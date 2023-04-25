@@ -9,19 +9,18 @@ class BuildingsController extends Controller
 {
     public function index()
     {
-//        $buildings = CpsBuildings::offset(0)->limit(100)->get();
-
-        $buildings = Buildings::all();
+        $buildings = Buildings::orderBy('area', 'asc')->orderBy('group_1', 'asc')->orderBy('group_2', 'asc')->orderBy('shed', 'asc')->get();
         return response()->json($buildings);
     }
 
     public function create(Request $request)
     {
-//        $this->validate($request, [
-//            'inner_name' => 'required',
-//            'quant' => 'required',
-//            'outer_id' => 'required'
-//        ]);
+        $this->validate($request, [
+            'area' => 'required',
+            'group_1' => 'required',
+            'shed' => 'required',
+            'affiliate' => 'required',
+        ]);
         $building = Buildings::create($request->all());
 
         return response()->json($building);

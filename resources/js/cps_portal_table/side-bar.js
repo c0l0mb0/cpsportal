@@ -18,7 +18,7 @@ export default class SideBar {
             this.tableAgGrid = new TableAgGrid(agGridParameters.workersParameters.gridOptions,
                 config.api.getWorkersALl, config.api.postPutDeleteWorkers,
                 agGridParameters.workersParameters.agName, this.actionMenu);
-            this.actionMenu.tableAgGrid = this.tableAgGrid
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.hideALl();
             this.modalForm.setModalWorkersFormHtml();
@@ -31,7 +31,7 @@ export default class SideBar {
             this.tableAgGrid = new TableAgGrid(agGridParameters.fireInstrParameters.gridOptions,
                 config.api.getWorkersALl, config.api.postPutDeleteWorkers,
                 agGridParameters.fireInstrParameters.agName, this.actionMenu);
-            this.actionMenu.tableAgGrid = this.tableAgGrid
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.hideALl();
             this.actionMenu.showExcelButton();
@@ -41,15 +41,28 @@ export default class SideBar {
         };
 
         document.querySelector('.sidebar__edit-equip-in-building').onclick = () => {
+            this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
+                config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
+                agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.hideALl();
+            this.actionMenu.showExcelButton();
+            this.actionMenu.setEditInnerAction();
+            this.modalForm.setFormWithTexboxesSubmitHandler();
+            changePageTitle("Оборудование в здании");
+        };
+
+        document.querySelector('.sidebar__edit-buildings').onclick = () => {
             this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsParameters.gridOptions,
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
                 agGridParameters.buildingsParameters.agName, this.actionMenu);
-            this.actionMenu.tableAgGrid = this.tableAgGrid
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.hideALl();
+            this.actionMenu.unsetEditAndAddEquipToBuildingButtonAction();
             this.modalForm.setModalCpsBuildingsFormHtml();
             this.actionMenu.showPlusAndExcelButton();
-            this.actionMenu.setEditInnerAction();
             this.modalForm.setFormWithTexboxesSubmitHandler();
             changePageTitle("Здания");
         };
@@ -58,9 +71,10 @@ export default class SideBar {
             this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentParameters.gridOptions,
                 config.api.getEquipmentALl, config.api.postPutDeleteEquipment,
                 agGridParameters.equipmentParameters.agName, this.actionMenu);
-            this.actionMenu.tableAgGrid = this.tableAgGrid
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.hideALl();
+            this.actionMenu.unsetEditAndAddEquipToBuildingButtonAction();
             this.modalForm.setModalCpsEquipmentFormHtml();
             this.actionMenu.showPlusAndExcelButton();
             this.modalForm.setFormWithTexboxesSubmitHandler();

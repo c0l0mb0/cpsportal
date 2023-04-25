@@ -17,6 +17,8 @@ export default class ActionMenu {
     agBuildingName;
     editTableRow;
     returnToBuildings;
+    EditAddEquipOfBuildingButtonActionEventLister;
+    AddEquipOfBuildingButtonActionEventLister;
 
     hideALl() {
         this.newTableRow.style.display = 'none';
@@ -118,28 +120,31 @@ export default class ActionMenu {
             this.modalForm.agBuildingId = this.agBuildingId;
 
             changePageTitle('Здание =>' + selectedRow.group_1 + '=>' + selectedRow.shed + "=> Оборудование");
-            this.setEditEquipOfBuildingButtonAction();
-            this.setAddEquipToBuildingButtonAction();
+            this.setEditAddEquipOfBuildingButtonAction();
         };
     }
 
-    setEditEquipOfBuildingButtonAction() {
-        this.editTableRow.addEventListener('click', this.modalForm.setModalPutEquipmentInBuildingHtml.bind(this.modalForm));
+    setEditAddEquipOfBuildingButtonAction() {
+        this.EditAddEquipOfBuildingButtonActionEventLister = this.modalForm.setModalPutEquipmentInBuildingHtml.bind(this.modalForm);
+        this.AddEquipOfBuildingButtonActionEventLister = this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm);
+        this.editTableRow.addEventListener('click', this.EditAddEquipOfBuildingButtonActionEventLister);
+        this.newTableRow.addEventListener('click',this.AddEquipOfBuildingButtonActionEventLister );
     }
 
-    setAddEquipToBuildingButtonAction() {
-        this.newTableRow.addEventListener('click', this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm));
+    unsetEditAndAddEquipToBuildingButtonAction() {
+        this.editTableRow.removeEventListener('click', this.EditAddEquipOfBuildingButtonActionEventLister);
+        this.newTableRow.removeEventListener('click',this.AddEquipOfBuildingButtonActionEventLister );
     }
 
     setReturnToBuildingsAction() {
         this.returnToBuildings.onclick = () => {
-            this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsParameters.gridOptions,
+            this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
-                agGridParameters.buildingsParameters.agName, this);
+                agGridParameters.uneditableBuildingsParameters.agName, this);
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.hideALl();
-            this.modalForm.setModalCpsBuildingsFormHtml();
-            this.showPlusAndExcelButton();
+            // this.modalForm.setModalCpsBuildingsFormHtml();
+            this.showExcelButton();
             this.setEditInnerAction();
             changePageTitle("Здания");
         };

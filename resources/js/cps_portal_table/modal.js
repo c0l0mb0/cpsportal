@@ -44,7 +44,7 @@ export default class ModalForm {
     modalformWithGridCallback = event => {
         let _this = this;
         event.preventDefault();
-        let selectedRow = this.modalTableAgGrid.getSelectedRow();
+        let selectedRow = _this.modalTableAgGrid.getSelectedRow();
         if (selectedRow === undefined) {
             this._hideError();
             let massage = {}
@@ -55,14 +55,20 @@ export default class ModalForm {
         }
         let equipmentId = selectedRow.id;
         let requestBody = {};
-        requestBody.id_app = equipmentId;
-        requestBody.id_obj = _this.agBuildingId;
+        requestBody.id_equip = equipmentId;
+        let requestUrl = _this.ui.modalForm.requestUrl
         if (_this.ui.modalForm.requestMethod === 'POST') {
             requestBody.quantity = document.querySelector('#quantity').value;
             requestBody.measure = document.querySelector('#measure').value;
+            requestBody.id_build = _this.agBuildingId;
+        }
+        if (_this.ui.modalForm.requestMethod === 'PUT') {
+            let selectedRowEquipInBuilding = _this.tableAgGrid.getSelectedRow();
+            let buildEquipId = selectedRowEquipInBuilding.id;
+            requestUrl = requestUrl + '/' + buildEquipId;
         }
         requestBody = addCSRF(requestBody);
-        httpRequest(_this.ui.modalForm.requestUrl, _this.ui.modalForm.requestMethod, requestBody).then((e) => {
+        httpRequest(requestUrl, _this.ui.modalForm.requestMethod, requestBody).then((e) => {
             _this._hideError();
             _this.hideModal();
             event.target.reset();
@@ -145,12 +151,14 @@ export default class ModalForm {
     }
 
     setModalCpsBuildingsFormHtml() {
+        // this.deleteAllSubmitModalFormHandler();
         this.ui.modalForm.caption.innerHTML = 'Добавить здание';
         this.ui.modalForm.modalBody.innerHTML = modalNewBuilding;
         this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;
     }
 
     setModalCpsEquipmentFormHtml() {
+        // this.deleteAllSubmitModalFormHandler();
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
         this.ui.modalForm.modalBody.innerHTML = modalNewEquipment;
         this.ui.modalForm.requestUrl = config.api.postPutDeleteEquipment;
@@ -171,7 +179,7 @@ export default class ModalForm {
 
     setModalPutEquipmentInBuildingHtml() {
         let selectedRow = this.tableAgGrid.getSelectedRow();
-        let equipmentName = selectedRow.app_name;
+        let equipmentName = selectedRow.equip_name;
         this.ui.modalForm.caption.innerHTML = 'Заменить ' + equipmentName + ' в ' + this.agBuildingName + ' на';
         this.ui.modalForm.modalBody.innerHTML = modalPutEquipmentInBuilding;
         this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
@@ -207,7 +215,7 @@ const modalNewEquipmentInBuilding = `
                         <div class="modal-aggrid-wrapper">
                             <div id="modal-aggrid" style="width: 100%; height: 100%;"></div>
                         </div>
-                         <div class="d-flex justify-content-around">
+                        <div class="d-flex justify-content-around">
                             <div class="p-2">
                                 <label for="quantity" class="col-form-label">Количество</label>
                             </div>
@@ -324,10 +332,10 @@ const modalNewBuilding = `
 const modalNewEquipment = `
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="app_name" class="col-form-label">Название</label>
+                                <label for="equip_name" class="col-form-label">Название</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="app_name" required name="app_name">
+                                 <input type="text" class="form-control" id="equip_name" required name="equip_name">
                             </div>
                         </div>
                          <div class="row p-2">

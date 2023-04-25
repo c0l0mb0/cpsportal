@@ -12,7 +12,7 @@ class BuildEquipController extends Controller
     public function index($id)
     {
         $objectAndEquip = DB::table('build_equip')
-            ->select(DB::raw('build_equip.id as id,app_name, quantity,measure, app_year'))
+            ->select(DB::raw('build_equip.id as id,equip_name, quantity,measure, app_year'))
             ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
             ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
             ->where('buildings.id', $id)
@@ -41,13 +41,11 @@ class BuildEquipController extends Controller
     public function update($id, Request $request)
     {
         $this->validate($request, [
-            'id' => 'required',
-            'quantity' => 'required',
+            'id_equip' => 'required',
         ]);
-
-        $objectAndEquip = BuildEquip::find($id);
-        $objectAndEquip->update($request->all());
-        return response()->json($objectAndEquip);
+        $buildingAndEquip = BuildEquip::findOrFail($id);
+        $buildingAndEquip->update($request->all());
+        return response()->json($buildingAndEquip);
     }
 
     public function destroy($id)

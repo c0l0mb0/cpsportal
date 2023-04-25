@@ -114,13 +114,19 @@ export let agGridParameters = {
     buildingsParameters: {
         gridOptions: {
             columnDefs: [
-                {headerName: "Участок", field: "area", minWidth: 100, tooltipField: 'area', sortable: true},
-                {headerName: "Группа", field: "group_1", minWidth: 100, tooltipField: 'group_1', sortable: true},
-                {headerName: "Подгруппа", field: "group_2", minWidth: 100, tooltipField: 'group_2', sortable: true},
-                {headerName: "Здание", field: "shed", minWidth: 100, tooltipField: 'shed', sortable: true},
-                {headerName: "Очередь", field: "Queue", minWidth: 100, tooltipField: 'Queue', sortable: true},
-                {headerName: "Филиал", field: "affiliate", minWidth: 100, tooltipField: 'affiliate', sortable: true},
-
+                {headerName: "Участок", field: "area", minWidth: 100, tooltipField: 'area', sortable: true,filter: true, },
+                {headerName: "Группа", field: "group_1", minWidth: 100, tooltipField: 'group_1', sortable: true,filter: true,},
+                {headerName: "Подгруппа", field: "group_2", minWidth: 100, tooltipField: 'group_2', sortable: true,filter: true,},
+                {headerName: "Здание", field: "shed", minWidth: 100, tooltipField: 'shed', sortable: true,filter: true,},
+                {headerName: "Очередь", field: "Queue", minWidth: 100, tooltipField: 'Queue', sortable: true,filter: true,},
+                {headerName: "Филиал", field: "affiliate", minWidth: 100, tooltipField: 'affiliate', sortable: true,filter: true,},
+                {headerName: "Монтаж", field: "fitt", minWidth: 100, tooltipField: 'fitt', sortable: true,filter: true,},
+                {headerName: "МонтажГод", field: "fitt_year", minWidth: 100, tooltipField: 'fitt_year', sortable: true,filter: true,},
+                {headerName: "Проект", field: "proj", minWidth: 100, tooltipField: 'proj', sortable: true,filter: true,},
+                {headerName: "ПроектГод", field: "proj_year", minWidth: 100, tooltipField: 'proj_year', sortable: true,filter: true,},
+                {headerName: "АУПС", field: "type_aups", minWidth: 100, tooltipField: 'type_aups', sortable: true,filter: true,},
+                {headerName: "СОУЭтип", field: "aud_warn_type", minWidth: 100, tooltipField: 'aud_warn_type', sortable: true,filter: true,},
+                {headerName: "КатТехСложАСУ", field: "aud_warn_type", minWidth: 100, tooltipField: 'aud_warn_type', sortable: true,filter: true,},
             ],
             rowSelection: 'single',
             defaultColDef: {
@@ -134,7 +140,6 @@ export let agGridParameters = {
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.showDelButton();
-                agGridParameters.actionMenu.showGoToEquipButton();
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
@@ -142,31 +147,61 @@ export let agGridParameters = {
         },
         agName: 'cps_buildings',
     },
+    uneditableBuildingsParameters: {
+        gridOptions: {
+            columnDefs: [
+                {headerName: "Участок", field: "area", minWidth: 100, tooltipField: 'area', sortable: true},
+                {headerName: "Группа", field: "group_1", minWidth: 100, tooltipField: 'group_1', sortable: true},
+                {headerName: "Подгруппа", field: "group_2", minWidth: 100, tooltipField: 'group_2', sortable: true},
+                {headerName: "Здание", field: "shed", minWidth: 100, tooltipField: 'shed', sortable: true},
+                {headerName: "Очередь", field: "Queue", minWidth: 100, tooltipField: 'Queue', sortable: true},
+                {headerName: "Филиал", field: "affiliate", minWidth: 100, tooltipField: 'affiliate', sortable: true},
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: false,
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: function (event) {
+                httpRequest(config.api.postPutDeleteBuildings, "PUT",
+                    addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
+            },
+            onRowSelected: function () {
+                agGridParameters.actionMenu.showGoToEquipButton();
+            },
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            }
+        },
+        agName: 'cps_uneditable_buildings',
+    },
     equipmentParameters: {
         gridOptions: {
             columnDefs: [
-                {headerName: "Название", field: "app_name", minWidth: 100, tooltipField: 'area', sortable: true},
+                {headerName: "Название", field: "equip_name", minWidth: 100, tooltipField: 'equip_name', sortable: true, filter: true,},
                 {
                     headerName: "ТипОбобщенный",
                     field: "kind_app",
                     minWidth: 100,
-                    tooltipField: 'group_2',
-                    sortable: true
+                    tooltipField: 'kind_app',
+                    sortable: true, filter: true,
                 },
-                {headerName: "Тип", field: "kind_app_second", minWidth: 100, tooltipField: 'shed', sortable: true},
+                {headerName: "Тип", field: "kind_app_second", minWidth: 100, tooltipField: 'kind_app_second', sortable: true, filter: true,},
                 {
                     headerName: "Сигнал",
                     field: "kind_signal",
                     minWidth: 100,
-                    tooltipField: 'group_1',
-                    sortable: true
+                    tooltipField: 'kind_signal',
+                    sortable: true, filter: true,
                 },
                 {
                     headerName: "Производитель",
                     field: "brand_name",
                     minWidth: 100,
-                    tooltipField: 'Queue',
-                    sortable: true
+                    tooltipField: 'brand_name',
+                    sortable: true, filter: true,
                 },
 
             ],
@@ -194,15 +229,15 @@ export let agGridParameters = {
             columnDefs: [
                 {
                     headerName: "Название",
-                    field: "app_name",
+                    field: "equip_name",
                     minWidth: 100,
-                    tooltipField: 'app_name',
-                    sortable: true,
+                    tooltipField: 'equip_name',
+                    sortable: true, filter: true,
                     editable: false,
                 },
-                {headerName: "Количество", field: "quantity", minWidth: 100, tooltipField: 'quantity', sortable: true},
-                {headerName: "Измерение", field: "measure", minWidth: 100, tooltipField: 'measure', sortable: true},
-                {headerName: "Год", field: "app_year", minWidth: 100, tooltipField: 'app_year', sortable: true},
+                {headerName: "Количество", field: "quantity", minWidth: 100, tooltipField: 'quantity', sortable: true, filter: true,},
+                {headerName: "Измерение", field: "measure", minWidth: 100, tooltipField: 'measure', sortable: true, filter: true,},
+                {headerName: "Год", field: "app_year", minWidth: 100, tooltipField: 'app_year', sortable: true, filter: true,},
 
             ],
             rowSelection: 'single',
@@ -229,21 +264,21 @@ export let agGridParameters = {
     equipmentForChooseParameters: {
         gridOptions: {
             columnDefs: [
-                {headerName: "Название", field: "app_name", minWidth: 350, tooltipField: 'area', sortable: true},
+                {headerName: "Название", field: "equip_name", minWidth: 350, tooltipField: 'area', sortable: true, filter: true,},
                 {
                     headerName: "Тип",
                     field: "kind_app",
                     minWidth: 60,
                     tooltipField: 'group_2',
-                    sortable: true
+                    sortable: true, filter: true,
                 },
-                {headerName: "ТипОбобщенный", field: "kind_app_second", minWidth: 60, tooltipField: 'shed', sortable: true},
+                {headerName: "ТипОбобщенный", field: "kind_app_second", minWidth: 60, tooltipField: 'shed', sortable: true, filter: true,},
                 {
                     headerName: "Сигнал",
                     field: "kind_signal",
                     maxWidth: 120,
                     tooltipField: 'group_1',
-                    sortable: true
+                    sortable: true, filter: true,
                 },
             ],
             rowSelection: 'single',

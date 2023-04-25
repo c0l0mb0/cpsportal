@@ -47,14 +47,6 @@ export default class TableAgGrid {
         }
     }
 
-    selectRowByInternalId() {
-
-    }
-
-    getAgGridInternalRowId() {
-
-    }
-
     setDeleteButtonAction() {
         this.actionMenu.deleteTableRow.onclick = () => {
             let selectedRow = this.getSelectedRow();

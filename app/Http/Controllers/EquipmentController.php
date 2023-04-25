@@ -18,19 +18,19 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-
-        $equipment = Equipment::all();
+        $equipment = Equipment::orderBy('id', 'asc')->get();
         return response()->json($equipment);
 
     }
 
     public function create(Request $request)
     {
-//        $this->validate($request, [
-//            'inner_name' => 'required',
-//            'quant' => 'required',
-//            'outer_id' => 'required'
-//        ]);
+        $this->validate($request, [
+            'equip_name' => 'required',
+            'kind_app' => 'required',
+            'kind_app_second' => 'required',
+            'kind_signal' => 'required',
+        ]);
         $equipment = Equipment::create($request->all());
 
         return response()->json($equipment);

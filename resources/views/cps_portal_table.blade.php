@@ -32,34 +32,33 @@
 {{--                    <a class="sidebar__edit-passports sidebar-list-left_margin" href="#">Паспорта</a>--}}
 {{--                </li>--}}
 {{--            </ul>--}}
-            <div class="admin_role">
+
                 <ul class="list-unstyled components">
-                    <div class="sidebar-list_capture admin_role">Оборудование</div>
+                    <div class="sidebar-list_capture">Оборудование</div>
                     <li>
-                        <a class="sidebar__edit-equip sidebar-list-left_margin admin_role worker_role" href="#">Все обрудование</a>
+                        <a class="sidebar__edit-equip sidebar-list-left_margin" href="#">Все обрудование</a>
                     </li>
                     <li>
-                        <a class="sidebar__edit-buildings sidebar-list-left_margin admin_role" href="#">Здания</a>
+                        <a class="sidebar__edit-buildings sidebar-list-left_margin" href="#">Здания</a>
                     </li>
                     <li>
-                        <a class="sidebar__edit-equip-in-building sidebar-list-left_margin admin_role" href="#">Оборудование в здании</a>
+                        <a class="sidebar__edit-equip-in-building sidebar-list-left_margin" href="#">Оборудование в здании</a>
                     </li>
-                    <li>
-                        <a class="sidebar__edit-plan_grafici sidebar-list-left_margin admin_role" href="#">План-графики</a>
+                    <li hidden>
+                        <a class="sidebar__edit-plan_grafici sidebar-list-left_margin" href="#">План-графики</a>
                     </li>
-                    <li>
-                        <a class="sidebar__edit-passports sidebar-list-left_margin admin_role worker_role" href="#">Паспорта</a>
+                    <li hidden>
+                        <a class="sidebar__edit-passports sidebar-list-left_margin" href="#">Паспорта</a>
                     </li>
-                    <div class="sidebar-list_capture admin_role">Персонал</div>
-                    <li>
-                        <a class="sidebar__edit-fire_instr sidebar-list-left_margin admin_role" href="#">ПожИнструктаж</a>
+                    <div hidden class="sidebar-list_capture ">Персонал</div>
+                    <li hidden>
+                        <a class="sidebar__edit-fire_instr sidebar-list-left_margin" href="#">ПожИнструктаж</a>
                     </li>
-                    <li>
-                        <a class="sidebar__edit-staff sidebar-list-left_margin admin_role" href="#">Данные</a>
+                    <li hidden>
+                        <a class="sidebar__edit-staff sidebar-list-left_margin " href="#">Данные</a>
                     </li>
                 </ul>
             </div>
-        </div>
     </nav>
 
     <!-- Page Content  -->
