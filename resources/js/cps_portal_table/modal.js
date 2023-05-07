@@ -3,6 +3,7 @@ import {httpRequest} from './cps-portal-dao.js'
 import {addCSRF} from './helper.js'
 import ModalAggrid from "./modal-aggrid.js";
 import {agGridParameters} from "./ag-grid-parameters";
+import {lists} from "./lists";
 
 export default class ModalForm {
     actionMenu;
@@ -10,6 +11,7 @@ export default class ModalForm {
     agBuildingId;
     agBuildingName;
     modalTableAgGrid;
+    modalHtml = {};
     ui = {
         modalForm: {
             caption: document.getElementById('modal__caption'),
@@ -24,6 +26,10 @@ export default class ModalForm {
         requestUrl: undefined,
         requestMethod: 'POST',
     };
+
+    constructor() {
+        this.initiateModalHtml();
+    }
 
     modalformWithTexboxesCallback = event => {
         let _this = this;
@@ -146,27 +152,29 @@ export default class ModalForm {
 
     setModalWorkersFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить работника';
-        this.ui.modalForm.modalBody.innerHTML = modalNewWorker;
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewWorker;
         this.ui.modalForm.requestUrl = config.api.postPutDeleteWorkers;
     }
 
     setModalCpsBuildingsFormHtml() {
         // this.deleteAllSubmitModalFormHandler();
         this.ui.modalForm.caption.innerHTML = 'Добавить здание';
-        this.ui.modalForm.modalBody.innerHTML = modalNewBuilding;
+        // modalHtml.modalNewBuilding = modalHtml.modalNewBuilding.replace('@group_1',lists.buildings.group_1);
+        // modalHtml.modalNewBuilding = modalHtml.modalNewBuilding.replace('@group_2',lists.buildings.group_2);
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewBuilding;
         this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;
     }
 
     setModalCpsEquipmentFormHtml() {
         // this.deleteAllSubmitModalFormHandler();
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
-        this.ui.modalForm.modalBody.innerHTML = modalNewEquipment;
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipment;
         this.ui.modalForm.requestUrl = config.api.postPutDeleteEquipment;
     }
 
     setModalNewEquipmentInBuildingHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование в ' + this.agBuildingName;
-        this.ui.modalForm.modalBody.innerHTML = modalNewEquipmentInBuilding;
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipmentInBuilding;
         document.querySelector('#quantity').addEventListener('input', this.validateNumberWithDot);
         this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
             config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
@@ -181,7 +189,7 @@ export default class ModalForm {
         let selectedRow = this.tableAgGrid.getSelectedRow();
         let equipmentName = selectedRow.equip_name;
         this.ui.modalForm.caption.innerHTML = 'Заменить ' + equipmentName + ' в ' + this.agBuildingName + ' на';
-        this.ui.modalForm.modalBody.innerHTML = modalPutEquipmentInBuilding;
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalPutEquipmentInBuilding;
         this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
             config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
         this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
@@ -200,10 +208,8 @@ export default class ModalForm {
             e.target.value = regText[0];
         }
     }
-
-}
-
-const modalNewEquipmentInBuilding = `
+    initiateModalHtml(){
+        this.modalHtml.modalNewEquipmentInBuilding = `
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="equip_search" class="col-form-label">Поиск</label>
@@ -234,7 +240,7 @@ const modalNewEquipmentInBuilding = `
                         </div>
                         `;
 
-const modalPutEquipmentInBuilding = `
+        this.modalHtml.modalPutEquipmentInBuilding = `
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="equip_search" class="col-form-label">Поиск</label>
@@ -246,7 +252,7 @@ const modalPutEquipmentInBuilding = `
                         <div class="modal-aggrid-wrapper">
                             <div id="modal-aggrid" style="width: 100%; height: 100%;"></div>
                         </div>`;
-const modalNewWorker = `
+        this.modalHtml.modalNewWorker = `
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="fio" class="col-form-label">Ф.И.О.</label>
@@ -271,14 +277,15 @@ const modalNewWorker = `
                                 <input type="text" class="form-control" id="worker_position" name="worker_position">
                             </div>
                         </div>`;
-
-const modalNewBuilding = `
+        this.modalHtml.modalNewBuilding = `
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="area" class="col-form-label">Участок</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="area" required name="area">
+                              <select class="form-control" id="area" required name="area"">` + lists.buildings.area +
+                              `
+                              </select>
                             </div>
                         </div>
                         <div class="row p-2">
@@ -286,7 +293,9 @@ const modalNewBuilding = `
                                 <label for="group_1" class="col-form-label">Группа</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="group_1" required name="group_1">
+                                 <select class="form-control" id="group_1" required name="group_1">` + lists.buildings.group_1 +
+                                 `
+                                 </select>
                             </div>
                         </div>
                         <div class="row p-2">
@@ -294,7 +303,9 @@ const modalNewBuilding = `
                                 <label for="group_2" class="col-form-label">Подгруппа</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="group_2"  name="group_2">
+                                 <select class="form-control" id="group_2"  name="group_2">` + lists.buildings.group_2 +
+                                 `
+                                 </select>
                             </div>
                         </div>
                          <div class="row p-2">
@@ -310,7 +321,9 @@ const modalNewBuilding = `
                                 <label for="Queue" class="col-form-label">Очередь</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="Queue"  name="Queue">
+                                  <select class="form-control" id="queue"  name="queue"">` + lists.buildings.queue +
+                              `
+                              </select>
                             </div>
                         </div>
                          <div class="row p-2">
@@ -318,7 +331,41 @@ const modalNewBuilding = `
                                 <label for="affiliate" class="col-form-label">Филиал</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="affiliate" required name="affiliate">
+                                 <select class="form-control" id="affiliate" required name="affiliate">` + lists.buildings.affiliate +
+                                 `
+                                 </select>
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="proj" class="col-form-label">Проект</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="proj" required name="proj">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="proj_year" class="col-form-label">Проект год </label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="number" class="form-control" id="proj_year" required name="proj_year">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="fitt" class="col-form-label">Монтаж</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="fitt" required name="fitt">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="fitt_year" class="col-form-label">Монтаж год</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="number" class="form-control" id="fitt_year" required name="fitt_year">
                             </div>
                         </div>
                         <div class="row p-2">
@@ -326,10 +373,33 @@ const modalNewBuilding = `
                                 <label for="type_aups" class="col-form-label">ТипАУПС</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="type_aups" required name="type_aups">
+                               <select class="form-control" id="type_aups" required name="type_aups"">` + lists.buildings.type_aups +
+                              `
+                              </select>
                             </div>
-                        </div>`;
-const modalNewEquipment = `
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="aud_warn_type" class="col-form-label">типСОУЭ</label>
+                            </div>
+                            <div class="col-9">
+                                  <select class="form-control" id="aud_warn_type" required name="aud_warn_type"">` + lists.buildings.aud_warn_type +
+                              `
+                              </select>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="categ_asu" class="col-form-label">Категоря сложности АСУ</label>
+                            </div>
+                            <div class="col-9">
+                                  <select class="form-control" id="categ_asu" required name="categ_asu"">` + lists.buildings.categ_asu +
+                              `
+                              </select>
+                            </div>
+                        </div>
+                        `;
+        this.modalHtml.modalNewEquipment = `
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="equip_name" class="col-form-label">Название</label>
@@ -370,3 +440,6 @@ const modalNewEquipment = `
                                  <input type="text" class="form-control" id="brand_name" required name="brand_name">
                             </div>
                         </div>`;
+    }
+}
+

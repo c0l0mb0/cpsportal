@@ -26,6 +26,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::delete('workers/{id}', [WorkersController::class, 'destroy']);
 
     Route::get('cps-buildings-all', [BuildingsController::class, 'index']);
+    Route::get('cps-buildings-group1', [BuildingsController::class, 'indexGroup1']);
+    Route::get('cps-buildings-group2', [BuildingsController::class, 'indexGroup2']);
+    Route::get('cps-buildings-affiliate', [BuildingsController::class, 'indexAffiliate']);
     Route::post('cps-buildings', [BuildingsController::class, 'create']);
     Route::put('cps-buildings/{id}', [BuildingsController::class, 'update']);
     Route::delete('cps-buildings/{id}', [BuildingsController::class, 'destroy']);
