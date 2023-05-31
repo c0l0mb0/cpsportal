@@ -36,16 +36,10 @@ function init() {
 
 function getAllValuesForLists() {
     httpRequest(config.api.getBuildingsGroup1, 'GET').then((buildingsGroup1Data) => {
-        buildingsGroup1Data.forEach((elem) => {
-            lists.buildings.group_1 = lists.buildings.group_1 + ('<option value="' + elem.group_1 + '">' + elem.area + ' | ' + elem.group_1 + '</option>' + '\n');
-        });
+        lists.buildings.group_1 = buildingsGroup1Data;
         return httpRequest(config.api.getBuildingsGroup2, 'GET');
     }).then((buildingsGroup2Data) => {
-        const emptyOption = '<option value="">без подгруппы</option>';
-        lists.buildings.group_2 = lists.buildings.group_2 + emptyOption;
-        buildingsGroup2Data.forEach((elem) => {
-            lists.buildings.group_2 = lists.buildings.group_2 + ('<option value="' + elem.group_2 + '">' + elem.area + ' | ' + elem.group_2 + '</option>' + '\n');
-        });
+        lists.buildings.group_2 = buildingsGroup2Data;
         return httpRequest(config.api.getBuildingsAffiliate, 'GET');
     }).then((buildingsAffiliateData) => {
         buildingsAffiliateData.forEach((elem) => {

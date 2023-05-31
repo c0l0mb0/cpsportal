@@ -10,7 +10,11 @@ class BuildingsController extends Controller
 {
     public function index()
     {
-        $buildings = Buildings::orderBy('area', 'asc')->orderBy('group_1', 'asc')->orderBy('group_2', 'asc')->orderBy('shed', 'asc')->get();
+        $buildings = Buildings::orderBy('area', 'asc')
+            ->orderBy('group_1', 'asc')
+            ->orderBy('group_2', 'asc')
+            ->orderBy('shed', 'asc')
+            ->get();
         return response()->json($buildings);
     }
     public function indexGroup1()
@@ -27,13 +31,21 @@ class BuildingsController extends Controller
     public function indexGroup2()
     {
         $group2List = DB::table('buildings')
-            ->select(['group_2', 'area'])
+            ->select(['group_1','group_2', 'area'])
             ->distinct()
             ->orderBy('area', 'asc')
             ->orderBy('group_2', 'asc')
             ->whereNotNull('group_2')
             ->get();
         return response()->json($group2List);
+//        $group2List = DB::table('equipment')
+//            ->select(['kind_app','kind_app_second'])
+//            ->distinct()
+//            ->orderBy('kind_app', 'asc')
+//            ->orderBy('kind_app_second', 'asc')
+//            ->whereNotNull('group_2')
+//            ->get();
+//        return response()->json($group2List);
     }
     public function indexAffiliate()
     {

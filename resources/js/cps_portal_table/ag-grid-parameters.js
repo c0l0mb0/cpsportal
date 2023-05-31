@@ -132,6 +132,7 @@ export let agGridParameters = {
             defaultColDef: {
                 resizable: true,
                 editable: true,
+                menuTabs: ['filterMenuTab'],
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
@@ -186,9 +187,9 @@ export let agGridParameters = {
                     field: "kind_app",
                     minWidth: 100,
                     tooltipField: 'kind_app',
-                    sortable: true, filter: true,
+                     filter: true,
                 },
-                {headerName: "Тип", field: "kind_app_second", minWidth: 100, tooltipField: 'kind_app_second', sortable: true, filter: true,},
+                {headerName: "Тип", field: "kind_app_second", minWidth: 100, tooltipField: 'kind_app_second', filter: true,},
                 {
                     headerName: "Сигнал",
                     field: "kind_signal",
@@ -209,6 +210,7 @@ export let agGridParameters = {
             defaultColDef: {
                 resizable: true,
                 editable: true,
+                menuTabs: ['filterMenuTab'],
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {

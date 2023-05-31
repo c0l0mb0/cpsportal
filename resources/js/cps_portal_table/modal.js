@@ -19,6 +19,12 @@ export default class ModalForm {
             modalBody: document.querySelector('.modal__form__body'),
             form: document.getElementById('form__new-entry'),
             error: document.getElementById('form__error'),
+            listsArea: undefined,
+            group_1: undefined,
+            group_2: undefined,
+            kind_app: undefined,
+            kind_app_second: undefined,
+
         },
         modalContainer: document.querySelector('.modal-container'),
         showModalButton: document.querySelector('.new-table-row'),
@@ -159,17 +165,77 @@ export default class ModalForm {
     setModalCpsBuildingsFormHtml() {
         // this.deleteAllSubmitModalFormHandler();
         this.ui.modalForm.caption.innerHTML = 'Добавить здание';
-        // modalHtml.modalNewBuilding = modalHtml.modalNewBuilding.replace('@group_1',lists.buildings.group_1);
-        // modalHtml.modalNewBuilding = modalHtml.modalNewBuilding.replace('@group_2',lists.buildings.group_2);
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewBuilding;
+        this.setModalCpsBuildingsFormHtmlListsListeners();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;
+    }
+
+    setModalCpsBuildingsFormHtmlListsListeners() {
+        this.ui.modalForm.listsArea = document.getElementById('area');
+        this.ui.modalForm.group_1 = document.getElementById('group_1');
+        this.ui.modalForm.group_2 = document.getElementById('group_2');
+        this.ui.modalForm.group_1.disabled = true;
+        this.ui.modalForm.group_2.disabled = true;
+        let listsAreaSelectedValue = '';
+        let listsGroup_1SelectedValue = '';
+
+        this.ui.modalForm.listsArea.addEventListener("change", (event) => {
+            this.ui.modalForm.group_1.disabled = false;
+            this.ui.modalForm.group_2.disabled = true;
+            listsAreaSelectedValue = this.ui.modalForm.listsArea.value;
+            this.removeOptions(this.ui.modalForm.group_1);
+            this.ui.modalForm.group_1.add(new Option('',''));
+            lists.buildings.group_1.forEach((elem) => {
+                if (elem.area === listsAreaSelectedValue) {
+                    this.ui.modalForm.group_1.add(new Option(elem.group_1,elem.group_1));
+                }
+            });
+        });
+
+        this.ui.modalForm.group_1.addEventListener("change", () => {
+            this.ui.modalForm.group_2.disabled = false;
+            listsGroup_1SelectedValue = this.ui.modalForm.group_1.value;
+            this.removeOptions(this.ui.modalForm.group_2);
+            this.ui.modalForm.group_2.add(new Option('',''));
+            lists.buildings.group_2.forEach((elem) => {
+                if (elem.area === listsAreaSelectedValue && elem.group_1 === listsGroup_1SelectedValue) {
+                    this.ui.modalForm.group_2.add(new Option(elem.group_2,elem.group_2));
+                }
+            });
+        });
+
+    }
+     removeOptions(selectElement) {
+        let i, L = selectElement.options.length - 1;
+        for(i = L; i >= 0; i--) {
+            selectElement.remove(i);
+        }
     }
 
     setModalCpsEquipmentFormHtml() {
         // this.deleteAllSubmitModalFormHandler();
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipment;
+        this.setModalCpsEquipmentFormHtmlListsListeners();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteEquipment;
+    }
+
+    setModalCpsEquipmentFormHtmlListsListeners() {
+        this.ui.modalForm.kind_app = document.getElementById('kind_app');
+        this.ui.modalForm.kind_app_second = document.getElementById('kind_app_second');
+        this.ui.modalForm.kind_app_second.disabled = true;
+        let listKind_appSelectedValue = '';
+
+        this.ui.modalForm.kind_app.addEventListener("change", (event) => {
+            listKind_appSelectedValue = this.ui.modalForm.kind_app.value;
+            this.removeOptions(this.ui.modalForm.kind_app_second);
+            lists.equipment.kind_app_second.forEach((elem) => {
+                if (elem.kind_app === listKind_appSelectedValue) {
+                    this.ui.modalForm.kind_app_second.add(new Option(elem.kind_app_second, elem.kind_app_second));
+                }
+            });
+            this.ui.modalForm.kind_app_second.disabled = false;
+        });
     }
 
     setModalNewEquipmentInBuildingHtml() {
@@ -208,7 +274,8 @@ export default class ModalForm {
             e.target.value = regText[0];
         }
     }
-    initiateModalHtml(){
+
+    initiateModalHtml() {
         this.modalHtml.modalNewEquipmentInBuilding = `
                         <div class="row p-2">
                             <div class="col-3">
@@ -284,7 +351,7 @@ export default class ModalForm {
                             </div>
                             <div class="col-9">
                               <select class="form-control" id="area" required name="area"">` + lists.buildings.area +
-                              `
+            `
                               </select>
                             </div>
                         </div>
@@ -293,8 +360,7 @@ export default class ModalForm {
                                 <label for="group_1" class="col-form-label">Группа</label>
                             </div>
                             <div class="col-9">
-                                 <select class="form-control" id="group_1" required name="group_1">` + lists.buildings.group_1 +
-                                 `
+                                 <select class="form-control" id="group_1" required name="group_1">
                                  </select>
                             </div>
                         </div>
@@ -303,8 +369,7 @@ export default class ModalForm {
                                 <label for="group_2" class="col-form-label">Подгруппа</label>
                             </div>
                             <div class="col-9">
-                                 <select class="form-control" id="group_2"  name="group_2">` + lists.buildings.group_2 +
-                                 `
+                                 <select class="form-control" id="group_2" required name="group_2">
                                  </select>
                             </div>
                         </div>
@@ -322,7 +387,7 @@ export default class ModalForm {
                             </div>
                             <div class="col-9">
                                   <select class="form-control" id="queue"  name="queue"">` + lists.buildings.queue +
-                              `
+            `
                               </select>
                             </div>
                         </div>
@@ -332,7 +397,7 @@ export default class ModalForm {
                             </div>
                             <div class="col-9">
                                  <select class="form-control" id="affiliate" required name="affiliate">` + lists.buildings.affiliate +
-                                 `
+            `
                                  </select>
                             </div>
                         </div>
@@ -374,7 +439,7 @@ export default class ModalForm {
                             </div>
                             <div class="col-9">
                                <select class="form-control" id="type_aups" required name="type_aups"">` + lists.buildings.type_aups +
-                              `
+            `
                               </select>
                             </div>
                         </div>
@@ -384,7 +449,7 @@ export default class ModalForm {
                             </div>
                             <div class="col-9">
                                   <select class="form-control" id="aud_warn_type" required name="aud_warn_type"">` + lists.buildings.aud_warn_type +
-                              `
+            `
                               </select>
                             </div>
                         </div>
@@ -394,7 +459,7 @@ export default class ModalForm {
                             </div>
                             <div class="col-9">
                                   <select class="form-control" id="categ_asu" required name="categ_asu"">` + lists.buildings.categ_asu +
-                              `
+            `
                               </select>
                             </div>
                         </div>
@@ -413,7 +478,9 @@ export default class ModalForm {
                                 <label for="kind_app" class="col-form-label">ТипОбобщенный</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="kind_app" required name="kind_app">
+                                 <select class="form-control" id="kind_app" required name="kind_app"">` + lists.equipment.kind_app +
+                            `
+                              </select>
                             </div>
                         </div>
                         <div class="row p-2">
@@ -421,7 +488,8 @@ export default class ModalForm {
                                 <label for="kind_app_second" class="col-form-label">Тип</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="kind_app_second" required name="kind_app_second">
+                                  <select disabled class="form-control" id="kind_app_second" required name="kind_app_second"">
+                                  </select>
                             </div>
                         </div>
                         <div class="row p-2">
@@ -429,7 +497,9 @@ export default class ModalForm {
                                 <label for="kind_signal" class="col-form-label">ТипСигнала</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="kind_signal" required name="kind_signal">
+                                <select class="form-control" id="kind_signal" required name="kind_signal"">` + lists.equipment.kind_signal +
+                            `
+                              </select>
                             </div>
                         </div>
                         <div class="row p-2">

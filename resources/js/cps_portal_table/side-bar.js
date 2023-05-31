@@ -20,7 +20,6 @@ export default class SideBar {
                 agGridParameters.workersParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.hideALl();
             this.modalForm.setModalWorkersFormHtml();
             this.actionMenu.showPlusAndExcelButton();
             this.modalForm.setFormWithTexboxesSubmitHandler();
@@ -33,7 +32,6 @@ export default class SideBar {
                 agGridParameters.fireInstrParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.hideALl();
             this.actionMenu.showExcelButton();
             this.actionMenu.setFireExamPlusSixAction();
             this.modalForm.setFormWithTexboxesSubmitHandler();
@@ -46,7 +44,6 @@ export default class SideBar {
                 agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.hideALl();
             this.actionMenu.showExcelButton();
             this.actionMenu.setEditInnerAction();
             this.modalForm.setFormWithTexboxesSubmitHandler();
@@ -59,7 +56,6 @@ export default class SideBar {
                 agGridParameters.buildingsParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.hideALl();
             this.actionMenu.unsetEditAndAddEquipToBuildingButtonAction();
             this.modalForm.setModalCpsBuildingsFormHtml();
             this.actionMenu.showPlusAndExcelButton();
@@ -73,7 +69,6 @@ export default class SideBar {
                 agGridParameters.equipmentParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.hideALl();
             this.actionMenu.unsetEditAndAddEquipToBuildingButtonAction();
             this.modalForm.setModalCpsEquipmentFormHtml();
             this.actionMenu.showPlusAndExcelButton();

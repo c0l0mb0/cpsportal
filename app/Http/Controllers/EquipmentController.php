@@ -18,7 +18,10 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        $equipment = Equipment::orderBy('id', 'asc')->get();
+        $equipment = Equipment::orderBy('kind_app', 'asc')
+            ->orderBy('kind_app_second', 'asc')
+            ->orderBy('equip_name', 'asc')
+            ->get();
         return response()->json($equipment);
 
     }

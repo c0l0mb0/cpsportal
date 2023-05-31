@@ -1,6 +1,7 @@
 import {httpRequest} from './cps-portal-dao.js'
 import {myExcelXML} from './ag_grid_classes/excel-export.js';
 import {addCSRF} from './helper.js';
+import {AG_GRID_LOCALE_RU} from "./ag_grid_classes/local.ru";
 
 //ag grid wrapper, first field from DAO has to have the name "id". constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu)
 export default class TableAgGrid {
@@ -23,11 +24,13 @@ export default class TableAgGrid {
 
     renderAgGrid() {
         this.prepareHtml();
+        this.gridOptions.localeText =  AG_GRID_LOCALE_RU;
         new agGrid.Grid(document.getElementById(this.targetId), this.gridOptions);
         this.setGridData();
-        this.setGridCloseObserver();
+        // this.setGridCloseObserver();
         this.setDeleteButtonAction();
         this.isReady = true;
+        this.actionMenu.hideALl();
         this.actionMenu.setExportExcelAction();
     }
 
@@ -60,19 +63,27 @@ export default class TableAgGrid {
     }
 
     setGridCloseObserver() {
-
+        let this_ = this;
         const observer = new MutationObserver(function (mutations_list) {
+            console.log(mutations_list)
+            this_.actionMenu.hideALl();
+            observer.disconnect();
             //if another one mutation observer has been started
-            if (mutations_list.length > 1) {
-                observer.disconnect();
-                return;
-            }
-            mutations_list.forEach(node => {
-                if (node.removedNodes.length > 0) {
-                    this.actionMenu.hideALl();
-                    observer.disconnect();
-                }
-            })
+            // if (mutations_list.length > 1) {
+            //     observer.disconnect();
+            //     return;
+            // }
+
+            // console.log(mutations_list);
+
+            // let this__ =  this_;
+            // mutations_list.forEach(node => {
+            //     if (node.removedNodes.length > 0) {
+            //         // this__.actionMenu.hideALl();
+            //         // console.log('setGridCloseObserver');
+            //         observer.disconnect();
+            //     }
+            // })
         });
         observer.observe(document.getElementById(this.targetId), {subtree: false, childList: true});
     }
