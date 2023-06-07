@@ -3,6 +3,7 @@
 use App\Http\Controllers\BuildEquipController;
 use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\ExelExportController;
 use App\Http\Controllers\WorkersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,5 +43,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('cps-equipment-buildings', [BuildEquipController::class, 'create']);
     Route::put('cps-equipment-buildings/{id}', [BuildEquipController::class, 'update']);
     Route::delete('cps-equipment-buildings/{id}', [BuildEquipController::class, 'destroy']);
+
+    Route::get('export-test', [ExelExportController::class, 'testExport']);
 
 });

@@ -2,6 +2,7 @@ import TableAgGrid from './aggrid.js'
 import {config} from './cps-portal-dao.js'
 import {changePageTitle} from './helper.js'
 import {agGridParameters} from './ag-grid-parameters.js'
+import {queryselector} from "caniuse-lite/data/features";
 
 export default class SideBar {
     tableAgGrid;
@@ -74,6 +75,22 @@ export default class SideBar {
             this.actionMenu.showPlusAndExcelButton();
             this.modalForm.setFormWithTexboxesSubmitHandler();
             changePageTitle("Оборудование");
+        };
+        document.querySelector('.sidebar__export-reports').onclick = () => {
+            const pageContent = document.querySelector('#page-content');
+            const reportList = document.createElement('ul');
+            pageContent.appendChild(reportList);
+
+            const exportTestLiTag = document.createElement('li');
+            exportTestLiTag.classList.add("export_list-item");
+            reportList.appendChild(exportTestLiTag);
+            const exportTestAtag = document.createElement('a');
+            exportTestLiTag.appendChild(exportTestAtag);
+
+            exportTestAtag.innerText = "экспорт тест";
+            exportTestAtag.href = config.api.getExelTest;
+
+            changePageTitle("Отчеты");
         };
     }
 }

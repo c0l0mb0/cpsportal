@@ -19,6 +19,7 @@ export let config = {
         postPutDeleteEquipment: '/api/cps-equipment',
         getPutDeleteEquipmentInBuilding: '/api/cps-equipment-buildings',
         getUserRole: '/api/get-user-role',
+        getExelTest: '/api/export-test',
     }
 };
 

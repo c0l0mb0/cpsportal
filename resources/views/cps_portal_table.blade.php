@@ -44,6 +44,9 @@
                     <li>
                         <a class="sidebar__edit-equip-in-building sidebar-list-left_margin" href="#">Оборудование в здании</a>
                     </li>
+                    <li>
+                        <a class="sidebar__export-reports sidebar-list-left_margin" href="#">Отчеты</a>
+                    </li>
                     <li hidden>
                         <a class="sidebar__edit-plan_grafici sidebar-list-left_margin" href="#">План-графики</a>
                     </li>
@@ -105,7 +108,6 @@
                 <div class="justify-content-end navbar-btn-logout-wrapper">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-
                         <x-dropdown-link :href="route('logout')"
                                          onclick="event.preventDefault();
                                                 this.closest('form').submit();">

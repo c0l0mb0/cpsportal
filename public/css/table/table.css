@@ -198,7 +198,11 @@ a.article:hover {
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
-
+/*export-list*/
+.export_list-item{
+    margin: 20px 20px 20px 20px;
+    text-decoration: underline;
+}
 #content {
     display: flex;
     flex-direction: column;
