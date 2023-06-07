@@ -1,7 +1,7 @@
 import ActionMenu from './action-menu.js'
 import SideBar from './side-bar.js'
 import ModalForm from './modal.js'
-import {agGridParameters} from "./ag-grid-parameters.js";
+import {agGridParameters, initializeAgGridParameters} from "./ag-grid-parameters.js";
 import {config, httpRequest} from "./cps-portal-dao";
 import {lists} from "./lists";
 
@@ -9,6 +9,8 @@ import {lists} from "./lists";
 getAllValuesForLists();
 
 function init() {
+
+    initializeAgGridParameters();
     let actionMenu = new ActionMenu();
     let modalForm = new ModalForm();
     let sideBar = new SideBar();
@@ -42,8 +44,10 @@ function getAllValuesForLists() {
         lists.buildings.group_2 = buildingsGroup2Data;
         return httpRequest(config.api.getBuildingsAffiliate, 'GET');
     }).then((buildingsAffiliateData) => {
+        // console.log(buildingsAffiliateData)
+        // lists.buildings.affiliate = buildingsAffiliateData;
         buildingsAffiliateData.forEach((elem) => {
-            lists.buildings.affiliate = lists.buildings.affiliate + ('<option value="' + elem.affiliate + '">' + elem.affiliate + '</option>' + '\n');
+            lists.buildings.affiliate.push(elem.affiliate);
         });
     }).then(() => {
         init();

@@ -2,6 +2,8 @@ import DatePicker from "./ag_grid_classes/date-picker";
 import {config, httpRequest} from "./cps-portal-dao";
 import {addCSRF} from "./helper";
 import NumericCellEditor from "./ag_grid_classes/numericCellEditor.js";
+import {lists} from "./lists";
+
 
 export let agGridParameters = {
     agOuterId: undefined,
@@ -114,19 +116,152 @@ export let agGridParameters = {
     buildingsParameters: {
         gridOptions: {
             columnDefs: [
-                {headerName: "Участок", field: "area", minWidth: 100, tooltipField: 'area', sortable: true,filter: true, },
-                {headerName: "Группа", field: "group_1", minWidth: 100, tooltipField: 'group_1', sortable: true,filter: true,},
-                {headerName: "Подгруппа", field: "group_2", minWidth: 100, tooltipField: 'group_2', sortable: true,filter: true,},
-                {headerName: "Здание", field: "shed", minWidth: 100, tooltipField: 'shed', sortable: true,filter: true,},
-                {headerName: "Очередь", field: "Queue", minWidth: 100, tooltipField: 'Queue', sortable: true,filter: true,},
-                {headerName: "Филиал", field: "affiliate", minWidth: 100, tooltipField: 'affiliate', sortable: true,filter: true,},
-                {headerName: "Монтаж", field: "fitt", minWidth: 100, tooltipField: 'fitt', sortable: true,filter: true,},
-                {headerName: "МонтажГод", field: "fitt_year", minWidth: 100, tooltipField: 'fitt_year', sortable: true,filter: true,},
-                {headerName: "Проект", field: "proj", minWidth: 100, tooltipField: 'proj', sortable: true,filter: true,},
-                {headerName: "ПроектГод", field: "proj_year", minWidth: 100, tooltipField: 'proj_year', sortable: true,filter: true,},
-                {headerName: "АУПС", field: "type_aups", minWidth: 100, tooltipField: 'type_aups', sortable: true,filter: true,},
-                {headerName: "СОУЭтип", field: "aud_warn_type", minWidth: 100, tooltipField: 'aud_warn_type', sortable: true,filter: true,},
-                {headerName: "КатТехСложАСУ", field: "aud_warn_type", minWidth: 100, tooltipField: 'aud_warn_type', sortable: true,filter: true,},
+                {
+                    headerName: "Участок",
+                    field: "area",
+                    minWidth: 100,
+                    tooltipField: 'area',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Группа",
+                    field: "group_1",
+                    minWidth: 100,
+                    tooltipField: 'group_1',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Подгруппа",
+                    field: "group_2",
+                    minWidth: 100,
+                    tooltipField: 'group_2',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Здание",
+                    field: "shed",
+                    minWidth: 100,
+                    tooltipField: 'shed',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "Очередь",
+                    field: "Queue",
+                    minWidth: 100,
+                    tooltipField: 'Queue',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Филиал",
+                    field: "affiliate",
+                    minWidth: 100,
+                    tooltipField: 'affiliate',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Монтаж",
+                    field: "fitt",
+                    minWidth: 100,
+                    tooltipField: 'fitt',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "МонтажГод",
+                    field: "fitt_year",
+                    minWidth: 100,
+                    tooltipField: 'fitt_year',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: NumericCellEditor,
+                },
+                {
+                    headerName: "Проект",
+                    field: "proj",
+                    minWidth: 100,
+                    tooltipField: 'proj',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "ПроектГод",
+                    field: "proj_year",
+                    minWidth: 100,
+                    tooltipField: 'proj_year',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: NumericCellEditor,
+                },
+                {
+                    headerName: "АУПС",
+                    field: "type_aups",
+                    minWidth: 100,
+                    tooltipField: 'type_aups',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "СОУЭтип",
+                    field: "aud_warn_type",
+                    minWidth: 100,
+                    tooltipField: 'aud_warn_type',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "КатТехСложАСУ",
+                    field: "categ_asu",
+                    minWidth: 100,
+                    tooltipField: 'categ_asu',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
             ],
             rowSelection: 'single',
             defaultColDef: {
@@ -181,21 +316,49 @@ export let agGridParameters = {
     equipmentParameters: {
         gridOptions: {
             columnDefs: [
-                {headerName: "Название", field: "equip_name", minWidth: 100, tooltipField: 'equip_name', sortable: true, filter: true,},
+                {
+                    headerName: "Название",
+                    field: "equip_name",
+                    minWidth: 100,
+                    tooltipField: 'equip_name',
+                    sortable: true,
+                    filter: true,
+                },
                 {
                     headerName: "ТипОбобщенный",
                     field: "kind_app",
                     minWidth: 100,
                     tooltipField: 'kind_app',
-                     filter: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
                 },
-                {headerName: "Тип", field: "kind_app_second", minWidth: 100, tooltipField: 'kind_app_second', filter: true,},
+                {
+                    headerName: "Тип",
+                    field: "kind_app_second",
+                    minWidth: 100,
+                    tooltipField: 'kind_app_second',
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
                 {
                     headerName: "Сигнал",
                     field: "kind_signal",
                     minWidth: 100,
                     tooltipField: 'kind_signal',
                     sortable: true, filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
                 },
                 {
                     headerName: "Производитель",
@@ -237,9 +400,37 @@ export let agGridParameters = {
                     sortable: true, filter: true,
                     editable: false,
                 },
-                {headerName: "Количество", field: "quantity", minWidth: 100, tooltipField: 'quantity', sortable: true, filter: true,},
-                {headerName: "Измерение", field: "measure", minWidth: 100, tooltipField: 'measure', sortable: true, filter: true,},
-                {headerName: "Год", field: "app_year", minWidth: 100, tooltipField: 'app_year', sortable: true, filter: true,},
+                {
+                    headerName: "Количество",
+                    field: "quantity",
+                    minWidth: 100,
+                    tooltipField: 'quantity',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: NumericCellEditor,
+                },
+                {
+                    headerName: "Измерение",
+                    field: "measure",
+                    minWidth: 100,
+                    tooltipField: 'measure',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Год",
+                    field: "app_year",
+                    minWidth: 100,
+                    tooltipField: 'app_year',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: NumericCellEditor,
+                },
 
             ],
             rowSelection: 'single',
@@ -266,7 +457,14 @@ export let agGridParameters = {
     equipmentForChooseParameters: {
         gridOptions: {
             columnDefs: [
-                {headerName: "Название", field: "equip_name", minWidth: 350, tooltipField: 'area', sortable: true, filter: true,},
+                {
+                    headerName: "Название",
+                    field: "equip_name",
+                    minWidth: 350,
+                    tooltipField: 'area',
+                    sortable: true,
+                    filter: true,
+                },
                 {
                     headerName: "Тип",
                     field: "kind_app",
@@ -274,7 +472,14 @@ export let agGridParameters = {
                     tooltipField: 'group_2',
                     sortable: true, filter: true,
                 },
-                {headerName: "ТипОбобщенный", field: "kind_app_second", minWidth: 60, tooltipField: 'shed', sortable: true, filter: true,},
+                {
+                    headerName: "ТипОбобщенный",
+                    field: "kind_app_second",
+                    minWidth: 60,
+                    tooltipField: 'shed',
+                    sortable: true,
+                    filter: true,
+                },
                 {
                     headerName: "Сигнал",
                     field: "kind_signal",
@@ -298,4 +503,65 @@ export let agGridParameters = {
         },
         agName: 'cps_equipment_for_choose',
     },
+}
+
+export function initializeAgGridParameters() {
+    agGridParameters.equipmentParameters.gridOptions.columnDefs.forEach((columnDefs)=>{
+        if (columnDefs.field === 'kind_app') {
+            columnDefs.cellEditorParams.values = lists.equipment.kind_app;
+        }
+        if (columnDefs.field === 'kind_app') {
+            columnDefs.cellEditorParams.values = lists.equipment.kind_app;
+        }
+        if (columnDefs.field === 'kind_signal') {
+            lists.equipment.kind_signal.forEach((elem)=>{
+                columnDefs.cellEditorParams.values.push(elem);
+            })
+        }
+    });
+    agGridParameters.buildingsParameters.gridOptions.columnDefs.forEach((columnDefs)=>{
+        if (columnDefs.field === 'area') {
+            columnDefs.cellEditorParams.values = lists.buildings.area;
+        }
+        if (columnDefs.field === 'group_1') {
+            lists.buildings.group_1.forEach((elem)=>{
+                columnDefs.cellEditorParams.values.push(elem.group_1);
+            })
+        }
+        if (columnDefs.field === 'type_aups') {
+            lists.buildings.type_aups.forEach((elem)=>{
+                columnDefs.cellEditorParams.values.push(elem);
+            })
+        }
+        if (columnDefs.field === 'aud_warn_type') {
+            lists.buildings.aud_warn_type.forEach((elem)=>{
+                columnDefs.cellEditorParams.values.push(elem);
+            })
+        }
+        if (columnDefs.field === 'categ_asu') {
+            lists.buildings.categ_asu.forEach((elem)=>{
+                columnDefs.cellEditorParams.values.push(elem);
+            })
+        }
+        if (columnDefs.field === 'group_2') {
+            columnDefs.cellEditorParams.values.push('');
+            lists.buildings.group_2.forEach((elem)=>{
+                if(columnDefs.cellEditorParams.values.indexOf(elem.group_2) === -1) {
+                    columnDefs.cellEditorParams.values.push(elem.group_2);
+                }
+
+            })
+        }
+        if (columnDefs.field === 'Queue') {
+            columnDefs.cellEditorParams.values = lists.buildings.queue;
+        }
+        if (columnDefs.field === 'affiliate') {
+            columnDefs.cellEditorParams.values = lists.buildings.affiliate;
+        }
+    });
+    agGridParameters.equipmentInBuildingsParameters.gridOptions.columnDefs.forEach((columnDefs)=>{
+        if (columnDefs.field === 'measure') {
+            columnDefs.cellEditorParams.values = lists.equipment.measure;
+        }
+    });
 }
