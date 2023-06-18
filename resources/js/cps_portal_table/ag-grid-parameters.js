@@ -510,8 +510,10 @@ export function initializeAgGridParameters() {
         if (columnDefs.field === 'kind_app') {
             columnDefs.cellEditorParams.values = lists.equipment.kind_app;
         }
-        if (columnDefs.field === 'kind_app') {
-            columnDefs.cellEditorParams.values = lists.equipment.kind_app;
+        if (columnDefs.field === 'kind_app_second') {
+            lists.equipment.kind_app_second.forEach((elem)=>{
+                columnDefs.cellEditorParams.values.push(elem.kind_app_second);
+            })
         }
         if (columnDefs.field === 'kind_signal') {
             lists.equipment.kind_signal.forEach((elem)=>{
@@ -549,7 +551,6 @@ export function initializeAgGridParameters() {
                 if(columnDefs.cellEditorParams.values.indexOf(elem.group_2) === -1) {
                     columnDefs.cellEditorParams.values.push(elem.group_2);
                 }
-
             })
         }
         if (columnDefs.field === 'Queue') {

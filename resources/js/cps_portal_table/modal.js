@@ -8,9 +8,9 @@ import {lists} from "./lists";
 export default class ModalForm {
     actionMenu;
     tableAgGrid;
+    modalTableAgGrid;
     agBuildingId;
     agBuildingName;
-    modalTableAgGrid;
     modalHtml = {};
     ui = {
         modalForm: {
@@ -45,12 +45,12 @@ export default class ModalForm {
             _this._hideError();
             _this.hideModal();
             event.target.reset();
-            _this.tableAgGrid.setGridData();
+            _this.tableAgGrid.setGridData(e.id);
             _this.actionMenu.hideAllOneRowAction();
         }).catch((e) => {
             _this._hideError();
             _this._showError(e);
-        })
+        });
     }
 
     modalformWithGridCallback = event => {
@@ -126,17 +126,12 @@ export default class ModalForm {
     getInputsArr() {
         let data = {};
         let formData = $('#form__new-entry').serializeArray();
-
+        console.log(formData)
         formData.forEach(function (arrayItem) {
             if (arrayItem.value !== '') {
                 data[arrayItem.name] = arrayItem.value;
             }
         });
-        // if (this.agOuterId !== undefined && (this.tableAgGrid.agName === "innerEquip" ||
-        //     this.tableAgGrid.agName === "kapRemont" || this.tableAgGrid.agName === "tehnObslRemont" ||
-        //     this.tableAgGrid.agName === "penRen" || this.tableAgGrid.agName === "tro")) {
-        //     data['outer_id'] = this.agOuterId;
-        // }
         data = addCSRF(data);
         return data;
     }

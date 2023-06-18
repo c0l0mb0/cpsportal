@@ -8,7 +8,7 @@ export default class SideBar {
     tableAgGrid;
     actionMenu;
     modalForm;
-
+    reportList;
     setButtonsActions() {
 
         document.getElementById('sidebarCollapse').onclick = () => {
@@ -56,7 +56,8 @@ export default class SideBar {
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
                 agGridParameters.buildingsParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
-            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.modalFor
+            m.tableAgGrid = this.tableAgGrid;
             this.actionMenu.unsetEditAndAddEquipToBuildingButtonAction();
             this.modalForm.setModalCpsBuildingsFormHtml();
             this.actionMenu.showPlusAndExcelButton();
@@ -78,20 +79,28 @@ export default class SideBar {
         };
         document.querySelector('.sidebar__export-reports').onclick = () => {
             const pageContent = document.querySelector('#page-content');
-            const reportList = document.createElement('ul');
-            pageContent.appendChild(reportList);
+            while (pageContent.firstChild) {
+                pageContent.removeChild(pageContent.firstChild);
+            }
+            this.reportList = document.createElement('ul');
+            pageContent.appendChild(this.reportList);
 
-            const exportTestLiTag = document.createElement('li');
-            exportTestLiTag.classList.add("export_list-item");
-            reportList.appendChild(exportTestLiTag);
-            const exportTestAtag = document.createElement('a');
-            exportTestLiTag.appendChild(exportTestAtag);
-
-            exportTestAtag.innerText = "экспорт тест";
-            exportTestAtag.href = config.api.getExelTest;
+            this.addLinkToReports("Нормы запаса КИПиСА",config.api.getExportNormiZapasaKip);
+            this.addLinkToReports("Потребность МТР",config.api.getExportPotrebnostMtr);
 
             changePageTitle("Отчеты");
         };
+    }
+
+    addLinkToReports(linkName, LinkURL) {
+        let exportTestLiTag = document.createElement('li');
+        exportTestLiTag.classList.add("export_list-item");
+        this.reportList.appendChild(exportTestLiTag);
+        let exportTestAtag = document.createElement('a');
+        exportTestLiTag.appendChild(exportTestAtag);
+
+        exportTestAtag.innerText = linkName;
+        exportTestAtag.href = LinkURL;
     }
 }
 

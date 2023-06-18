@@ -11,6 +11,7 @@ export default class TableAgGrid {
     delUrl;
     isReady = false;
     targetId = 'page-content';
+    confirmDeleteBtn = document.querySelector('.modal__confirm-delete-entry-btn');
     agName;
 
     constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu) {
@@ -24,7 +25,7 @@ export default class TableAgGrid {
 
     renderAgGrid() {
         this.prepareHtml();
-        this.gridOptions.localeText =  AG_GRID_LOCALE_RU;
+        this.gridOptions.localeText = AG_GRID_LOCALE_RU;
         new agGrid.Grid(document.getElementById(this.targetId), this.gridOptions);
         this.setGridData();
         // this.setGridCloseObserver();
@@ -34,12 +35,21 @@ export default class TableAgGrid {
         this.actionMenu.setExportExcelAction();
     }
 
-    setGridData() {
+    setGridData(idToScroll) {
         httpRequest(this.getDataUrl, 'GET').then((data) => {
             if (data === null) {
                 throw 'setGridData data is null';
             }
             this.gridOptions.api.setRowData(data);
+            if (idToScroll !== undefined) {
+                let _this = this;
+                this.gridOptions.api.forEachNode(function (node) {
+                    if (node.data.id === idToScroll) {
+                        node.setSelected(true);
+                        _this.gridOptions.api.ensureIndexVisible(node.rowIndex, 'middle');
+                    }
+                });
+            }
         });
     }
 
@@ -51,13 +61,14 @@ export default class TableAgGrid {
     }
 
     setDeleteButtonAction() {
-        this.actionMenu.deleteTableRow.onclick = () => {
+        this.confirmDeleteBtn.onclick = () => {
             let selectedRow = this.getSelectedRow();
             let csrf = {};
             csrf = addCSRF(csrf);
             httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id).then(() => {
                 this.actionMenu.hideAllOneRowAction();
                 this.setGridData();
+                $('#modal__confirm-delete-entry').modal('hide');
             });
         };
     }

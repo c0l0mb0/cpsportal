@@ -88,8 +88,8 @@
                             title="вернуться к зданиям">
                         <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Удалить">
+                    <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="tooltip" data-toggle="modal"
+                            data-target="#modal__confirm-delete-entry" data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn plus-six-month action-menu-btn" data-bs-toggle="tooltip"
@@ -149,6 +149,26 @@
                             <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal confirm delete-->
+    <div class="modal" tabindex="-1" role="dialog" id="modal__confirm-delete-entry">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Удаление</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы действительно хотите удалить данную запись?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary modal__confirm-delete-entry-btn">Удалить</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
                 </div>
             </div>
         </div>

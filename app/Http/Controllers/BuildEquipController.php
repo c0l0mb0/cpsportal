@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\BuildEquip;
-use App\Models\ListStates;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,14 +10,13 @@ class BuildEquipController extends Controller
 {
     public function index($id)
     {
-        $objectAndEquip = DB::table('build_equip')
-            ->select(DB::raw('build_equip.id as id,equip_name, quantity,measure, app_year'))
+        $buildingAndEquip = DB::table('build_equip')
+            ->select(DB::raw('*, build_equip.id as id,equip_name, quantity,measure, app_year'))
             ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
             ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
             ->where('buildings.id', $id)
-            ->orderBy('id', 'asc')
             ->get();
-        return response()->json($objectAndEquip);
+        return response()->json($buildingAndEquip);
 
     }
 
