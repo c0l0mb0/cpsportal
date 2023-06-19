@@ -3,7 +3,8 @@
 use App\Http\Controllers\BuildEquipController;
 use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\EquipmentController;
-use App\Http\Controllers\ExelExportNormiZapasaKipController;
+use App\Http\Controllers\ExcelExportController;
+use App\Http\Controllers\ExelExportNormiZapasaKip;
 use App\Http\Controllers\ExelExportPotrebnostMtrController;
 use App\Http\Controllers\WorkersController;
 use Illuminate\Http\Request;
@@ -46,7 +47,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::put('cps-equipment-buildings/{id}', [BuildEquipController::class, 'update']);
     Route::delete('cps-equipment-buildings/{id}', [BuildEquipController::class, 'destroy']);
 
-    Route::get('export-normi-zapasa-kip', [ExelExportNormiZapasaKipController::class, 'exportNormiZapasaKip']);
-    Route::get('export-potrebnost-mtr', [ExelExportPotrebnostMtrController::class, 'exportPotrebnostMtr']);
+
+    Route::get('export-normi-zapasa-kip', [ExcelExportController::class, 'exportNormiZapasaKip']);
+    Route::get('export-potrebnost-mtr', [ExcelExportController::class, 'exportPotrebnostMtr']);
 
 });
