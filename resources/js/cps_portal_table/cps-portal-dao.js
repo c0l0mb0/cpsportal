@@ -21,6 +21,9 @@ export let config = {
         getUserRole: '/api/get-user-role',
         getExportNormiZapasaKip: '/api/export-normi-zapasa-kip',
         getExportPotrebnostMtr: '/api/export-potrebnost-mtr',
+        getExportPassport: '/api/export-passport',
+        getExportPlanGrafic: '/api/export-plangrafic',
+        getExportOtkaziIzveshatelei: '/api/export-otkazi-russianizveshateli',
     }
 };
 

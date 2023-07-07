@@ -2,17 +2,14 @@
 
 namespace App\Export;
 
-use App\Http\Controllers\BuildingsController;
+use App\Http\Controllers\BuildEquipController;
 use App\Export;
+use App\Http\Controllers\BuildingsController;
+use App\Http\Controllers\cpsStuffController;
 
 
 class ExelExportNormiZapasaKip extends ExcelExport
 {
-    function __construct()
-    {
-        parent::__construct('нормы_запаса_КИП.xlsx', 3, 1);
-    }
-
     public function createHead()
     {
         $rowsData = array('Наименование комплектуемого оборудования, объекта',
@@ -91,7 +88,7 @@ class ExelExportNormiZapasaKip extends ExcelExport
 
             $this->affiliates = BuildingsController::getAffiliates([['area', '=', $area]]);
             foreach ($this->affiliates as $affiliate) {
-                $this->buildingsWithEequipment = BuildingsController::getBuildingsWithEquipmentGruppedWithSumWithCaseEquipName([['area', '=', $area], ['affiliate', '=', $affiliate->affiliate]]);
+                $this->buildingsWithEquipment = BuildEquipController::getBuildingsWithEquipmentGruppedWithSumWithCaseEquipName([['area', '=', $area], ['affiliate', '=', $affiliate->affiliate]]);
                 $fieldNames = array('affiliate');
                 $styleArray = [
                     'font' => [
@@ -108,6 +105,27 @@ class ExelExportNormiZapasaKip extends ExcelExport
                 $this->insertTableChunk($this->excelRowCursor, $this->excelColumnCursor, $fieldNames, false, null, null);
             }
         }
+        $this->buildingsWithEquipment = cpsStuffController::index();
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+                'color' => ['argb' => 'FFFA0000'],
+            ],];
+        $rowsData = array('Ямбург');
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+                'color' => ['argb' => 'FFFA0000'],
+            ],];
+        $rowsData = array('УАиМО');
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
+        $fieldNames = array('stuff_name', 'empty', 'empty', 'custom|10000', 'custom|0.97'
+        , 'custom|8760', 'quantity',
+            'custom|=IF(H&formulaRow<9,K&formulaRow+L&formulaRow+M&formulaRow,K&formulaRow+M&formulaRow)',
+            'custom|=ROUND(H&formulaRow*I&formulaRow,0)', 'custom|=1-F&formulaRow',
+            'custom|=1/2/H&formulaRow', 'custom|=2*SQRT(F&formulaRow*K&formulaRow/H&formulaRow)');
+        $this->insertTableChunk($this->excelRowCursor, $this->excelColumnCursor, $fieldNames, false, null, null);
     }
 
     public function checkAdditionalFieldConditionals($fieldName, $fieldPipeSeparated, $buildingsWithEquipmentEntry): bool
@@ -119,6 +137,16 @@ class ExelExportNormiZapasaKip extends ExcelExport
             $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor], $tmp);
             $this->excelColumnCursor++;
             return true;
+        }
+        if ($fieldPipeSeparated[0] == 'custom' and isset($buildingsWithEquipmentEntry->life_time_max) and
+            $fieldPipeSeparated[1] === '10000') {
+            if(!is_Null($buildingsWithEquipmentEntry->life_time_max) ) {
+                $tmp = intval($buildingsWithEquipmentEntry->life_time_max)*730;
+                $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor], $tmp);
+                $this->excelColumnCursor++;
+                return true;
+            }
+
         }
         return false;
     }

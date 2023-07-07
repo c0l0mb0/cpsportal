@@ -80,42 +80,23 @@ class BuildingsController extends Controller
 
     }
 
-//    excel export DAO
-    public static function getBuildingsWithEquipmentGruppedWithSumWithCaseEquipName($whereArr)
-    {
-        return DB::table('build_equip')
-            ->select(DB::raw(" measure, affiliate,
-            equip_name_extracted_brand, SUM(quantity) as quantity, kind_app_second,
-            CASE WHEN equip_name_extracted_type is NULL THEN equip_name  ELSE equip_name_extracted_type END eqip_name_case,
-            CASE WHEN kind_app_second = 'Аккумулятор' THEN 'TRUE'  ELSE 'FALSE' END is_accum" ))
-            ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
-            ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
+    public static function getBuildings($whereArr) {
+        return  DB::table('buildings')
+            ->select('*')
             ->where($whereArr)
-            ->groupBy('equip_name', 'measure', 'affiliate','equip_name_extracted_type',
-                'equip_name_extracted_brand' ,'kind_app_second')
-            ->get();
-    }
-
-    public static function getBuildingsWithEquipmentGruppedWithSum($whereArr)
-    {
-        return  DB::table('build_equip')
-            ->select(DB::raw(" measure, affiliate, area ,equip_name, kind_app_second, SUM(quantity) as quantity,
-            CASE WHEN kind_app_second = 'Аккумулятор' THEN 'TRUE'  ELSE 'FALSE' END is_accum" ))
-            ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
-            ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
-            ->where($whereArr)
-            ->groupBy('measure', 'affiliate', 'equip_name', 'area','kind_app_second')
             ->get();
     }
 
     public static function getAffiliates($whereArr)
     {
-        return  DB::table('buildings')
+        return DB::table('buildings')
             ->select(DB::raw('affiliate'))
             ->distinct()
             ->where($whereArr)
             ->orderBy('affiliate', 'asc')
             ->get();
     }
+
+
 
 }

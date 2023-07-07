@@ -50,5 +50,8 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::get('export-normi-zapasa-kip', [ExcelExportController::class, 'exportNormiZapasaKip']);
     Route::get('export-potrebnost-mtr', [ExcelExportController::class, 'exportPotrebnostMtr']);
+    Route::get('export-passport', [ExcelExportController::class, 'exportPassport']);
+    Route::get('export-plangrafic', [ExcelExportController::class, 'exportPlanGraf']);
+    Route::get('export-otkazi-russianizveshateli', [ExcelExportController::class, 'exportOtkaziRussianIzveshatel']);
 
 });

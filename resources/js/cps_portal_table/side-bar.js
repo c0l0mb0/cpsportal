@@ -87,6 +87,9 @@ export default class SideBar {
 
             this.addLinkToReports("Нормы запаса КИПиСА",config.api.getExportNormiZapasaKip);
             this.addLinkToReports("Потребность МТР",config.api.getExportPotrebnostMtr);
+            this.addLinkToReports("Паспорт",config.api.getExportPassport);
+            this.addLinkToReports("Планграфик ",config.api.getExportPlanGrafic);
+            this.addLinkToReports("Отказы извещателей ",config.api.getExportOtkaziIzveshatelei);
 
             changePageTitle("Отчеты");
         };
