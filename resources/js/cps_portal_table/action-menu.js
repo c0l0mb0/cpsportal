@@ -1,4 +1,4 @@
-import {config} from "./cps-portal-dao.js";
+import {config, downloadFile} from "./cps-portal-dao.js";
 import {httpRequest} from "./cps-portal-dao.js";
 import {addCSRF, changePageTitle} from "./helper.js";
 import {agGridParameters} from "./ag-grid-parameters.js";
@@ -11,14 +11,19 @@ export default class ActionMenu {
     deleteTableRow;
     deleteAction;
     exportExcel;
+    exportPassport;
+    exportPlanGraf;
     fireExamPlusSix;
     innerEquipment;
     agBuildingId;
     agBuildingName;
     editTableRow;
     returnToBuildings;
-    EditAddEquipOfBuildingButtonActionEventLister;
-    AddEquipOfBuildingButtonActionEventLister;
+    EditButtonActionEventLister;
+    AddButtonActionEventLister;
+    innerMonth;
+    planGrafSequence;
+    arrangePlanGrafSequence;
 
     hideALl() {
         this.newTableRow.style.display = 'none';
@@ -28,9 +33,53 @@ export default class ActionMenu {
         this.innerEquipment.style.display = 'none';
         this.editTableRow.style.display = 'none';
         this.returnToBuildings.style.display = 'none';
+        this.exportPassport.style.display = 'none';
+        this.exportPlanGraf.style.display = 'none';
+        this.innerMonth.style.display = 'none';
+        this.planGrafSequence.style.display = 'none';
+        this.arrangePlanGrafSequence.style.display = 'none';
     }
 
-    ////
+    hideArrangePlanGrafSequenceButton() {
+        this.arrangePlanGrafSequence.style.display = 'none';
+    }
+
+    showArrangePlanGrafSequenceButton() {
+        this.arrangePlanGrafSequence.style.display = 'block';
+    }
+
+    hidePlanGrafSequenceMonthButton() {
+        this.planGrafSequence.style.display = 'none';
+    }
+
+    showPlanGrafSequenceButton() {
+        this.planGrafSequence.style.display = 'block';
+    }
+
+    hideInnerMonthButton() {
+        this.innerMonth.style.display = 'none';
+    }
+
+    showInnerMonthButton() {
+        this.innerMonth.style.display = 'block';
+    }
+
+    hidePlanGrafButton() {
+        this.exportPlanGraf.style.display = 'none';
+    }
+
+    showPlanGrafButton() {
+        this.exportPlanGraf.style.display = 'block';
+    }
+
+    hidePassportButton() {
+        this.exportPassport.style.display = 'none';
+    }
+
+    showPassportButton() {
+        this.exportPassport.style.display = 'block';
+    }
+
     showExcelButton() {
         this.exportExcel.style.display = 'block';
     }
@@ -85,6 +134,8 @@ export default class ActionMenu {
         this.hidePlusSixButton();
         this.hideEditButton();
         this.hideGoToEquipButton();
+        this.hidePassportButton();
+        this.hidePlanGrafButton();
     }
 
     setExportExcelAction() {
@@ -96,7 +147,6 @@ export default class ActionMenu {
     setFireExamPlusSixAction() {
         this.fireExamPlusSix.onclick = () => {
             let selectedRow = this.tableAgGrid.getSelectedRow();
-            console.log(selectedRow);
             httpRequest(config.api.postWorkersAddSixMonth, "POST", addCSRF(selectedRow)).then(() => {
                 this.tableAgGrid.setGridData();
             }).catch((rejected) => console.log(rejected));
@@ -120,20 +170,66 @@ export default class ActionMenu {
             this.modalForm.agBuildingId = this.agBuildingId;
 
             changePageTitle('Здание =>' + selectedRow.group_1 + '=>' + selectedRow.shed + "=> Оборудование");
-            this.setEditAddEquipOfBuildingButtonAction();
+            this.setEditAddEquipOfBuildingButtonActionForNewEquipInBuilding();
         };
     }
 
-    setEditAddEquipOfBuildingButtonAction() {
-        this.EditAddEquipOfBuildingButtonActionEventLister = this.modalForm.setModalPutEquipmentInBuildingHtml.bind(this.modalForm);
-        this.AddEquipOfBuildingButtonActionEventLister = this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm);
-        this.editTableRow.addEventListener('click', this.EditAddEquipOfBuildingButtonActionEventLister);
-        this.newTableRow.addEventListener('click',this.AddEquipOfBuildingButtonActionEventLister );
+    setEditInnerMonthAction() {
+        this.innerMonth.onclick = () => {
+            let selectedRow = this.tableAgGrid.getSelectedRow();
+            this.tableAgGrid = new TableAgGrid(agGridParameters.tehnObslMonthInBuildingsParameters.gridOptions,
+                config.api.getPutDeleteEquipmentInBuilding + '/' +
+                selectedRow.id, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.tehnObslMonthInBuildingsParameters.agName, this);
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.hideALl();
+            changePageTitle('Здание =>' + selectedRow.group_1 + '=>' + selectedRow.shed + "=> ТО по месяцам");
+        };
     }
 
-    unsetEditAndAddEquipToBuildingButtonAction() {
-        this.editTableRow.removeEventListener('click', this.EditAddEquipOfBuildingButtonActionEventLister);
-        this.newTableRow.removeEventListener('click',this.AddEquipOfBuildingButtonActionEventLister );
+    setEditSequencePlanGrafAction() {
+        this.planGrafSequence.onclick = () => {
+            let selectedRow = this.tableAgGrid.getSelectedRow();
+            this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsPlanGrafSequnceParameters.gridOptions,
+                config.api.getBuildingsPlanGrafOrderedById + '/' +
+                selectedRow.id, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.buildingsPlanGrafSequnceParameters.agName, this);
+            this.showArrangePlanGrafSequenceButton();
+            this.setArrangeBuildingInPlanGrafAction();
+            changePageTitle(' Изменение последовательности зданий в план-графике =>' + selectedRow.plan_graf_name);
+        };
+    }
+
+    setArrangeBuildingInPlanGrafAction() {
+
+        this.arrangePlanGrafSequence.onclick = () => {
+            let requestBody = {};
+            let buildingsSequence = [];
+            this.tableAgGrid.gridOptions.api.forEachNode((rowNode) => {
+                buildingsSequence.push(rowNode.data.id);
+            });
+            requestBody.plan_graf_name = this.tableAgGrid.gridOptions.api.getRowNode(0).data.plan_graf_name;
+            requestBody.buildingsSequence = buildingsSequence;
+            httpRequest(config.api.putUpdateBuildingSequenceOfPlanGraf, "PUT", addCSRF(requestBody)).then(() => {
+                this.tableAgGrid.setGridData();
+            }).catch((rejected) => console.log(rejected));
+        }
+    }
+
+    setAddButtonActionForNewEquipment() {
+        this.AddButtonActionEventLister = this.modalForm.setModalCpsEquipmentFormHtml.bind(this.modalForm);
+        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+    }
+
+
+    setEditAddEquipOfBuildingButtonActionForNewEquipInBuilding() {
+        this.EditButtonActionEventLister = this.modalForm.setModalPutEquipmentInBuildingHtml.bind(this.modalForm);
+        this.AddButtonActionEventLister = this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm);
+        this.editTableRow.addEventListener('click', this.EditButtonActionEventLister);
+        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+    }
+
+    unsetEditAndAddButtonAction() {
+        this.editTableRow.removeEventListener('click', this.EditButtonActionEventLister);
+        this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
     }
 
     setReturnToBuildingsAction() {
@@ -147,6 +243,26 @@ export default class ActionMenu {
             this.showExcelButton();
             this.setEditInnerAction();
             changePageTitle("Здания");
+        };
+    }
+
+    setExportPassportAction() {
+        this.exportPassport.onclick = () => {
+            let selectedRow = this.tableAgGrid.getSelectedRow();
+            let URL = config.api.getExportPassport + '/' + selectedRow.id;
+
+            let downloadLink = document.createElement("a");
+            downloadLink.href = URL;
+            downloadLink.click();
+        };
+    }
+
+    setExportPlanGrafAction() {
+        this.exportPlanGraf.onclick = () => {
+            let selectedRow = this.tableAgGrid.getSelectedRow();
+            let requestBody = {};
+            requestBody.plan_graf_name = selectedRow.plan_graf_name;
+            downloadFile(config.api.getExportPlanGrafic, "POST", addCSRF(requestBody))
         };
     }
 

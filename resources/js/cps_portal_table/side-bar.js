@@ -2,15 +2,29 @@ import TableAgGrid from './aggrid.js'
 import {config} from './cps-portal-dao.js'
 import {changePageTitle} from './helper.js'
 import {agGridParameters} from './ag-grid-parameters.js'
-import {queryselector} from "caniuse-lite/data/features";
+import {userRole} from './app.js'
+
 
 export default class SideBar {
     tableAgGrid;
     actionMenu;
     modalForm;
     reportList;
-    setButtonsActions() {
 
+    setButtonsVision() {
+        if (userRole === "super-user") {
+            document.querySelector('.sidebar__edit-equip').hidden  = false;
+            document.querySelector('.sidebar__edit-buildings').hidden = false;
+            document.querySelector('.sidebar__export-reports').hidden = false;
+            document.querySelector('.sidebar__export-plan_grafici').hidden = false;
+            document.querySelector('.sidebar__edit-plan_grafici').hidden = false;
+
+        } else {
+            document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
+        }
+    }
+
+    setButtonsActions() {
         document.getElementById('sidebarCollapse').onclick = () => {
             document.getElementById('sidebar').classList.toggle("active");
         };
@@ -45,24 +59,10 @@ export default class SideBar {
                 agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.unsetEditAndAddButtonAction();
             this.actionMenu.showExcelButton();
             this.actionMenu.setEditInnerAction();
-            this.modalForm.setFormWithTexboxesSubmitHandler();
             changePageTitle("Оборудование в здании");
-        };
-
-        document.querySelector('.sidebar__edit-buildings').onclick = () => {
-            this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsParameters.gridOptions,
-                config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
-                agGridParameters.buildingsParameters.agName, this.actionMenu);
-            this.actionMenu.tableAgGrid = this.tableAgGrid;
-            this.modalFor
-            m.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.unsetEditAndAddEquipToBuildingButtonAction();
-            this.modalForm.setModalCpsBuildingsFormHtml();
-            this.actionMenu.showPlusAndExcelButton();
-            this.modalForm.setFormWithTexboxesSubmitHandler();
-            changePageTitle("Здания");
         };
 
         document.querySelector('.sidebar__edit-equip').onclick = () => {
@@ -71,13 +71,27 @@ export default class SideBar {
                 agGridParameters.equipmentParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.unsetEditAndAddEquipToBuildingButtonAction();
-            this.modalForm.setModalCpsEquipmentFormHtml();
+            this.actionMenu.unsetEditAndAddButtonAction();
             this.actionMenu.showPlusAndExcelButton();
-            this.modalForm.setFormWithTexboxesSubmitHandler();
+            this.actionMenu.setAddButtonActionForNewEquipment()
             changePageTitle("Оборудование");
         };
+
+        document.querySelector('.sidebar__edit-buildings').onclick = () => {
+            this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsParameters.gridOptions,
+                config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
+                agGridParameters.buildingsParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.unsetEditAndAddButtonAction();
+            this.modalForm.setModalCpsBuildingsFormHtml();
+            this.actionMenu.showPlusAndExcelButton();
+            this.actionMenu.setExportPassportAction();
+            changePageTitle("Здания");
+        };
+
         document.querySelector('.sidebar__export-reports').onclick = () => {
+            this.actionMenu.hideALl();
             const pageContent = document.querySelector('#page-content');
             while (pageContent.firstChild) {
                 pageContent.removeChild(pageContent.firstChild);
@@ -85,10 +99,35 @@ export default class SideBar {
             this.reportList = document.createElement('ul');
             pageContent.appendChild(this.reportList);
 
-            this.addLinkToReports("Нормы запаса КИПиСА",config.api.getExportNormiZapasaKip);
-            this.addLinkToReports("Потребность МТР",config.api.getExportPotrebnostMtr);
+            this.addLinkToReports("Нормы запаса КИПиСА", config.api.getExportNormiZapasaKip);
+            this.addLinkToReports("Потребность МТР", config.api.getExportPotrebnostMtr);
+            // this.addLinkToReports("Паспорт",config.api.getExportPassport);
+            // this.addLinkToReports("Планграфик ",config.api.getExportPlanGrafic);
+            this.addLinkToReports("Отказы извещателей ", config.api.getExportOtkaziIzveshatelei);
 
             changePageTitle("Отчеты");
+        };
+
+        document.querySelector('.sidebar__export-plan_grafici').onclick = () => {
+            this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsPlanGrafikParameters.gridOptions,
+                config.api.getBuildingsPlanGraf, null,
+                agGridParameters.uneditableBuildingsPlanGrafikParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.unsetEditAndAddButtonAction();
+            this.actionMenu.setExportPlanGrafAction();
+            changePageTitle("План-графики");
+        };
+        document.querySelector('.sidebar__edit-plan_grafici').onclick = () => {
+            this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsPlanGrafParameters.gridOptions,
+                config.api.getBuildingsPlanGrafOrderedByPlGrafNumb, null,
+                agGridParameters.buildingsPlanGrafParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.unsetEditAndAddButtonAction();
+            this.actionMenu.setEditInnerMonthAction();
+            this.actionMenu.setEditSequencePlanGrafAction();
+            changePageTitle("План-графики");
         };
     }
 

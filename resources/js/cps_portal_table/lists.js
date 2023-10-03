@@ -31,9 +31,10 @@ export let lists = {
             '2',
             '3',
         ],
+        planGraf: [],
     },
     equipment: {
-        measure: ['км.','шт.'],
+        measure: ['км.', 'шт.'],
         kind_signal:
             ['', 'УД', 'ИД', 'УА', 'ИА', 'ИУЦ'],
         kind_app:

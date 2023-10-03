@@ -29,12 +29,14 @@ class EquipmentController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
+            'id_equip' => 'required',
             'equip_name' => 'required',
-            'kind_app' => 'required',
-            'kind_app_second' => 'required',
-            'kind_signal' => 'required',
+            'brand_name' => 'required',
         ]);
-        $equipment = Equipment::create($request->all());
+        $equipment = Equipment::find($request->id_equip);
+        $equipment->equip_name = $request->equip_name;
+        $equipment->brand_name = $request->brand_name;
+        $equipment = Equipment::create($equipment->toArray());
 
         return response()->json($equipment);
     }

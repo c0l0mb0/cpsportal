@@ -61,16 +61,19 @@ export default class TableAgGrid {
     }
 
     setDeleteButtonAction() {
-        this.confirmDeleteBtn.onclick = () => {
-            let selectedRow = this.getSelectedRow();
-            let csrf = {};
-            csrf = addCSRF(csrf);
-            httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id).then(() => {
-                this.actionMenu.hideAllOneRowAction();
-                this.setGridData();
-                $('#modal__confirm-delete-entry').modal('hide');
-            });
-        };
+        if (this.delUrl !== null) {
+            this.confirmDeleteBtn.onclick = () => {
+                let selectedRow = this.getSelectedRow();
+                let csrf = {};
+                csrf = addCSRF(csrf);
+                httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id).then(() => {
+                    this.actionMenu.hideAllOneRowAction();
+                    this.setGridData();
+                    $('#modal__confirm-delete-entry').modal('hide');
+                });
+            };
+        }
+
     }
 
     setGridCloseObserver() {

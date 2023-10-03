@@ -36,15 +36,6 @@ export let myExcelXML = (function () {
                 elem.click();
                 document.body.removeChild(elem);
             }
-            // uri = 'data:text/xls;charset=utf-8,' + encodeURIComponent(Workbook);
-            // link = document.createElement("a");
-            // link.href = uri;
-            // // console.log(uri)
-            // // link.style.display = "none";
-            // link.download = fileName + ".xls";
-            // document.body.appendChild(link);
-            // link.click();
-            // // document.body.removeChild(link);
         }
 
         get fileName() {

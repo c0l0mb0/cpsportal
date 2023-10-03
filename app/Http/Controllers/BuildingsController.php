@@ -4,18 +4,57 @@ namespace App\Http\Controllers;
 
 use App\Models\Buildings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BuildingsController extends Controller
 {
     public function index()
     {
-        $buildings = Buildings::orderBy('area', 'asc')
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        $buildingsQuery = Buildings::orderBy('area', 'asc')
             ->orderBy('group_1', 'asc')
             ->orderBy('group_2', 'asc')
-            ->orderBy('shed', 'asc')
+            ->orderBy('shed', 'asc');
+
+        if ($userRole !== 'super-user') {
+            return response()->json($buildingsQuery->where('maintainer_role', '=', $userRole)->get());
+        }
+        return response()->json($buildingsQuery->get());
+    }
+
+    public function getBuildingsAndPlanGrafDataOrderedByPlanGraf()
+    {
+        $buildings = Buildings::orderBy('area', 'asc')
+            ->orderBy('plan_graf_name', 'asc')
+            ->orderBy('gr_numb', 'asc')
             ->get();
         return response()->json($buildings);
+    }
+
+    public static function getBuildingPlanGrafById($id)
+    {
+        $building = Buildings::find($id);
+        $planGrafName = $building->plan_graf_name;
+        $planGrafBuildings = DB::table('buildings')
+            ->select('*')
+            ->where('plan_graf_name', '=', $planGrafName)
+            ->orderBy('gr_numb', 'asc')
+            ->get();
+
+        return response()->json($planGrafBuildings);
+    }
+
+    public function indexPlanGraf()
+    {
+        $buildingsPlanGraf = DB::table('buildings')
+            ->select(DB::raw('area, plan_graf_name'))
+            ->distinct()
+            ->orderBy('area', 'asc')
+            ->orderBy('plan_graf_name', 'asc')
+            ->get();
+        return response()->json($buildingsPlanGraf);
     }
 
     public function indexGroup1()
@@ -71,6 +110,21 @@ class BuildingsController extends Controller
         return response()->json($building);
     }
 
+    public function updateBuildingSequenceOfPlanGraf(Request $request)
+    {
+        $planGrafName = $request->plan_graf_name;
+        foreach ($request->buildingsSequence as $index => $buildId) {
+            Buildings::where([['id', '=', $buildId], ['plan_graf_name', '=', $planGrafName]])->update(['gr_numb' => $index + 1]);
+        }
+
+        $planGrafBuildings = DB::table('buildings')
+            ->select(DB::raw('id, plan_graf_name, gr_numb'))
+            ->where('plan_graf_name', '=', $request->plan_graf_name)
+            ->orderBy('gr_numb', 'asc')
+            ->get();
+        return response()->json($planGrafBuildings);
+    }
+
     public function destroy($id)
     {
         $building = Buildings::find($id);
@@ -80,42 +134,30 @@ class BuildingsController extends Controller
 
     }
 
-//    excel export DAO
-    public static function getBuildingsWithEquipmentGruppedWithSumWithCaseEquipName($whereArr)
+    public static function getBuildingById($id)
     {
-        return DB::table('build_equip')
-            ->select(DB::raw(" measure, affiliate,
-            equip_name_extracted_brand, SUM(quantity) as quantity, kind_app_second,
-            CASE WHEN equip_name_extracted_type is NULL THEN equip_name  ELSE equip_name_extracted_type END eqip_name_case,
-            CASE WHEN kind_app_second = 'Аккумулятор' THEN 'TRUE'  ELSE 'FALSE' END is_accum" ))
-            ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
-            ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
-            ->where($whereArr)
-            ->groupBy('equip_name', 'measure', 'affiliate','equip_name_extracted_type',
-                'equip_name_extracted_brand' ,'kind_app_second')
-            ->get();
+        $building = Buildings::find($id);
+        return $building->shed;
     }
 
-    public static function getBuildingsWithEquipmentGruppedWithSum($whereArr)
+    public static function getBuildingsOfPlanGrafic($whereArr)
     {
-        return  DB::table('build_equip')
-            ->select(DB::raw(" measure, affiliate, area ,equip_name, kind_app_second, SUM(quantity) as quantity,
-            CASE WHEN kind_app_second = 'Аккумулятор' THEN 'TRUE'  ELSE 'FALSE' END is_accum" ))
-            ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
-            ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
+        return DB::table('buildings')
+            ->select('*')
             ->where($whereArr)
-            ->groupBy('measure', 'affiliate', 'equip_name', 'area','kind_app_second')
+            ->orderBy('gr_numb', 'asc')
             ->get();
     }
 
     public static function getAffiliates($whereArr)
     {
-        return  DB::table('buildings')
+        return DB::table('buildings')
             ->select(DB::raw('affiliate'))
             ->distinct()
             ->where($whereArr)
             ->orderBy('affiliate', 'asc')
             ->get();
     }
+
 
 }

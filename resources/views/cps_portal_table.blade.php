@@ -24,44 +24,39 @@
                     <img src="{{ asset('icon/sensor.png') }}" alt="" aria-hidden="true">
                 </div>
             </div>
-{{--            <ul class="list-unstyled components worker_role">--}}
-{{--                <li>--}}
-{{--                    <a class="sidebar__edit-buildings sidebar-list-left_margin" href="#">Оборудование в здании</a>--}}
-{{--                </li>--}}
-{{--                <li>--}}
-{{--                    <a class="sidebar__edit-passports sidebar-list-left_margin" href="#">Паспорта</a>--}}
-{{--                </li>--}}
-{{--            </ul>--}}
 
-                <ul class="list-unstyled components">
-                    <div class="sidebar-list_capture">Оборудование</div>
-                    <li>
-                        <a class="sidebar__edit-equip sidebar-list-left_margin" href="#">Все обрудование</a>
-                    </li>
-                    <li>
-                        <a class="sidebar__edit-buildings sidebar-list-left_margin" href="#">Здания</a>
-                    </li>
-                    <li>
-                        <a class="sidebar__edit-equip-in-building sidebar-list-left_margin" href="#">Оборудование в здании</a>
-                    </li>
-                    <li>
-                        <a class="sidebar__export-reports sidebar-list-left_margin" href="#">Отчеты</a>
-                    </li>
-                    <li hidden>
-                        <a class="sidebar__edit-plan_grafici sidebar-list-left_margin" href="#">План-графики</a>
-                    </li>
-                    <li hidden>
-                        <a class="sidebar__edit-passports sidebar-list-left_margin" href="#">Паспорта</a>
-                    </li>
-                    <div hidden class="sidebar-list_capture ">Персонал</div>
-                    <li hidden>
-                        <a class="sidebar__edit-fire_instr sidebar-list-left_margin" href="#">ПожИнструктаж</a>
-                    </li>
-                    <li hidden>
-                        <a class="sidebar__edit-staff sidebar-list-left_margin " href="#">Данные</a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="list-unstyled components">
+                <div class="sidebar-list_capture">Оборудование</div>
+                <li>
+                    <a class="sidebar__edit-equip sidebar-list-left_margin" hidden href="#">Все обрудование</a>
+                </li>
+                <li>
+                    <a class="sidebar__edit-buildings sidebar-list-left_margin" hidden href="#">Здания</a>
+                </li>
+                <li>
+                    <a class="sidebar__edit-equip-in-building sidebar-list-left_margin" hidden href="#">Оборудование в
+                        здании</a>
+                </li>
+                <li>
+                    <a class="sidebar__export-reports sidebar-list-left_margin" hidden href="#">Отчеты</a>
+                </li>
+                <li>
+                    <a class="sidebar__edit-plan_grafici sidebar-list-left_margin" hidden href="#">План-графики
+                        данные</a>
+                </li>
+                <li>
+                    <a class="sidebar__export-plan_grafici sidebar-list-left_margin" hidden href="#">План-графики
+                        экспорт</a>
+                </li>
+                <div hidden class="sidebar-list_capture ">Персонал</div>
+                <li>
+                    <a class="sidebar__edit-fire_instr sidebar-list-left_margin" hidden href="#">ПожИнструктаж</a>
+                </li>
+                <li>
+                    <a class="sidebar__edit-staff sidebar-list-left_margin " hidden href="#">Данные</a>
+                </li>
+            </ul>
+        </div>
     </nav>
 
     <!-- Page Content  -->
@@ -88,7 +83,8 @@
                             title="вернуться к зданиям">
                         <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="tooltip" data-toggle="modal"
+                    <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="tooltip"
+                            data-toggle="modal"
                             data-target="#modal__confirm-delete-entry" data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
@@ -103,6 +99,26 @@
                     <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Экспорт в Excel">
                         <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn excel-export-passport action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Паспорт здания">
+                        <img src="{{ asset('icon/passport.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn excel-export-plangrafic action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Экспорт плана-графика">
+                        <img src="{{ asset('icon/plangraf.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn excel-inner-month action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Меяцы проверок">
+                        <img src="{{ asset('icon/inner-month.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn plangraf-sequence action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Порядок зданий ПлГр">
+                        <img src="{{ asset('icon/sequence.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn plangraf-arrange-numbers action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Расставить номера">
+                        <img src="{{ asset('icon/arrange-build-plgraf.svg') }}" class="row-menue__icon">
                     </button>
                 </div>
                 <div class="justify-content-end navbar-btn-logout-wrapper">
@@ -177,7 +193,8 @@
 
 
 {{--<script src="{{ asset('js/libs/ag-grid-community-ie11.min.js') }}"></script>--}}
-<script src="{{ asset('js/libs/ag-grid-enterprise.js') }}"></script>
+{{--<script src="{{ asset('js/libs/ag-grid-enterprise.js') }}"></script>--}}
+<script src="{{ asset('js/libs/ag-grid-enterprise.min.js') }}"></script>
 <script src="{{ asset('js/libs/flatpickr.js') }}"></script>
 <script src="{{ asset('js/libs/ru.js') }}"></script>
 

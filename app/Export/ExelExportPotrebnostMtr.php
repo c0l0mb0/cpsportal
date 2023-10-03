@@ -2,17 +2,15 @@
 
 namespace App\Export;
 
-use App\Http\Controllers\BuildingsController;
+use App\Http\Controllers\BuildEquipController;
 use App\Export;
+use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\cpsStuffController;
+use function PHPUnit\Framework\throwException;
 
 
 class ExelExportPotrebnostMtr extends ExcelExport
 {
-    function __construct()
-    {
-        parent::__construct('потребности_МТР.xlsx', 1, 1);
-    }
 
     public function createHead()
     {
@@ -80,12 +78,10 @@ class ExelExportPotrebnostMtr extends ExcelExport
     public function createBody()
     {
         $this->affiliates = BuildingsController::getAffiliates([['area', '!=', 'ПС САП']]);
-
         foreach ($this->affiliates as $affiliate) {
             foreach ($this->areas as $area) {
-                $this->buildingsWithEequipment = BuildingsController::getBuildingsWithEquipmentGruppedWithSum([['area', '=', $area],
+                $this->buildingsWithEquipment = BuildEquipController::getBuildingsWithEquipmentGruppedWithSum([['area', '=', $area],
                     ['affiliate', '=', $affiliate->affiliate], ['quantity', '!=', 0]]);
-
                 $fieldNames = array('empty', 'affiliate', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',
                     'measure', 'quantity', 'equip_name', 'calculateNormCTO', 'measure',
                     'custom|=ROUNDUP(L&formulaRow*J&formulaRow,0)', 'empty', 'empty', 'empty', 'empty', 'area');
@@ -94,7 +90,8 @@ class ExelExportPotrebnostMtr extends ExcelExport
 
             }
         }
-        $this->buildingsWithEequipment = cpsStuffController::index();
+        //cps ladders, screwdrivers..
+        $this->buildingsWithEquipment = cpsStuffController::index();
         $fieldNames = array('empty', 'custom|УАиМО', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',
             'measure', 'quantity', 'stuff_name', 'calculateNormCTO', 'measure',
             'custom|=ROUNDUP(L&formulaRow*J&formulaRow,0)', 'empty', 'empty', 'empty', 'empty', 'custom|Ямбург');

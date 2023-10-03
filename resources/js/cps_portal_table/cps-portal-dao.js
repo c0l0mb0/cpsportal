@@ -13,7 +13,11 @@ export let config = {
         getBuildingsALl: '/api/cps-buildings-all',
         getBuildingsGroup1: '/api/cps-buildings-group1',
         getBuildingsGroup2: '/api/cps-buildings-group2',
+        getBuildingsPlanGraf: '/api/cps-buildings-plangraf',
+        getBuildingsPlanGrafOrderedByPlGrafNumb: '/api/cps-buildings-and-orederedplangraf',
+        getBuildingsPlanGrafOrderedById: '/api/cps-buildings-plangraf-by-id',
         getBuildingsAffiliate: '/api/cps-buildings-affiliate',
+        putUpdateBuildingSequenceOfPlanGraf: '/api/cps-update-buildingplangraf-seq',
         postPutDeleteBuildings: '/api/cps-buildings',
         getEquipmentALl: '/api/cps-equipment-all',
         postPutDeleteEquipment: '/api/cps-equipment',
@@ -21,6 +25,10 @@ export let config = {
         getUserRole: '/api/get-user-role',
         getExportNormiZapasaKip: '/api/export-normi-zapasa-kip',
         getExportPotrebnostMtr: '/api/export-potrebnost-mtr',
+        getExportPassport: '/api/export-passport',
+        getExportPlanGrafic: '/api/export-plangrafic',
+        getExportOtkaziIzveshatelei: '/api/export-otkazi-russianizveshateli',
+        getUserRoles: '/api/get-user-roles',
     }
 };
 
@@ -66,22 +74,36 @@ export function httpRequest(url, method, data = null, idRow = null) {
     });
 }
 
-export function downloadFile(url) {
-    var oReq = new XMLHttpRequest();
-    oReq.open("GET", url, true);
+export function downloadFile(url, method, data = null) {
+    let oReq = new XMLHttpRequest();
+    oReq.open(method, url, true);
     oReq.responseType = "blob";
+    oReq.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    oReq.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     oReq.onload = function (event) {
-        var blob = oReq.response;
-        var fileName = oReq.getResponseHeader("fileName") //if you have the fileName header available
-        var link = document.createElement('a');
+        let blob = oReq.response;
+        let filename = '';
+        let disposition = oReq.getResponseHeader('Content-Disposition');
+        if (disposition && disposition.indexOf('attachment') !== -1) {
+            let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            let matches = filenameRegex.exec(disposition);
+            if (matches != null && matches[1]) {
+                filename = matches[1].replace(/['"]/g, '');
+            }
+        }
+
+        let link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        link.download = fileName;
+        link.download = decodeURI(filename);
         link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url)
+        link.remove();
+        URL.revokeObjectURL(url);
+    };
+    oReq.onerror = function (event) {
+        console.log(event);
     };
 
-    oReq.send();
+    oReq.send(JSON.stringify(data));
 }
 
 

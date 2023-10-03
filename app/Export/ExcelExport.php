@@ -2,20 +2,23 @@
 
 namespace App\Export;
 
+use Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 abstract class ExcelExport
 {
-    public $buildingsWithEequipment;
+    public $buildingsWithEquipment;
     public $affiliates;
     public $areas;
+
     public int $excelRowCursor;
     public int $excelColumnCursor;
     protected $sheet;
     private string $fileName;
-    private $spreadsheet;
+    protected $spreadsheet;
+    protected $insertedDbChanksRangesArr = [];
 
     function __construct($fileName, $excelStartRowCursor, $excelStartColumnCursor)
     {
@@ -27,7 +30,6 @@ abstract class ExcelExport
         $this->areas = ['ГП', 'Ямбург', 'Новый Уренгой'];
         $this->excelRowCursor = $excelStartRowCursor;
         $this->excelColumnCursor = $excelStartColumnCursor;
-        $this->run();
     }
 
     abstract public function createHead();
@@ -52,6 +54,14 @@ abstract class ExcelExport
         exit();
     }
 
+    protected function getBuildingsWithEquipmentFieldValue($fieldName)
+    {
+        if (!is_Null($this->buildingsWithEquipment[0]->$fieldName)) {
+            return $this->buildingsWithEquipment[0]->$fieldName;
+        }
+        return null;
+    }
+
     protected function insertJustTextDataInRow($excelRowStart, $excelColumnStart, $rowsData, $workBookNumber, $styleArray)
     {
         foreach ($rowsData as $filedData) {
@@ -64,6 +74,12 @@ abstract class ExcelExport
         }
         if (!is_null($styleArray)) {
             $range = $this->getLetterCoordinates($excelColumnStart, $excelRowStart, $excelColumnStart + count($rowsData) - 1, $excelRowStart);
+
+            foreach ($styleArray as $styleEntry => $styleValue) {
+                if ($styleEntry === "height") {
+                    $this->sheet->getRowDimension($excelRowStart)->setRowHeight($styleValue);
+                }
+            }
             $this->sheet->getStyle($range)->applyFromArray($styleArray);
         }
 
@@ -71,17 +87,30 @@ abstract class ExcelExport
         $this->excelRowCursor++;
     }
 
-    protected function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames, $isOneEntry = false, $workBookNumber, $styleArray)
+    public function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames, $isOneEntry = false, $workBookNumber, $styleArray, $pageBreakEquipNumber = null)
     {
         $this->excelRowCursor = $excelRowStart;
         $this->excelColumnCursor = $excelColumnStart;
-        foreach ($this->buildingsWithEequipment as $buildingsWithEquipmentEntry) {
+        $range = '';
+        foreach ($this->buildingsWithEquipment as $buildingsWithEquipmentEntry) {
             foreach ($fieldNames as $fieldName) {
                 if ($fieldName == 'empty') {
                     $this->excelColumnCursor++;
                     continue;
                 }
                 $fieldPipeSeparated = explode('|', $fieldName);
+
+                if (count($fieldPipeSeparated) > 1 and $fieldPipeSeparated[1] == 'centered') {
+                    $fieldNameToString = $fieldPipeSeparated[0];
+                    $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor],
+                        $buildingsWithEquipmentEntry->$fieldNameToString);
+                    $this->sheet->getStyle([$this->excelColumnCursor, $this->excelRowCursor])
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    $this->sheet->getStyle([$this->excelColumnCursor, $this->excelRowCursor])
+                        ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $this->excelColumnCursor++;
+                    continue;
+                }
 
                 if ($this->checkAdditionalFieldConditionals($fieldName, $fieldPipeSeparated, $buildingsWithEquipmentEntry)) {
                     continue;
@@ -98,29 +127,48 @@ abstract class ExcelExport
                 $this->excelColumnCursor++;
 
             }
+
             $this->excelColumnCursor = $excelColumnStart;
             $this->excelRowCursor++;
             if ($isOneEntry === true) {
                 $range = $this->getLetterCoordinates($excelColumnStart, $excelRowStart, $excelColumnStart + count($fieldNames) - 1, $excelRowStart);
+                array_push($this->insertedDbChanksRangesArr, $range);
                 break;
             } else {
-                $range = $this->getLetterCoordinates($excelColumnStart, $excelRowStart, $excelColumnStart + count($fieldNames) - 1, count($this->buildingsWithEequipment));
+                $range = $this->getLetterCoordinates($excelColumnStart, $excelRowStart, $excelColumnStart + count($fieldNames) - 1, $excelRowStart + count($this->buildingsWithEquipment) - 1);
+                array_push($this->insertedDbChanksRangesArr, $range);
             }
         }
 
         if (!is_null($styleArray)) {
+            foreach ($styleArray as $styleEntry => $styleValue) {
+                if ($styleEntry === "height") {
+                    $firstLastRowArr = $this->getFirstAndLastRowFromFullExcelRange($range);
+                    for ($i = $firstLastRowArr[0]; $i <= $firstLastRowArr[1]; $i++) {
+                        $this->sheet->getRowDimension($i)->setRowHeight($styleValue);
+                    }
+                }
+            }
             $this->sheet->getStyle($range)->applyFromArray($styleArray);
         }
     }
 
     abstract public function checkAdditionalFieldConditionals($fieldName, $fieldPipeSeparated, $buildingsWithEquipmentEntry);
 
-    private function getLetterCoordinates($excelColumnFirst, $excelRowFirst, $excelColumnLast, $excelRowLast,)
+    protected function getLetterCoordinates($excelColumnFirst, $excelRowFirst, $excelColumnLast, $excelRowLast,)
     {
         $excelColumnFirstLetter = $this->getNameFromNumber($excelColumnFirst);
         $excelColumnLastLetter = $this->getNameFromNumber($excelColumnLast);
 
         return $excelColumnFirstLetter . $excelRowFirst . ':' . $excelColumnLastLetter . $excelRowLast;
+    }
+
+    public function getFirstAndLastRowFromFullExcelRange($range)
+    {
+        $rangeSeparated = explode(':', $range);
+        $firstRow = preg_replace("/[^0-9]/", "", $rangeSeparated[0]);
+        $lastRow = preg_replace("/[^0-9]/", "", $rangeSeparated[1]);
+        return array($firstRow, $lastRow);
     }
 
     private function getNameFromNumber($num)
@@ -133,6 +181,35 @@ abstract class ExcelExport
         } else {
             return $letter;
         }
+    }
+
+    private function getNumberFromLetter($string)
+    {
+        $string = strtoupper($string);
+        $length = strlen($string);
+        $number = 0;
+        $level = 1;
+        while ($length >= $level) {
+            $char = $string[$length - $level];
+            $c = ord($char) - 64;
+            $number += $c * (26 ** ($level - 1));
+            $level++;
+        }
+        return $number;
+    }
+
+    public function getMaxTextLinesInRow($rowNumber)
+    {
+        $maxTextLinesInCell = 1;
+        for ($column = 1; $column <= $this->getNumberFromLetter($this->sheet->getHighestColumn()); $column++) {
+//            $symbolsCount = mb_strlen($this->sheet->getCell([$column, $rowNumber])->getValue(), 'utf8');
+//            $textLinesInCell = mb_substr_count($this->sheet->getCell([$column,$rowNumber])->getValue(), "0xE2 0x90 0xA4") + 1;
+            $textLinesInCell = substr_count($this->sheet->getCell([$column,$rowNumber])->getValue(), PHP_EOL ) + 1;
+            if ($maxTextLinesInCell < $textLinesInCell) {
+                $maxTextLinesInCell = $textLinesInCell;
+            }
+        }
+        return $maxTextLinesInCell;
     }
 
 }

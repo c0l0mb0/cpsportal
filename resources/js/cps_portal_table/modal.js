@@ -70,9 +70,30 @@ export default class ModalForm {
         requestBody.id_equip = equipmentId;
         let requestUrl = _this.ui.modalForm.requestUrl
         if (_this.ui.modalForm.requestMethod === 'POST') {
-            requestBody.quantity = document.querySelector('#quantity').value;
-            requestBody.measure = document.querySelector('#measure').value;
-            requestBody.id_build = _this.agBuildingId;
+            if (document.querySelector('#quantity') !== null) {
+                requestBody.quantity = document.querySelector('#quantity').value;
+                if (parseFloat(document.querySelector('#quantity').value) === 0) {
+                    this._hideError();
+                    let massage = {}
+                    massage.status = 'ошибка ввода'
+                    massage.statusText = 'количество равно 0!'
+                    this._showError(massage);
+                    return;
+                }
+            }
+
+            if (document.querySelector('#measure') !== null) {
+                requestBody.measure = document.querySelector('#measure').value;
+            }
+            if (document.querySelector('#equip_name') !== null) {
+                requestBody.equip_name = document.querySelector('#equip_name').value;
+            }
+            if (document.querySelector('#brand_name') !== null) {
+                requestBody.brand_name = document.querySelector('#brand_name').value;
+            }
+            if (_this.agBuildingId !== null) {
+                requestBody.id_build = _this.agBuildingId;
+            }
         }
         if (_this.ui.modalForm.requestMethod === 'PUT') {
             let selectedRowEquipInBuilding = _this.tableAgGrid.getSelectedRow();
@@ -86,6 +107,7 @@ export default class ModalForm {
             event.target.reset();
             _this.tableAgGrid.setGridData();
             _this.modalTableAgGrid.resetFilter();
+            _this.tableAgGrid.setGridData(e.id);
             _this.actionMenu.hideAllOneRowAction();
         }).catch((e) => {
             _this._hideError();
@@ -158,10 +180,10 @@ export default class ModalForm {
     }
 
     setModalCpsBuildingsFormHtml() {
-        // this.deleteAllSubmitModalFormHandler();
         this.ui.modalForm.caption.innerHTML = 'Добавить здание';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewBuilding;
         this.setModalCpsBuildingsFormHtmlListsListeners();
+        this.setFormWithTexboxesSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;
     }
 
@@ -175,6 +197,7 @@ export default class ModalForm {
         let listsGroup_1SelectedValue = '';
 
         this.ui.modalForm.listsArea.addEventListener("change", (event) => {
+            this.ui.modalForm.group_2.required = true;
             this.ui.modalForm.group_1.disabled = false;
             this.ui.modalForm.group_2.disabled = true;
             listsAreaSelectedValue = this.ui.modalForm.listsArea.value;
@@ -188,17 +211,22 @@ export default class ModalForm {
         });
 
         this.ui.modalForm.group_1.addEventListener("change", () => {
+            this.ui.modalForm.group_2.required = true;
             this.ui.modalForm.group_2.disabled = false;
             listsGroup_1SelectedValue = this.ui.modalForm.group_1.value;
             this.removeOptions(this.ui.modalForm.group_2);
             this.ui.modalForm.group_2.add(new Option('', ''));
+            let group2Count = 0;
             lists.buildings.group_2.forEach((elem) => {
                 if (elem.area === listsAreaSelectedValue && elem.group_1 === listsGroup_1SelectedValue) {
                     this.ui.modalForm.group_2.add(new Option(elem.group_2, elem.group_2));
+                    group2Count++;
                 }
             });
+            if (group2Count === 0) {
+                this.ui.modalForm.group_2.required = false;
+            }
         });
-
     }
 
     removeOptions(selectElement) {
@@ -209,29 +237,15 @@ export default class ModalForm {
     }
 
     setModalCpsEquipmentFormHtml() {
-        // this.deleteAllSubmitModalFormHandler();
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipment;
-        this.setModalCpsEquipmentFormHtmlListsListeners();
+        this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
+            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
+        this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
+        this.modalTableAgGrid.setFilterTextBox();
+        this.ui.modalForm.requestMethod = "POST";
+        this.setFormWithGridSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteEquipment;
-    }
-
-    setModalCpsEquipmentFormHtmlListsListeners() {
-        this.ui.modalForm.kind_app = document.getElementById('kind_app');
-        this.ui.modalForm.kind_app_second = document.getElementById('kind_app_second');
-        this.ui.modalForm.kind_app_second.disabled = true;
-        let listKind_appSelectedValue = '';
-
-        this.ui.modalForm.kind_app.addEventListener("change", (event) => {
-            listKind_appSelectedValue = this.ui.modalForm.kind_app.value;
-            this.removeOptions(this.ui.modalForm.kind_app_second);
-            lists.equipment.kind_app_second.forEach((elem) => {
-                if (elem.kind_app === listKind_appSelectedValue) {
-                    this.ui.modalForm.kind_app_second.add(new Option(elem.kind_app_second, elem.kind_app_second));
-                }
-            });
-            this.ui.modalForm.kind_app_second.disabled = false;
-        });
     }
 
     setModalNewEquipmentInBuildingHtml() {
@@ -273,8 +287,9 @@ export default class ModalForm {
 
     makeOptionsFromArray(arr) {
         let options;
+        options = options + '<option value=""></option>';
         arr.forEach((elem) => {
-            options = options + '<option value="'+ elem +'">' + elem + '</option>';
+            options = options + '<option value="' + elem + '">' + elem + '</option>';
         });
         return options;
     }
@@ -467,43 +482,39 @@ export default class ModalForm {
                               </select>
                             </div>
                         </div>
-                        `;
-        this.modalHtml.modalNewEquipment = `
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="equip_name" class="col-form-label">Название</label>
+                                <label for="plan_graf_name" class="col-form-label">ПланГрафик</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="equip_name" required name="equip_name">
+                                  <select class="form-control" id="plan_graf_name" required name="plan_graf_name"">` + this.makeOptionsFromArray(lists.buildings.planGraf) +
+            `
+                              </select>
                             </div>
+                        </div>
+                        `;
+        this.modalHtml.modalNewEquipment = `
+                        <div class="col-9">
+                             <div>Выберите наиболее похожий прибор из существующих:</div>
                         </div>
                          <div class="row p-2">
                             <div class="col-3">
-                                <label for="kind_app" class="col-form-label">ТипОбобщенный</label>
+                                <label for="equip_search" class="col-form-label">Поиск</label>
                             </div>
                             <div class="col-9">
-                                 <select class="form-control" id="kind_app" required name="kind_app"">` + this.makeOptionsFromArray(lists.equipment.kind_app) +
-            `
-                              </select>
+                                 <input type="text" class="form-control" id="equip_search"  name="equip_search">
                             </div>
+                        </div>
+                        </div>
+                        <div class="modal-aggrid-wrapper">
+                            <div id="modal-aggrid" style="width: 100%; height: 100%;"></div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="kind_app_second" class="col-form-label">Тип</label>
+                                <label for="equip_name" class="col-form-label">Название нового прибора</label>
                             </div>
                             <div class="col-9">
-                                  <select disabled class="form-control" id="kind_app_second" required name="kind_app_second"">
-                                  </select>
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="kind_signal" class="col-form-label">ТипСигнала</label>
-                            </div>
-                            <div class="col-9">
-                                <select class="form-control" id="kind_signal" required name="kind_signal"">` + this.makeOptionsFromArray(lists.equipment.kind_signal) +
-            `
-                              </select>
+                                 <input type="text" class="form-control" id="equip_name" required name="equip_name">
                             </div>
                         </div>
                         <div class="row p-2">
@@ -513,7 +524,8 @@ export default class ModalForm {
                             <div class="col-9">
                                  <input type="text" class="form-control" id="brand_name" required name="brand_name">
                             </div>
-                        </div>`;
+                        </div>
+                        `;
     }
 }
 
