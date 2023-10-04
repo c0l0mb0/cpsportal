@@ -9,17 +9,22 @@ export default class TableAgGrid {
     gridOptions;
     getDataUrl;
     delUrl;
+    idToScroll;
+    agFilterModel;
     isReady = false;
     targetId = 'page-content';
     confirmDeleteBtn = document.querySelector('.modal__confirm-delete-entry-btn');
     agName;
 
-    constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu) {
+    constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu, idToScroll = undefined,
+                agFilterModel = undefined) {
         this.gridOptions = gridOptions;
         this.getDataUrl = getDataUrl;
         this.delUrl = delUrl;
         this.agName = agName;
         this.actionMenu = actionMenu;
+        this.idToScroll = idToScroll;
+        this.agFilterModel = agFilterModel;
         this.renderAgGrid();
     }
 
@@ -35,22 +40,33 @@ export default class TableAgGrid {
         this.actionMenu.setExportExcelAction();
     }
 
-    setGridData(idToScroll) {
+    setGridData() {
         httpRequest(this.getDataUrl, 'GET').then((data) => {
             if (data === null) {
                 throw 'setGridData data is null';
             }
             this.gridOptions.api.setRowData(data);
-            if (idToScroll !== undefined) {
-                let _this = this;
-                this.gridOptions.api.forEachNode(function (node) {
-                    if (node.data.id === idToScroll) {
-                        node.setSelected(true);
-                        _this.gridOptions.api.ensureIndexVisible(node.rowIndex, 'middle');
-                    }
-                });
+            if (this.idToScroll !== undefined) {
+                this.scrollToid(this.idToScroll);
+                this.idToScroll = undefined;
+            }
+            if (this.agFilterModel !== undefined) {
+                this.restoreFilterModel(this.agFilterModel);
+                this.agFilterModel = undefined;
+            }
+
+        });
+    }
+
+    scrollToid() {
+        let _this = this;
+        this.gridOptions.api.forEachNode(function (node) {
+            if (node.data.id === _this.idToScroll) {
+                node.setSelected(true);
+                _this.gridOptions.api.ensureIndexVisible(node.rowIndex, 'middle');
             }
         });
+
     }
 
     getSelectedRow() {
@@ -107,6 +123,14 @@ export default class TableAgGrid {
         pageContentHtml.innerHTML = "";
         pageContentHtml.style.width = '100%'
         pageContentHtml.classList.add('ag-theme-alpine');
+    }
+
+    getAgFilterModel() {
+        return this.gridOptions.api.getFilterModel();
+    }
+
+    restoreFilterModel(savedFilterModel) {
+        this.gridOptions.api.setFilterModel(savedFilterModel);
     }
 
     exportDisplyedDataToExcel() {

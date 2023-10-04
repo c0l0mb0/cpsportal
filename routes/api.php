@@ -46,7 +46,6 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::get('cps-equipment-buildings/{id}', [BuildEquipController::class, 'index']);
     Route::post('cps-equipment-buildings', [BuildEquipController::class, 'create']);
-    Route::post('cps-equipment-buildings', [BuildEquipController::class, 'create']);
     Route::put('cps-equipment-buildings/{id}', [BuildEquipController::class, 'update']);
     Route::delete('cps-equipment-buildings/{id}', [BuildEquipController::class, 'destroy']);
 

@@ -3,6 +3,7 @@ import {httpRequest} from "./cps-portal-dao.js";
 import {addCSRF, changePageTitle} from "./helper.js";
 import {agGridParameters} from "./ag-grid-parameters.js";
 import TableAgGrid from "./aggrid";
+import {userRole} from "./app";
 
 export default class ActionMenu {
     tableAgGrid;
@@ -17,6 +18,7 @@ export default class ActionMenu {
     innerEquipment;
     agBuildingId;
     agBuildingName;
+    agBuildingFilterState;
     editTableRow;
     returnToBuildings;
     EditButtonActionEventLister;
@@ -24,6 +26,7 @@ export default class ActionMenu {
     innerMonth;
     planGrafSequence;
     arrangePlanGrafSequence;
+
 
     hideALl() {
         this.newTableRow.style.display = 'none';
@@ -158,9 +161,17 @@ export default class ActionMenu {
             let selectedRow = this.tableAgGrid.getSelectedRow();
             this.agBuildingId = selectedRow.id;
             this.agBuildingName = selectedRow.shed;
-            this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentInBuildingsParameters.gridOptions,
-                config.api.getPutDeleteEquipmentInBuilding + '/' +
-                this.agBuildingId, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.equipmentInBuildingsParameters.agName, this);
+            this.agBuildingFilterState = this.tableAgGrid.getAgFilterModel();
+
+            if (userRole === "super-user") {
+                this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentInBuildingsParameters.gridOptions,
+                    config.api.getPutDeleteEquipmentInBuilding + '/' +
+                    this.agBuildingId, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.equipmentInBuildingsParameters.agName, this);
+            } else {
+                this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentInBuildingsParametersForNotSupUser.gridOptions,
+                    config.api.getPutDeleteEquipmentInBuilding + '/' +
+                    this.agBuildingId, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.equipmentInBuildingsParametersForNotSupUser.agName, this);
+            }
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.hideALl();
             this.showPlusAndExcelButton();
@@ -236,10 +247,9 @@ export default class ActionMenu {
         this.returnToBuildings.onclick = () => {
             this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
-                agGridParameters.uneditableBuildingsParameters.agName, this);
+                agGridParameters.uneditableBuildingsParameters.agName, this, this.agBuildingId, this.agBuildingFilterState);
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.hideALl();
-            // this.modalForm.setModalCpsBuildingsFormHtml();
             this.showExcelButton();
             this.setEditInnerAction();
             changePageTitle("Здания");

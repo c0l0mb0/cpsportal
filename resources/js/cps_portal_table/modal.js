@@ -105,7 +105,7 @@ export default class ModalForm {
             _this._hideError();
             _this.hideModal();
             event.target.reset();
-            _this.tableAgGrid.setGridData();
+            // _this.tableAgGrid.setGridData();
             _this.modalTableAgGrid.resetFilter();
             _this.tableAgGrid.setGridData(e.id);
             _this.actionMenu.hideAllOneRowAction();

@@ -757,6 +757,106 @@ export let agGridParameters = {
         },
         agName: 'equipmentInBuildings',
     },
+    equipmentInBuildingsParametersForNotSupUser: {
+        gridOptions: {
+            columnDefs: [
+                {
+                    headerName: "Название",
+                    field: "equip_name",
+                    minWidth: 150,
+                    tooltipField: 'equip_name',
+                    sortable: true, filter: true,
+                    editable: false,
+                },
+                {
+                    headerName: "Назв.Новое",
+                    field: "equip_name_new",
+                    minWidth: 150,
+                    tooltipField: 'equip_name_new',
+                    sortable: true, filter: true,
+                    editable: false,
+                },
+                {
+                    headerName: "Количество",
+                    field: "quantity",
+                    minWidth: 100,
+                    tooltipField: 'quantity',
+                    sortable: true,
+                    filter: true,
+                    editable: false,
+                },
+                {
+                    headerName: "Кол.Новое",
+                    field: "quantity_new",
+                    minWidth: 100,
+                    tooltipField: 'quantity_new',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: NumericCellEditor,
+                },
+                {
+                    headerName: "Измерение",
+                    field: "measure",
+                    minWidth: 100,
+                    tooltipField: 'measure',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Год",
+                    field: "equip_year",
+                    minWidth: 100,
+                    tooltipField: 'equip_year',
+                    sortable: true,
+                    filter: true,
+                    editable: false,
+                },
+                {
+                    headerName: "ГодНовый",
+                    field: "equip_year_new",
+                    minWidth: 100,
+                    tooltipField: 'equip_year_new',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: NumericCellEditor,
+                },
+                {
+                    headerName: "Коментарии",
+                    field: "equip_comments_new",
+                    minWidth: 100,
+                    tooltipField: 'equip_comments_new',
+                    sortable: false,
+                    filter: false,
+                    editable: false,
+                },
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: true,
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: function (event) {
+                httpRequest(config.api.getPutDeleteEquipmentInBuilding, "PUT",
+                    addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
+            },
+            onRowSelected: function () {
+                agGridParameters.actionMenu.showDelButton();
+                agGridParameters.actionMenu.showReturnToBuildingsButton();
+                agGridParameters.actionMenu.showEditButton();
+            },
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            }
+        },
+        agName: 'equipmentInBuildingsForNotSupUser',
+    },
     tehnObslMonthInBuildingsParameters: {
         gridOptions: {
             columnDefs: [
@@ -1148,6 +1248,11 @@ export function initializeAgGridParameters() {
         }
     });
     agGridParameters.equipmentInBuildingsParameters.gridOptions.columnDefs.forEach((columnDefs) => {
+        if (columnDefs.field === 'measure') {
+            columnDefs.cellEditorParams.values = lists.equipment.measure;
+        }
+    });
+    agGridParameters.equipmentInBuildingsParametersForNotSupUser.gridOptions.columnDefs.forEach((columnDefs) => {
         if (columnDefs.field === 'measure') {
             columnDefs.cellEditorParams.values = lists.equipment.measure;
         }

@@ -17,5 +17,6 @@ class BuildEquip extends Model
         'cel_october_gray', 'cel_november_gray', 'cel_december_gray', 'numb_syst_asps', 'numb_syst_aspt', 'equip_year',
         'measure', 'cel_july', 'cel_november', 'cel_january', 'cel_august', 'cel_february', 'who_change', 'cel_march',
         'cel_september', 'cel_april', 'cel_december', 'cel_may', 'cel_october', 'cel_june', 'who_create',
+        'equip_comments',
     ];
 }
