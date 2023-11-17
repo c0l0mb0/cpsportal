@@ -192,8 +192,6 @@
 </div>
 
 
-{{--<script src="{{ asset('js/libs/ag-grid-community-ie11.min.js') }}"></script>--}}
-{{--<script src="{{ asset('js/libs/ag-grid-enterprise.js') }}"></script>--}}
 <script src="{{ asset('js/libs/ag-grid-enterprise.min.js') }}"></script>
 <script src="{{ asset('js/libs/flatpickr.js') }}"></script>
 <script src="{{ asset('js/libs/ru.js') }}"></script>

@@ -28,7 +28,9 @@ export let config = {
         getExportPassport: '/api/export-passport',
         getExportPlanGrafic: '/api/export-plangrafic',
         getExportOtkaziIzveshatelei: '/api/export-otkazi-russianizveshateli',
+        getExportAllData: '/api/export-all-data',
         getUserRoles: '/api/get-user-roles',
+        getPutDeleteEquipmentInBuildingWithWorkerChanges: '/api/cps-equipment-buildings-with-worker-changes',
     }
 };
 

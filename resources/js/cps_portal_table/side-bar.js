@@ -10,10 +10,11 @@ export default class SideBar {
     actionMenu;
     modalForm;
     reportList;
+    menuPlanGraf;
 
     setButtonsVision() {
         if (userRole === "super-user") {
-            document.querySelector('.sidebar__edit-equip').hidden  = false;
+            document.querySelector('.sidebar__edit-equip').hidden = false;
             document.querySelector('.sidebar__edit-buildings').hidden = false;
             document.querySelector('.sidebar__export-reports').hidden = false;
             document.querySelector('.sidebar__export-plan_grafici').hidden = false;
@@ -38,6 +39,10 @@ export default class SideBar {
             this.modalForm.setModalWorkersFormHtml();
             this.actionMenu.showPlusAndExcelButton();
             this.modalForm.setFormWithTexboxesSubmitHandler();
+            if (this.menuPlanGraf !== undefined) {
+                this.menuPlanGraf.remove();
+            }
+
             changePageTitle("Работники");
         };
 
@@ -50,6 +55,9 @@ export default class SideBar {
             this.actionMenu.showExcelButton();
             this.actionMenu.setFireExamPlusSixAction();
             this.modalForm.setFormWithTexboxesSubmitHandler();
+            if (this.menuPlanGraf !== undefined) {
+                this.menuPlanGraf.remove();
+            }
             changePageTitle("Пожинструктаж");
         };
 
@@ -59,9 +67,12 @@ export default class SideBar {
                 agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.unsetEditAndAddButtonAction();
             this.actionMenu.showExcelButton();
             this.actionMenu.setEditInnerAction();
+            this.actionMenu.setReturnToBuildingsAction();
+            if (this.menuPlanGraf !== undefined) {
+                this.menuPlanGraf.remove();
+            }
             changePageTitle("Оборудование в здании");
         };
 
@@ -71,9 +82,11 @@ export default class SideBar {
                 agGridParameters.equipmentParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.unsetEditAndAddButtonAction();
+            this.actionMenu.setAddButtonActionForNewEquipment();
             this.actionMenu.showPlusAndExcelButton();
-            this.actionMenu.setAddButtonActionForNewEquipment()
+            if (this.menuPlanGraf !== undefined) {
+                this.menuPlanGraf.remove();
+            }
             changePageTitle("Оборудование");
         };
 
@@ -83,10 +96,13 @@ export default class SideBar {
                 agGridParameters.buildingsParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.unsetEditAndAddButtonAction();
-            this.modalForm.setModalCpsBuildingsFormHtml();
+            this.actionMenu.setAddButtonActionForNewBuilding();
             this.actionMenu.showPlusAndExcelButton();
             this.actionMenu.setExportPassportAction();
+            if (this.menuPlanGraf !== undefined) {
+                this.menuPlanGraf.remove();
+            }
+
             changePageTitle("Здания");
         };
 
@@ -101,10 +117,11 @@ export default class SideBar {
 
             this.addLinkToReports("Нормы запаса КИПиСА", config.api.getExportNormiZapasaKip);
             this.addLinkToReports("Потребность МТР", config.api.getExportPotrebnostMtr);
-            // this.addLinkToReports("Паспорт",config.api.getExportPassport);
-            // this.addLinkToReports("Планграфик ",config.api.getExportPlanGrafic);
+            this.addLinkToReports("Все данные", config.api.getExportAllData);
             this.addLinkToReports("Отказы извещателей ", config.api.getExportOtkaziIzveshatelei);
-
+            if (this.menuPlanGraf !== undefined) {
+                this.menuPlanGraf.remove();
+            }
             changePageTitle("Отчеты");
         };
 
@@ -114,9 +131,9 @@ export default class SideBar {
                 agGridParameters.uneditableBuildingsPlanGrafikParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.unsetEditAndAddButtonAction();
             this.actionMenu.setExportPlanGrafAction();
-            changePageTitle("План-графики");
+            changePageTitle("План-графики экспорт");
+            this.insertPlanGrafMenu();
         };
         document.querySelector('.sidebar__edit-plan_grafici').onclick = () => {
             this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsPlanGrafParameters.gridOptions,
@@ -124,11 +141,69 @@ export default class SideBar {
                 agGridParameters.buildingsPlanGrafParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.unsetEditAndAddButtonAction();
             this.actionMenu.setEditInnerMonthAction();
             this.actionMenu.setEditSequencePlanGrafAction();
-            changePageTitle("План-графики");
+            if (this.menuPlanGraf !== undefined) {
+                this.menuPlanGraf.remove();
+            }
+            changePageTitle("План-графики редактирование");
         };
+    }
+
+    insertPlanGrafMenu() {
+        const pageContent = document.querySelector('.app-container');
+        this.menuPlanGraf = document.createElement('div');
+        this.menuPlanGraf.setAttribute("id", "menuPlanGraf");
+        this.menuPlanGraf.innerHTML = `
+                    <div class="d-inline">
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="year_pl_gr" class="col-form-label">Год</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="year_pl_gr" required  name="year_pl_gr">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="who_approve_fio" class="col-form-label">Утвердил ФИО</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="who_approve_fio" required  name="who_approve_fio">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="who_approve_position" class="col-form-label">Утвердил Должность</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="who_approve_position" required  name="who_approve_position">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="who_assign_fio" class="col-form-label">Составл ФИО</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="who_assign_fio"  required name="who_assign_fio">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="who_assign_position" class="col-form-label">Подписал Должность</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="who_assign_position" required text="Зам.нач. цеха" name="who_assign_position">
+                            </div>
+                        </div>
+                    </div>
+            `
+        pageContent.prepend(this.menuPlanGraf);
+        document.querySelector('#year_pl_gr').value = "2024";
+        document.querySelector('#who_approve_fio').value = "М.А. Баязитов";
+        document.querySelector('#who_approve_position').value = "Зам.нач. цеха";
+        document.querySelector('#who_assign_fio').value = "М.А. Баязитов";
+        document.querySelector('#who_assign_position').value = "Зам.нач. цеха";
     }
 
     addLinkToReports(linkName, LinkURL) {

@@ -11,8 +11,12 @@ class WorkerDataChanges extends Model
 
 
     protected $fillable = [
-        'id_equip', 'equip_deleted', 'quant', 'id_build', 'worker_comments', 'equip_updated',
-        'id_build_equip', 'equip_measure', 'equip_quant', 'equip_year', 'equip_created',
+        'id_build_equip', 'id_equip', 'id_build', 'quantity', 'measure', 'equip_year', 'worker_comments',
+        'equip_updated', 'equip_deleted', 'cel_january', 'cel_january_gray', 'cel_february', 'cel_february_gray',
+        'cel_march', 'cel_march_gray', 'cel_april', 'cel_april_gray', 'cel_may', 'cel_may_gray', 'cel_june',
+        'cel_june_gray', 'cel_july', 'cel_july_gray', 'cel_august', 'cel_august_gray', 'cel_september',
+        'cel_september_gray', 'cel_october', 'cel_october_gray', 'cel_november', 'cel_november_gray', 'cel_december',
+        'cel_december_gray',
     ];
 
 }

@@ -3,7 +3,8 @@ import {myExcelXML} from './ag_grid_classes/excel-export.js';
 import {addCSRF} from './helper.js';
 import {AG_GRID_LOCALE_RU} from "./ag_grid_classes/local.ru";
 
-//ag grid wrapper, first field from DAO has to have the name "id". constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu)
+//ag grid wrapper, first field from DAO has to have the name "id".
+// Constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu)
 export default class TableAgGrid {
     actionMenu;
     gridOptions;

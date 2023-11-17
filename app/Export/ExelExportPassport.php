@@ -11,9 +11,11 @@ class ExelExportPassport extends ExcelExport
 {
     private $idBuilding;
 
-    public function setIdBuilding ($id) {
+    public function setIdBuilding($id)
+    {
         $this->idBuilding = $id;
     }
+
     public function createHead()
     {
         $this->sheet->getStyle('A10:G14')->getAlignment()->setWrapText(true);
@@ -60,7 +62,6 @@ class ExelExportPassport extends ExcelExport
     public function createBody()
     {
         $currentBuildingId = $this->idBuilding;
-
 
 
         $styleArray = [
@@ -121,13 +122,13 @@ class ExelExportPassport extends ExcelExport
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
 
 
-        $symbolsCount = mb_strlen($this->sheet->getCell([3, 11])->getValue(),'utf8');
-        $rowWidth = $this->sheet->getColumnDimension('C')->getWidth()-0.62;
+        $symbolsCount = mb_strlen($this->sheet->getCell([3, 11])->getValue(), 'utf8');
+        $rowWidth = $this->sheet->getColumnDimension('C')->getWidth() - 0.62;
         $rowHeight = $this->sheet->getRowDimension('11')->getRowHeight();
         $fontSize = $this->sheet->getStyle([3, 11])->getFont()->getSize();
-        $textLength = $symbolsCount * ((-0.0136)*pow($fontSize,2)+0.6548*$fontSize-4.7184);
-        $textLinesInCell = ceil($textLength/$rowWidth);
-        $this->sheet->getRowDimension('11')->setRowHeight($textLinesInCell*16);
+        $textLength = $symbolsCount * ((-0.0136) * pow($fontSize, 2) + 0.6548 * $fontSize - 4.7184);
+        $textLinesInCell = ceil($textLength / $rowWidth);
+        $this->sheet->getRowDimension('11')->setRowHeight($textLinesInCell * 16);
 //        throw new Exception($textLinesInCell);
 
         $this->excelRowCursor++;
@@ -230,10 +231,125 @@ class ExelExportPassport extends ExcelExport
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
             array('Другие сведения  ____________________________________________'), null, null);
 
+        $this->excelRowCursor++;
+
+        $this->sheet->setBreak([1, $this->excelRowCursor], \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+        $this->sheet->mergeCells('A' . $this->excelRowCursor . ':G' . $this->excelRowCursor);
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],];
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
+            array('4. Сведения о проведенных заменах технических средств системы АУПС'), null, $styleArray);
+
+        $this->sheet->mergeCells('B' . $this->excelRowCursor . ':C' . $this->excelRowCursor);
+        $this->sheet->mergeCells('D' . $this->excelRowCursor . ':E' . $this->excelRowCursor);
+        $this->sheet->mergeCells('F' . $this->excelRowCursor . ':G' . $this->excelRowCursor);
+
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'alignment' => ['wrapText' => true, 'shrinkToFit' => true, 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,]];
+
+
+        $rowsData = array('Условный номер системы', 'Наименование замененного технического средства, узла, элемента',
+            'empty', 'Дата', 'empty',
+            'Основание для замены', 'empty');
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
+
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],];
+        $rowsData = array('empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty');
+        for ($i = 0; $i <= 51; $i++) {
+            $this->sheet->mergeCells('B' . $this->excelRowCursor . ':C' . $this->excelRowCursor);
+            $this->sheet->mergeCells('D' . $this->excelRowCursor . ':E' . $this->excelRowCursor);
+            $this->sheet->mergeCells('F' . $this->excelRowCursor . ':G' . $this->excelRowCursor);
+            $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
+
+        }
+
+        $rowsData = array('Паспорт составлен:', 'empty', 'empty', 'empty', 'Согласовано:');
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],];
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
+
+        $this->excelRowCursor++;
+
+        $this->sheet->mergeCells('A' . $this->excelRowCursor . ':B' . $this->excelRowCursor);
+        $this->sheet->mergeCells('E' . $this->excelRowCursor . ':G' . $this->excelRowCursor);
+
+        $this->sheet->getStyle('A' . $this->excelRowCursor . ':B' . $this->excelRowCursor)->getBorders()
+            ->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        $this->sheet->getStyle('E' . $this->excelRowCursor . ':G' . $this->excelRowCursor)->getBorders()
+            ->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        $rowsData = array('(должность)', 'empty', 'empty', 'empty', '(должность)');
+        $styleArray = [
+            'font' => [
+                'size' => 8,
+            ],
+            'alignment' => [
+                'wrapText' => true,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],];
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
+
+        $this->excelRowCursor++;
+
+        $this->sheet->mergeCells('A' . $this->excelRowCursor . ':B' . $this->excelRowCursor);
+        $this->sheet->mergeCells('E' . $this->excelRowCursor . ':G' . $this->excelRowCursor);
+
+        $this->sheet->getStyle('A' . $this->excelRowCursor . ':B' . $this->excelRowCursor)->getBorders()
+            ->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        $this->sheet->getStyle('E' . $this->excelRowCursor . ':G' . $this->excelRowCursor)->getBorders()
+            ->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $rowsData = array('(подпись, Ф.И.О.)', 'empty', 'empty', 'empty', '(подпись, Ф.И.О.)');
+
+        $styleArray = [
+            'font' => [
+                'size' => 8,
+            ],
+            'alignment' => [
+                'wrapText' => true,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],];
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
+
+        $this->excelRowCursor++;
+
+        $this->sheet->mergeCells('A' . $this->excelRowCursor . ':B' . $this->excelRowCursor);
+        $this->sheet->mergeCells('E' . $this->excelRowCursor . ':G' . $this->excelRowCursor);
+
+        $rowsData = array('"______"_________________ 20__ г.', 'empty', 'empty', 'empty', '"______"_________________ 20__ г.');
+        $styleArray = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],];
+
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
+
+
         $this->sheet->getPageSetup()->setFitToPage(true);
         $this->sheet->getHighestRow();
         $this->sheet->getHighestColumn();
-        $this->sheet->getPageSetup()->setPrintArea('A1:'.$this->sheet->getHighestColumn().$this->sheet->getHighestRow());
+        $this->sheet->getPageSetup()->setPrintArea('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow());
 
     }
 

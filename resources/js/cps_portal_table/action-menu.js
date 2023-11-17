@@ -26,6 +26,8 @@ export default class ActionMenu {
     innerMonth;
     planGrafSequence;
     arrangePlanGrafSequence;
+    modalPutEquipmentInBuildingHtml;
+    modalNewEquipmentInBuildingHtml;
 
 
     hideALl() {
@@ -156,32 +158,47 @@ export default class ActionMenu {
         }
     }
 
+    setEditAndAddEquipOfBuildingButtonActionForNewEquipInBuildingModal() {
+        this.editTableRow.removeEventListener('click', this.modalPutEquipmentInBuildingHtml);
+        this.modalPutEquipmentInBuildingHtml = this.modalForm.setModalPutEquipmentInBuildingHtml.bind(this.modalForm);
+        this.editTableRow.addEventListener('click', this.modalPutEquipmentInBuildingHtml);
+
+        this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
+        this.AddButtonActionEventLister = this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm);
+        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+    }
+
+    setAddButtonActionForNewEquipment() {
+        this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
+        this.AddButtonActionEventLister = this.modalForm.setModalCpsEquipmentFormHtml.bind(this.modalForm);
+        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+    }
+
+    setAddButtonActionForNewBuilding() {
+        this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
+        this.AddButtonActionEventLister = this.modalForm.setModalCpsBuildingsFormHtml.bind(this.modalForm);
+        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+    }
+
     setEditInnerAction() {
+        this.setEditAndAddEquipOfBuildingButtonActionForNewEquipInBuildingModal();
         this.innerEquipment.onclick = () => {
             let selectedRow = this.tableAgGrid.getSelectedRow();
             this.agBuildingId = selectedRow.id;
             this.agBuildingName = selectedRow.shed;
             this.agBuildingFilterState = this.tableAgGrid.getAgFilterModel();
-
-            if (userRole === "super-user") {
-                this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentInBuildingsParameters.gridOptions,
-                    config.api.getPutDeleteEquipmentInBuilding + '/' +
-                    this.agBuildingId, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.equipmentInBuildingsParameters.agName, this);
-            } else {
-                this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentInBuildingsParametersForNotSupUser.gridOptions,
-                    config.api.getPutDeleteEquipmentInBuilding + '/' +
-                    this.agBuildingId, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.equipmentInBuildingsParametersForNotSupUser.agName, this);
-            }
+            this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentInBuildingsParameters.gridOptions,
+                config.api.getPutDeleteEquipmentInBuilding + '/' +
+                this.agBuildingId, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.equipmentInBuildingsParameters.agName, this);
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.hideALl();
             this.showPlusAndExcelButton();
             this.showReturnToBuildingsButton();
-            this.setReturnToBuildingsAction();
             this.modalForm.agBuildingName = this.agBuildingName;
             this.modalForm.agBuildingId = this.agBuildingId;
 
             changePageTitle('Здание =>' + selectedRow.group_1 + '=>' + selectedRow.shed + "=> Оборудование");
-            this.setEditAddEquipOfBuildingButtonActionForNewEquipInBuilding();
+
         };
     }
 
@@ -225,22 +242,9 @@ export default class ActionMenu {
         }
     }
 
-    setAddButtonActionForNewEquipment() {
-        this.AddButtonActionEventLister = this.modalForm.setModalCpsEquipmentFormHtml.bind(this.modalForm);
-        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
-    }
-
 
     setEditAddEquipOfBuildingButtonActionForNewEquipInBuilding() {
-        this.EditButtonActionEventLister = this.modalForm.setModalPutEquipmentInBuildingHtml.bind(this.modalForm);
-        this.AddButtonActionEventLister = this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm);
-        this.editTableRow.addEventListener('click', this.EditButtonActionEventLister);
-        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
-    }
-
-    unsetEditAndAddButtonAction() {
-        this.editTableRow.removeEventListener('click', this.EditButtonActionEventLister);
-        this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
+        this.modalForm.setEditAddEquipOfBuildingButtonActionForNewEquipInBuildingModal();
     }
 
     setReturnToBuildingsAction() {
@@ -251,7 +255,6 @@ export default class ActionMenu {
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.hideALl();
             this.showExcelButton();
-            this.setEditInnerAction();
             changePageTitle("Здания");
         };
     }
@@ -272,7 +275,12 @@ export default class ActionMenu {
             let selectedRow = this.tableAgGrid.getSelectedRow();
             let requestBody = {};
             requestBody.plan_graf_name = selectedRow.plan_graf_name;
-            downloadFile(config.api.getExportPlanGrafic, "POST", addCSRF(requestBody))
+            requestBody.year_pl_gr = document.querySelector('#year_pl_gr').value;
+            requestBody.who_approve_fio = document.querySelector('#who_approve_fio').value;
+            requestBody.who_approve_position = document.querySelector('#who_approve_position').value;
+            requestBody.who_assign_fio = document.querySelector('#who_assign_fio').value;
+            requestBody.who_assign_position = document.querySelector('#who_assign_position').value;
+            downloadFile(config.api.getExportPlanGrafic, "POST", addCSRF(requestBody));
         };
     }
 

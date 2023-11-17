@@ -5,6 +5,7 @@ use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ExcelExportController;
 use App\Http\Controllers\UserConrtroller;
+use App\Http\Controllers\WorkerDataChangesController;
 use App\Http\Controllers\WorkersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -51,11 +52,14 @@ Route::middleware('auth:sanctum')->group(function(){
 
 
     Route::get('export-normi-zapasa-kip', [ExcelExportController::class, 'exportNormiZapasaKip']);
+    Route::get('export-all-data', [ExcelExportController::class, 'exportAllData']);
     Route::get('export-potrebnost-mtr', [ExcelExportController::class, 'exportPotrebnostMtr']);
     Route::get('export-passport/{id}', [ExcelExportController::class, 'exportPassport']);
     Route::post('export-plangrafic', [ExcelExportController::class, 'exportPlanGraf']);
     Route::get('export-otkazi-russianizveshateli', [ExcelExportController::class, 'exportOtkaziRussianIzveshatel']);
 
     Route::get('get-user-roles', [UserConrtroller::class, 'indexUserRoles']);
+
+
 
 });

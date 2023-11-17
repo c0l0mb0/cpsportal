@@ -4,6 +4,7 @@ import {addCSRF} from './helper.js'
 import ModalAggrid from "./modal-aggrid.js";
 import {agGridParameters} from "./ag-grid-parameters";
 import {lists} from "./lists";
+import {userRole} from "./app";
 
 export default class ModalForm {
     actionMenu;
@@ -98,6 +99,11 @@ export default class ModalForm {
         if (_this.ui.modalForm.requestMethod === 'PUT') {
             let selectedRowEquipInBuilding = _this.tableAgGrid.getSelectedRow();
             let buildEquipId = selectedRowEquipInBuilding.id;
+            requestBody.id_build = selectedRowEquipInBuilding.id_build;
+            requestBody.quantity = selectedRowEquipInBuilding.quantity;
+            requestBody.measure = selectedRowEquipInBuilding.measure;
+            requestBody.equip_year = selectedRowEquipInBuilding.equip_year;
+            requestBody.equip_comments = selectedRowEquipInBuilding.equip_comments;
             requestUrl = requestUrl + '/' + buildEquipId;
         }
         requestBody = addCSRF(requestBody);
@@ -105,13 +111,15 @@ export default class ModalForm {
             _this._hideError();
             _this.hideModal();
             event.target.reset();
-            // _this.tableAgGrid.setGridData();
             _this.modalTableAgGrid.resetFilter();
-            _this.tableAgGrid.setGridData(e.id);
+            _this.tableAgGrid.idToScroll = e.id;
+
+            _this.tableAgGrid.setGridData();
             _this.actionMenu.hideAllOneRowAction();
         }).catch((e) => {
             _this._hideError();
             _this._showError(e);
+            console.log(e);
         })
     }
 
@@ -179,13 +187,6 @@ export default class ModalForm {
         this.ui.modalForm.requestUrl = config.api.postPutDeleteWorkers;
     }
 
-    setModalCpsBuildingsFormHtml() {
-        this.ui.modalForm.caption.innerHTML = 'Добавить здание';
-        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewBuilding;
-        this.setModalCpsBuildingsFormHtmlListsListeners();
-        this.setFormWithTexboxesSubmitHandler();
-        this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;
-    }
 
     setModalCpsBuildingsFormHtmlListsListeners() {
         this.ui.modalForm.listsArea = document.getElementById('area');
@@ -236,6 +237,14 @@ export default class ModalForm {
         }
     }
 
+    setModalCpsBuildingsFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить здание';
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewBuilding;
+        this.setModalCpsBuildingsFormHtmlListsListeners();
+        this.setFormWithTexboxesSubmitHandler();
+        this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;
+    }
+
     setModalCpsEquipmentFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipment;
@@ -260,6 +269,8 @@ export default class ModalForm {
         this.setFormWithGridSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
     }
+
+
 
     setModalPutEquipmentInBuildingHtml() {
         let selectedRow = this.tableAgGrid.getSelectedRow();

@@ -4,6 +4,7 @@ namespace App\Export;
 
 use App\Http\Controllers\BuildEquipController;
 use App\Http\Controllers\BuildingsController;
+use Exception;
 
 
 class ExelExportPlanGrafic extends ExcelExport
@@ -17,9 +18,23 @@ class ExelExportPlanGrafic extends ExcelExport
     public $equipItemHeight = 16;
 
     private $planGrafName;
+    private $yearPlGr;
+    private $whoApproveFio;
+    private $whoApprovePosition;
+    private $whoAssignFio;
+    private $whoAssignPosition;
 
-    public function setPlanGrafWorkBookAndSheet ( $planGrafName) {
+    public function setPlanGrafWorkBookAndSheet($planGrafName, $yearPlGr, $whoApproveFio, $whoApprovePosition,
+                                                $whoAssignFio, $whoAssignPosition)
+    {
         $this->planGrafName = $planGrafName;
+        $this->yearPlGr = $yearPlGr;
+        $this->whoApproveFio = $whoApproveFio;
+        $this->whoApprovePosition = $whoApprovePosition;
+        $this->whoAssignFio = $whoAssignFio;
+        $this->whoAssignPosition = $whoAssignPosition;
+        $this->planGrafBuildings = BuildingsController::getBuildingsOfPlanGrafic([
+            ['plan_graf_name', '=', $this->planGrafName]]);
     }
 
     public function createHead()
@@ -60,15 +75,17 @@ class ExelExportPlanGrafic extends ExcelExport
                 'size' => 23,
             ],];
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('УТВЕРЖДАЮ'), null, $styleArray);
-        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('Начальник цеха ПС УАиМО'), null, $styleArray);
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array($this->whoApprovePosition), null, $styleArray);
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('ООО "Газпром добыча Ямбург"'), null, $styleArray);
         $this->excelRowCursor++;
-        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('_________________Ю.Г. Танцура'), null, $styleArray);
-        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('"____"___________2023 г.'), null, $styleArray);
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('_________________' . $this->whoApproveFio), null, $styleArray);
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('"____"___________' . $this->yearPlGr . ' г.'), null, $styleArray);
         $this->excelRowCursor++;
         $this->excelColumnCursor = 1;
         $this->sheet->mergeCells('A8:P8');
-        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('План-график проведения технического обслуживания и ремонта систем пожарной сигнализации, пожаротушения и управления эвакуацией '), null, $styleArray);
+
+
+        $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('План-график проведения технического обслуживания и ремонта систем пожарной сигнализации, пожаротушения и управления эвакуацией ' . $this->planGrafName), null, $styleArray);
         $this->sheet->getStyle('A8')
             ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $this->insertNewPageHeader();
@@ -78,11 +95,6 @@ class ExelExportPlanGrafic extends ExcelExport
 
     public function createBody()
     {
-        $planGrafName = $this->planGrafName;
-        $this->planGrafBuildings = BuildingsController::getBuildingsOfPlanGrafic([
-            ['plan_graf_name', '=', $planGrafName]]);
-
-
         foreach ($this->planGrafBuildings as $planGrafBuilding) {
             $this->buildingsWithEquipment = BuildEquipController::getBuildingWithEquipmentByBuildingId([['buildings.id', '=', $planGrafBuilding->id]]);
             $buildingWithEquipSize = $this->buildingLowerHeaderHeight + $this->buildingUpperHeaderHeight + count($this->buildingsWithEquipment) * $this->equipItemHeight;
@@ -102,7 +114,7 @@ class ExelExportPlanGrafic extends ExcelExport
                         $this->buildingUpperHeaderHeight - $this->buildingLowerHeaderHeight) / $this->equipItemHeight);
                 $this->insertBuildingData($planGrafBuilding, $amountOfEquipmentRowsFittedOnSheet);
                 $this->listUsedHeight = (count($this->buildingsWithEquipment) - $amountOfEquipmentRowsFittedOnSheet) * $this->equipItemHeight + $this->listHeaderHeight;
-
+                continue;
             }
             if ($this->listUsedHeight + $buildingWithEquipSize <= $this->listSize) {
                 $this->insertBuildingData($planGrafBuilding, null);
@@ -111,7 +123,7 @@ class ExelExportPlanGrafic extends ExcelExport
         }
         $this->excelRowCursor++;
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
-            array('empty', 'Мастер по КАиТ ЦПС', 'empty', 'empty', 'empty', 'Баязитов М.А.',), null, null);
+            array('empty', $this->whoAssignPosition, 'empty', 'empty', 'empty', $this->whoAssignFio,), null, null);
         $this->sheet->getPageSetup()->setPrintArea('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow());
     }
 
@@ -141,7 +153,9 @@ class ExelExportPlanGrafic extends ExcelExport
             'Ф.И.О. подпись', 'Ф.И.О. подпись', 'Ф.И.О. подпись',);
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
         $this->sheet->getRowDimension($this->excelRowCursor)->setRowHeight($this->buildingLowerHeaderHeight);
-        $rowsData = array(' Техническое обслуживание -  число месяца', 'empty', 'empty', 'empty', 'empty', 'empty',
+
+        $buildingNameWithGroupToDate = $this->getBuildingsWithEquipmentFieldValue('to_date');
+        $rowsData = array(' Техническое обслуживание - ' . $buildingNameWithGroupToDate . ' число месяца', 'empty', 'empty', 'empty', 'empty', 'empty',
             'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty');
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
 
@@ -152,6 +166,7 @@ class ExelExportPlanGrafic extends ExcelExport
                 ],
             ],
             'height' => $this->equipItemHeight];
+
         $fieldNames = array('equip_name', 'quantity|centered', 'measure|centered', 'to2_new|centered',
             'cel_january|centered', 'cel_february|centered', 'cel_march|centered',
             'cel_april|centered', 'cel_may|centered', 'cel_june|centered', 'cel_july|centered', 'cel_august|centered',
@@ -208,6 +223,7 @@ class ExelExportPlanGrafic extends ExcelExport
                 return true;
             }
         }
+
         return false;
     }
 
@@ -223,6 +239,24 @@ class ExelExportPlanGrafic extends ExcelExport
                     $this->excelColumnCursor++;
                     continue;
                 }
+                if ($fieldName == 'equip_name') {
+                    $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
+                    $richText->createText($buildingsWithEquipmentEntry->equip_name);
+                    if ($buildingsWithEquipmentEntry->to_ostanov) {
+                        $payable = $richText->createTextRun(' (на план. останове)');
+                        $payable->getFont()->setBold(true);
+                    }
+
+                    if ($buildingsWithEquipmentEntry->to_ostanov_itr) {
+                        $payable = $richText->createTextRun(' (на план. останове. Указать дату, ФИО, подпись ИТР проводящего ТО)');
+                        $payable->getFont()->setBold(true);
+                    }
+
+                    $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor], $richText);
+                    $this->excelColumnCursor++;
+                    continue;
+                }
+
                 $fieldPipeSeparated = explode('|', $fieldName);
 
                 if (count($fieldPipeSeparated) > 1 and $fieldPipeSeparated[1] == 'centered') {
@@ -283,51 +317,12 @@ class ExelExportPlanGrafic extends ExcelExport
                             $this->sheet->getRowDimension($i)->setRowHeight($this->listHeaderHeight);
                             continue;
                         }
-
-//                        $this->sheet->getRowDimension($i)->setRowHeight($styleValue);
-//                        $this->setRowHeightByFitting($i);
                         $styleShrinkToFit = ['alignment' => ['wrapText' => true, 'shrinkToFit' => true,]];
-//                        $styleShrinkToFit = ['alignment' => ['wrapText' => true]];
-//                        $this->sheet->setCellValue('J'. $i, '$buildingsWithEquipmentEntry->$fieldNamehljk lhjklhjkljhklhjklhjkl \n gsdfgsdfgsdfgsdfg');
                         $this->sheet->getStyle('A' . $i . ':P' . $i)->applyFromArray($styleShrinkToFit);
-//                        $this->sheet->getStyle('A' . $i . ':P' . $i)->getAlignment()->setWrapText(true);
-
-//                        $this->sheet->getRowDimension($i)->setRowHeight(
-//                            14.5 * (substr_count($this->sheet->getCell('J'. $i)->getValue(), "\n") + 1)
-//                        );
-
-
-//                        $maxTextLinesInRow = $this->getMaxTextLinesInRow($i);
-
-
-//                        $this->sheet->getRowDimension($i)->setRowHeight(-1);
-//                        $rowHeightAfterShrink = $this->sheet->getRowDimension($i)->getRowHeight();
-//                        if ($rowHeightAfterShrink == -1) {
-//                            $rowHeightAfterShrink = $this->sheet->getDefaultRowDimension()->getRowHeight();
-//                        }
-//                        if ($i == 95) {
-//                            throw new Exception(mb_strlen($this->sheet->getCell('J'. $i)->getValue(),'utf8'));
-//                            throw new Exception(substr_count($this->sheet->getCell('J'. $i)->getValue(), "\n") + 1);
-
-//                            print_r(strlen($this->sheet->getCell('J'. $i)->getValue()));
-//                        }
-//                        if ($i == 96) {
-//                            throw new Exception($rowHeightAfterShrink);
-//                        }
-
-//                        if ($rowHeightAfterShrink < $styleValue) { // too narrow
-//
-//
-
-//                        }
                     }
                 }
             }
 
         }
-//        $firstLastRowArr = $this->getFirstAndLastRowFromFullExcelRange($range);
-//        for ($i = $firstLastRowArr[0]; $i <= $firstLastRowArr[1]; $i++) {
-//            $this->setAppropriateRowHeightForLargestSymbolsConsequenceInRow($i);
-//        }
     }
 }

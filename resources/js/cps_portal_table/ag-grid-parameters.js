@@ -263,6 +263,16 @@ export let agGridParameters = {
                         values: []
                     }
                 },
+                {
+                    headerName: "НаКонсерв",
+                    field: "on_conserv",
+                    minWidth: 50,
+                    tooltipField: 'on_conserv',
+                    sortable: true,
+                    filter: true,
+                    editable: true,
+                    cellRenderer: CheckboxRenderer,
+                },
             ],
             rowSelection: 'single',
             defaultColDef: {
@@ -763,33 +773,16 @@ export let agGridParameters = {
                 {
                     headerName: "Название",
                     field: "equip_name",
-                    minWidth: 150,
+                    minWidth: 350,
                     tooltipField: 'equip_name',
-                    sortable: true, filter: true,
-                    editable: false,
-                },
-                {
-                    headerName: "Назв.Новое",
-                    field: "equip_name_new",
-                    minWidth: 150,
-                    tooltipField: 'equip_name_new',
                     sortable: true, filter: true,
                     editable: false,
                 },
                 {
                     headerName: "Количество",
                     field: "quantity",
-                    minWidth: 100,
+                    minWidth: 50,
                     tooltipField: 'quantity',
-                    sortable: true,
-                    filter: true,
-                    editable: false,
-                },
-                {
-                    headerName: "Кол.Новое",
-                    field: "quantity_new",
-                    minWidth: 100,
-                    tooltipField: 'quantity_new',
                     sortable: true,
                     filter: true,
                     cellEditor: NumericCellEditor,
@@ -797,7 +790,7 @@ export let agGridParameters = {
                 {
                     headerName: "Измерение",
                     field: "measure",
-                    minWidth: 100,
+                    minWidth: 50,
                     tooltipField: 'measure',
                     sortable: true,
                     filter: true,
@@ -814,25 +807,16 @@ export let agGridParameters = {
                     tooltipField: 'equip_year',
                     sortable: true,
                     filter: true,
-                    editable: false,
-                },
-                {
-                    headerName: "ГодНовый",
-                    field: "equip_year_new",
-                    minWidth: 100,
-                    tooltipField: 'equip_year_new',
-                    sortable: true,
-                    filter: true,
                     cellEditor: NumericCellEditor,
                 },
                 {
                     headerName: "Коментарии",
-                    field: "equip_comments_new",
+                    field: "equip_comments",
                     minWidth: 100,
-                    tooltipField: 'equip_comments_new',
+                    tooltipField: 'equip_comments',
                     sortable: false,
                     filter: false,
-                    editable: false,
+                    editable: true,
                 },
 
             ],
@@ -843,7 +827,7 @@ export let agGridParameters = {
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
-                httpRequest(config.api.getPutDeleteEquipmentInBuilding, "PUT",
+                httpRequest(config.api.getPutDeleteEquipmentInBuildingWithWorkerChanges, "PUT",
                     addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
             onRowSelected: function () {

@@ -23,16 +23,6 @@ class UserConrtroller extends Controller
      */
     public function indexUserRoles(User $user)
     {
-//        $user = User::find(1);
-//        $user->roles();
-//        print_r($user->roles());
-//        return $user;// Returns a collection;
-//        $roles = Role::orderBy('name')->get();
-//        return $roles;
-//        $roles = $user->getRoleNames();
-
-//        print_r( $this->getRoleNames());
-//        print_r( $user->getRoleNames()->first());
         return json_encode(Auth::user()->roles->pluck('name')[0]);
     }
 
