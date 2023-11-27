@@ -1250,6 +1250,11 @@ export function initializeAgGridParameters() {
         if (columnDefs.field === 'measure') {
             columnDefs.cellEditorParams.values = lists.equipment.measure;
         }
+
+        if (columnDefs.field === 'deleted_by_worker' && (userRole === "super-user" || userRole === "Nur_master" ||
+            userRole === "Yamburg_master" || userRole === "Zapolyarka_master")) {
+            columnDefs.hide = true;
+        }
     });
     agGridParameters.equipmentInBuildingsParametersForNotSupUser.gridOptions.columnDefs.forEach((columnDefs) => {
         if (columnDefs.field === 'measure') {
