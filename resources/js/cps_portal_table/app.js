@@ -41,7 +41,7 @@ function init() {
     actionMenu.planGrafSequence = document.querySelector('.plangraf-sequence');
     actionMenu.arrangePlanGrafSequence = document.querySelector('.plangraf-arrange-numbers');
 
-    actionMenu.hideALl();
+    // actionMenu.hideALl();
 }
 
 function getAllValuesForLists() {

@@ -58,6 +58,7 @@ a:focus {
 
 .action-menu-btn {
     background-color: transparent;
+    display: none;
 }
 
 .action-menu-btn:hover {
