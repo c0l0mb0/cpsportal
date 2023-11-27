@@ -4,6 +4,7 @@ import {addCSRF} from "./helper";
 import NumericCellEditor from "./ag_grid_classes/numericCellEditor.js";
 import {lists} from "./lists";
 import CheckboxRenderer from "./ag_grid_classes/check-box-render";
+import {userRole} from "./app";
 
 
 export let agGridParameters = {
@@ -736,6 +737,16 @@ export let agGridParameters = {
                     cellEditor: NumericCellEditor,
                 },
                 {
+                    headerName: "Удалить",
+                    field: "deleted_by_worker",
+                    minWidth: 50,
+                    tooltipField: 'deleted_by_worker',
+                    sortable: true,
+                    filter: true,
+                    editable: false,
+                    cellRenderer: CheckboxRenderer,
+                },
+                {
                     headerName: "Коментарии",
                     field: "equip_comments",
                     minWidth: 100,
@@ -744,6 +755,7 @@ export let agGridParameters = {
                     filter: false,
                     editable: true,
                 },
+
 
             ],
             rowSelection: 'single',
@@ -757,7 +769,10 @@ export let agGridParameters = {
                     addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
             onRowSelected: function () {
-                agGridParameters.actionMenu.showDelButton();
+                if (userRole === "super-user" || userRole === "Nur_master" || userRole === "Yamburg_master" ||
+                    userRole === "Zapolyarka_master") {
+                    agGridParameters.actionMenu.showDelButton();
+                }
                 agGridParameters.actionMenu.showReturnToBuildingsButton();
                 agGridParameters.actionMenu.showEditButton();
             },

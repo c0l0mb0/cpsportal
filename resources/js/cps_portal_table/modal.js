@@ -4,7 +4,6 @@ import {addCSRF} from './helper.js'
 import ModalAggrid from "./modal-aggrid.js";
 import {agGridParameters} from "./ag-grid-parameters";
 import {lists} from "./lists";
-import {userRole} from "./app";
 
 export default class ModalForm {
     actionMenu;

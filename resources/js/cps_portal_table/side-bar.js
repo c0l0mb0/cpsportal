@@ -55,9 +55,7 @@ export default class SideBar {
             this.actionMenu.showExcelButton();
             this.actionMenu.setFireExamPlusSixAction();
             this.modalForm.setFormWithTexboxesSubmitHandler();
-            if (this.menuPlanGraf !== undefined) {
-                this.menuPlanGraf.remove();
-            }
+            this.removeMenuPlanGraf();
             changePageTitle("Пожинструктаж");
         };
 
@@ -70,9 +68,7 @@ export default class SideBar {
             this.actionMenu.showExcelButton();
             this.actionMenu.setEditInnerAction();
             this.actionMenu.setReturnToBuildingsAction();
-            if (this.menuPlanGraf !== undefined) {
-                this.menuPlanGraf.remove();
-            }
+            this.removeMenuPlanGraf();
             changePageTitle("Оборудование в здании");
         };
 
@@ -84,9 +80,7 @@ export default class SideBar {
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.setAddButtonActionForNewEquipment();
             this.actionMenu.showPlusAndExcelButton();
-            if (this.menuPlanGraf !== undefined) {
-                this.menuPlanGraf.remove();
-            }
+            this.removeMenuPlanGraf();
             changePageTitle("Оборудование");
         };
 
@@ -99,9 +93,7 @@ export default class SideBar {
             this.actionMenu.setAddButtonActionForNewBuilding();
             this.actionMenu.showPlusAndExcelButton();
             this.actionMenu.setExportPassportAction();
-            if (this.menuPlanGraf !== undefined) {
-                this.menuPlanGraf.remove();
-            }
+            this.removeMenuPlanGraf();
 
             changePageTitle("Здания");
         };
@@ -119,9 +111,7 @@ export default class SideBar {
             this.addLinkToReports("Потребность МТР", config.api.getExportPotrebnostMtr);
             this.addLinkToReports("Все данные", config.api.getExportAllData);
             this.addLinkToReports("Отказы извещателей ", config.api.getExportOtkaziIzveshatelei);
-            if (this.menuPlanGraf !== undefined) {
-                this.menuPlanGraf.remove();
-            }
+            this.removeMenuPlanGraf();
             changePageTitle("Отчеты");
         };
 
@@ -143,11 +133,15 @@ export default class SideBar {
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.setEditInnerMonthAction();
             this.actionMenu.setEditSequencePlanGrafAction();
-            if (this.menuPlanGraf !== undefined) {
-                this.menuPlanGraf.remove();
-            }
+            this.removeMenuPlanGraf();
             changePageTitle("План-графики редактирование");
         };
+    }
+
+    removeMenuPlanGraf() {
+        if (this.menuPlanGraf !== undefined) {
+            this.menuPlanGraf.remove();
+        }
     }
 
     insertPlanGrafMenu() {

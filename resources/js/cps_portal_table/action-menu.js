@@ -3,7 +3,6 @@ import {httpRequest} from "./cps-portal-dao.js";
 import {addCSRF, changePageTitle} from "./helper.js";
 import {agGridParameters} from "./ag-grid-parameters.js";
 import TableAgGrid from "./aggrid";
-import {userRole} from "./app";
 
 export default class ActionMenu {
     tableAgGrid;
