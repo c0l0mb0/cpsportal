@@ -26,11 +26,15 @@ class BuildingsController extends Controller
 
     public function getBuildingsAndPlanGrafDataOrderedByPlanGraf()
     {
-        $buildings = Buildings::orderBy('area', 'asc')
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        $buildingsQuery = Buildings::orderBy('area', 'asc')
             ->orderBy('plan_graf_name', 'asc')
-            ->orderBy('gr_numb', 'asc')
-            ->get();
-        return response()->json($buildings);
+            ->orderBy('gr_numb', 'asc');
+        if ($userRole !== 'super-user') {
+            return response()->json($buildingsQuery->where('maintainer_role', '=', $userRole)->get());
+        }
+        return response()->json($buildingsQuery->get());
     }
 
     public static function getBuildingPlanGrafById($id)
