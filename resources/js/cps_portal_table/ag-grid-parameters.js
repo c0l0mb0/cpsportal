@@ -390,6 +390,7 @@ export let agGridParameters = {
                             tooltipField: 'group_1',
                             filter: true,
                             editable: false,
+
                         },
                         {
                             headerName: "Подгруппа",
@@ -398,6 +399,7 @@ export let agGridParameters = {
                             tooltipField: 'group_2',
                             filter: true,
                             editable: false,
+
                         },
                         {
                             headerName: "Здание",
@@ -406,6 +408,7 @@ export let agGridParameters = {
                             tooltipField: 'shed',
                             filter: true,
                             editable: false,
+
                         },
                         {
                             headerName: "Очередь",
@@ -414,6 +417,7 @@ export let agGridParameters = {
                             tooltipField: 'Queue',
                             filter: true,
                             editable: false,
+
                         },
                     ]
 
@@ -441,6 +445,7 @@ export let agGridParameters = {
                             tooltipField: 'to_date',
                             filter: true,
                             editable: true,
+                            cellStyle: {'font-weight': 'bold'}
                         },
                         {
                             headerName: "ПорядНомер",
@@ -449,6 +454,7 @@ export let agGridParameters = {
                             tooltipField: 'gr_numb',
                             filter: true,
                             editable: false,
+
                         },
                     ]
                 }
@@ -507,14 +513,6 @@ export let agGridParameters = {
                     field: "shed",
                     minWidth: 200,
                     tooltipField: 'shed',
-                    filter: true,
-                    editable: false,
-                },
-                {
-                    headerName: "Очередь",
-                    field: "Queue",
-                    minWidth: 100,
-                    tooltipField: 'Queue',
                     filter: true,
                     editable: false,
                 },
@@ -713,6 +711,7 @@ export let agGridParameters = {
                     sortable: true,
                     filter: true,
                     cellEditor: NumericCellEditor,
+                    cellStyle: {'font-weight': 'bold'}
                 },
                 {
                     headerName: "Измерение",
@@ -725,7 +724,8 @@ export let agGridParameters = {
                     singleClickEdit: true,
                     cellEditorParams: {
                         values: []
-                    }
+                    },
+                    cellStyle: {'font-weight': 'bold'}
                 },
                 {
                     headerName: "Год",
@@ -735,6 +735,7 @@ export let agGridParameters = {
                     sortable: true,
                     filter: true,
                     cellEditor: NumericCellEditor,
+                    cellStyle: {'font-weight': 'bold'}
                 },
                 {
                     headerName: "Удалить",
@@ -1261,9 +1262,17 @@ export function initializeAgGridParameters() {
             columnDefs.cellEditorParams.values = lists.equipment.measure;
         }
     });
-    agGridParameters.buildingsPlanGrafParameters.gridOptions.columnDefs.forEach((columnDefs) => {
-        if (columnDefs.headerName === "ПланГрафик") {
-            columnDefs.children[0].cellEditorParams.values = lists.buildings.planGraf;
+    agGridParameters.buildingsPlanGrafParameters.gridOptions.columnDefs[1].children.forEach((columnDefs) => {
+        if (columnDefs.field === 'plan_graf_name') {
+            if (userRole === "super-user" || userRole === "Nur_master" ||
+                userRole === "Yamburg_master" || userRole === "Zapolyarka_master") {
+                columnDefs.cellEditorParams.values = lists.buildings.planGraf;
+            } else {
+                delete columnDefs.cellEditorParams;
+                delete columnDefs.cellEditor;
+            }
         }
     });
+
+
 }

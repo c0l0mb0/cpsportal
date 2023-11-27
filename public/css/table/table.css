@@ -143,6 +143,7 @@ a[aria-expanded="true"] {
 .sidebar-list-left_margin {
     margin-left: 15px;
 }
+
 .sidebar-list_capture {
     margin-left: 10px;
     margin-bottom: 5px;
@@ -155,7 +156,6 @@ a[aria-expanded="true"] {
 a[data-toggle="collapse"] {
     position: relative;
 }
-
 
 
 ul ul a {
@@ -200,11 +200,12 @@ a.article:hover {
     CONTENT STYLE
 ----------------------------------------------------- */
 /*export-list*/
-.export_list-item{
+.export_list-item {
     margin: 20px 20px 20px 20px;
     text-decoration: underline;
     font-size: medium;
 }
+
 #content {
     display: flex;
     flex-direction: column;
@@ -243,8 +244,6 @@ a.article:hover {
     height: 100%;
 }
 
-.equip_info {
-}
 
 .equip_info-inner {
     height: 100%;
