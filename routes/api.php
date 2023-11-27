@@ -5,9 +5,7 @@ use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ExcelExportController;
 use App\Http\Controllers\UserConrtroller;
-use App\Http\Controllers\WorkerDataChangesController;
 use App\Http\Controllers\WorkersController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
