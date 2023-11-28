@@ -167,9 +167,9 @@ export let agGridParameters = {
                 },
                 {
                     headerName: "Очередь",
-                    field: "Queue",
+                    field: "queue",
                     minWidth: 100,
-                    tooltipField: 'Queue',
+                    tooltipField: 'queue',
                     sortable: true,
                     filter: true,
                     cellEditor: 'agSelectCellEditor',
@@ -302,7 +302,7 @@ export let agGridParameters = {
                 {
                     headerName: "Участок",
                     field: "area",
-                    minWidth: 100,
+                    minWidth: 50,
                     tooltipField: 'area',
                     sortable: true,
                     filter: true,
@@ -310,7 +310,7 @@ export let agGridParameters = {
                 {
                     headerName: "Группа",
                     field: "group_1",
-                    minWidth: 100,
+                    minWidth: 50,
                     tooltipField: 'group_1',
                     sortable: true,
                     filter: true,
@@ -318,7 +318,7 @@ export let agGridParameters = {
                 {
                     headerName: "Подгруппа",
                     field: "group_2",
-                    minWidth: 100,
+                    minWidth: 50,
                     tooltipField: 'group_2',
                     sortable: true,
                     filter: true,
@@ -326,16 +326,16 @@ export let agGridParameters = {
                 {
                     headerName: "Здание",
                     field: "shed",
-                    minWidth: 100,
+                    minWidth: 300,
                     tooltipField: 'shed',
                     sortable: true,
                     filter: true,
                 },
                 {
                     headerName: "Очередь",
-                    field: "Queue",
+                    field: "queue",
                     minWidth: 100,
-                    tooltipField: 'Queue',
+                    tooltipField: 'queue',
                     sortable: true,
                     filter: true,
                 },
@@ -412,9 +412,9 @@ export let agGridParameters = {
                         },
                         {
                             headerName: "Очередь",
-                            field: "Queue",
+                            field: "queue",
                             minWidth: 100,
-                            tooltipField: 'Queue',
+                            tooltipField: 'queue',
                             filter: true,
                             editable: false,
 
@@ -518,9 +518,9 @@ export let agGridParameters = {
                 },
                 {
                     headerName: "Очередь",
-                    field: "Queue",
+                    field: "queue",
                     minWidth: 100,
-                    tooltipField: 'Queue',
+                    tooltipField: 'queue',
                     filter: true,
                     editable: false,
                 },
@@ -690,7 +690,7 @@ export let agGridParameters = {
                 {
                     headerName: "Название",
                     field: "equip_name",
-                    minWidth: 100,
+                    minWidth: 350,
                     tooltipField: 'equip_name',
                     sortable: true, filter: true,
                     editable: false,
@@ -1240,7 +1240,7 @@ export function initializeAgGridParameters() {
                 }
             })
         }
-        if (columnDefs.field === 'Queue') {
+        if (columnDefs.field === 'queue') {
             columnDefs.cellEditorParams.values = lists.buildings.queue;
         }
         if (columnDefs.field === 'affiliate') {

@@ -16,7 +16,9 @@ function init() {
     let actionMenu = new ActionMenu();
     let modalForm = new ModalForm();
     let sideBar = new SideBar();
+    let cashedEquipment = {
 
+    }
     //set objects links to each other
     modalForm.actionMenu = actionMenu;
     actionMenu.modalForm = modalForm;
@@ -41,7 +43,6 @@ function init() {
     actionMenu.planGrafSequence = document.querySelector('.plangraf-sequence');
     actionMenu.arrangePlanGrafSequence = document.querySelector('.plangraf-arrange-numbers');
 
-    // actionMenu.hideALl();
 }
 
 function getAllValuesForLists() {
@@ -65,6 +66,9 @@ function getAllValuesForLists() {
         buildingsPlanGraf.forEach((elem) => {
             lists.buildings.planGraf.push(elem.plan_graf_name);
         });
+        return httpRequest(config.api.getEquipmentALl, 'GET');
+    }).then((equipmentALl) => {
+        lists.equipment.all = equipmentALl;
     }).then(() => {
         init();
     }).catch((e) => {

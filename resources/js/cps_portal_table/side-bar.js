@@ -22,7 +22,7 @@ export default class SideBar {
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
         } else {
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
-            document.querySelector('.sidebar__edit-plan_grafici').hidden = false;
+            // document.querySelector('.sidebar__edit-plan_grafici').hidden = false;
         }
     }
 
