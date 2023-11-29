@@ -2,10 +2,12 @@ import {httpRequest} from './cps-portal-dao.js'
 import {myExcelXML} from './ag_grid_classes/excel-export.js';
 import {addCSRF} from './helper.js';
 import {AG_GRID_LOCALE_RU} from "./ag_grid_classes/local.ru";
+import {lists} from "./lists";
 
 //ag grid wrapper, first field from DAO has to have the name "id".
 // Constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu)
 export default class TableAgGrid {
+    cashedGridData;
     actionMenu;
     gridOptions;
     getDataUrl;
@@ -18,7 +20,7 @@ export default class TableAgGrid {
     agName;
 
     constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu, idToScroll = undefined,
-                agFilterModel = undefined) {
+                agFilterModel = undefined, cashedGridData = false) {
         this.gridOptions = gridOptions;
         this.getDataUrl = getDataUrl;
         this.delUrl = delUrl;
@@ -26,6 +28,7 @@ export default class TableAgGrid {
         this.actionMenu = actionMenu;
         this.idToScroll = idToScroll;
         this.agFilterModel = agFilterModel;
+        this.cashedGridData = cashedGridData;
         this.renderAgGrid();
     }
 
@@ -42,21 +45,27 @@ export default class TableAgGrid {
     }
 
     setGridData() {
-        httpRequest(this.getDataUrl, 'GET').then((data) => {
-            if (data === null) {
-                throw 'setGridData data is null';
-            }
-            this.gridOptions.api.setRowData(data);
-            if (this.idToScroll !== undefined) {
-                this.scrollToid(this.idToScroll);
-                this.idToScroll = undefined;
-            }
-            if (this.agFilterModel !== undefined) {
-                this.restoreFilterModel(this.agFilterModel);
-                this.agFilterModel = undefined;
-            }
+        console.log(this.gridOptions);
+        if (this.cashedGridData === true) {
+            this.gridOptions.api.setRowData(lists.buildings.all);
+        } else {
+            httpRequest(this.getDataUrl, 'GET').then((data) => {
+                if (data === null) {
+                    throw 'setGridData data is null';
+                }
+                this.gridOptions.api.setRowData(data);
+                if (this.idToScroll !== undefined) {
+                    this.scrollToid(this.idToScroll);
+                    this.idToScroll = undefined;
+                }
+                if (this.agFilterModel !== undefined) {
+                    this.restoreFilterModel(this.agFilterModel);
+                    this.agFilterModel = undefined;
+                }
 
-        });
+            });
+        }
+
     }
 
     scrollToid() {

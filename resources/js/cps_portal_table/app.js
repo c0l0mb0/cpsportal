@@ -69,6 +69,9 @@ function getAllValuesForLists() {
         return httpRequest(config.api.getEquipmentALl, 'GET');
     }).then((equipmentALl) => {
         lists.equipment.all = equipmentALl;
+        return httpRequest(config.api.getBuildingsALl, 'GET');
+    }).then((buildingALl) => {
+        lists.buildings.all = buildingALl;
     }).then(() => {
         init();
     }).catch((e) => {

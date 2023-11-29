@@ -63,7 +63,8 @@ export default class SideBar {
         document.querySelector('.sidebar__edit-equip-in-building').onclick = () => {
             this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
-                agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu);
+                agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu, undefined,
+                undefined,true);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.showExcelButton();

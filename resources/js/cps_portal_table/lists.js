@@ -1,5 +1,6 @@
 export let lists = {
     buildings: {
+        all: {},
         area: [
             'ГП',
             'Ямбург',
