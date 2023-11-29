@@ -247,40 +247,37 @@ export default class ModalForm {
     setModalCpsEquipmentFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipment;
-        this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
-            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
-        this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
-        this.modalTableAgGrid.setFilterTextBox();
+        this.setModalAgGridWithFilter();
         this.ui.modalForm.requestMethod = "POST";
         this.setFormWithGridSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteEquipment;
     }
 
+    setModalAgGridWithFilter() {
+        this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
+            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
+        this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
+        this.modalTableAgGrid.setFilterTextBox();
+        this.modalTableAgGrid.resetFilter();
+    }
+
+
     setModalNewEquipmentInBuildingHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование в ' + this.agBuildingName;
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipmentInBuilding;
         document.querySelector('#quantity').addEventListener('input', this.validateNumberWithDot);
-        this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
-            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
-        this.modalTableAgGrid.gridOptions.api.setFilterModel('222');
-        this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
-        // this.modalTableAgGrid.setFilterTextBox();
+        this.setModalAgGridWithFilter();
         this.ui.modalForm.requestMethod = "POST";
         this.setFormWithGridSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
     }
-
-
 
     setModalPutEquipmentInBuildingHtml() {
         let selectedRow = this.tableAgGrid.getSelectedRow();
         let equipmentName = selectedRow.equip_name;
         this.ui.modalForm.caption.innerHTML = 'Заменить ' + equipmentName + ' в ' + this.agBuildingName + ' на';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalPutEquipmentInBuilding;
-        this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
-            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
-        this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
-        this.modalTableAgGrid.setFilterTextBox();
+        this.setModalAgGridWithFilter();
         this.ui.modalForm.requestMethod = "PUT";
         this.setFormWithGridSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
