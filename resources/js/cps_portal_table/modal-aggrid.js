@@ -34,6 +34,10 @@ export default class ModalAggrid {
             return selectedRows[0];
         }
     }
+    restoreFilterModel(savedFilterModel) {
+        this.gridOptions.api.setFilterModel(savedFilterModel);
+    }
+
 
     setGridData() {
         this.gridOptions.api.setRowData(lists.equipment.all);

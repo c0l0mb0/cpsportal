@@ -24,7 +24,8 @@ function init() {
     actionMenu.modalForm = modalForm;
     sideBar.actionMenu = actionMenu;
     sideBar.modalForm = modalForm;
-    sideBar.setButtonsVision();
+    sideBar.setPermissions();
+    actionMenu.setPermissions();
     sideBar.setButtonsActions();
 
     agGridParameters.actionMenu = actionMenu;

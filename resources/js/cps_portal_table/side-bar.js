@@ -11,8 +11,9 @@ export default class SideBar {
     modalForm;
     reportList;
     menuPlanGraf;
+    cashedAgGridBuildings;
 
-    setButtonsVision() {
+    setPermissions() {
         if (userRole === "super-user") {
             document.querySelector('.sidebar__edit-equip').hidden = false;
             document.querySelector('.sidebar__edit-buildings').hidden = false;
@@ -20,8 +21,10 @@ export default class SideBar {
             document.querySelector('.sidebar__export-plan_grafici').hidden = false;
             document.querySelector('.sidebar__edit-plan_grafici').hidden = false;
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
+            this.cashedAgGridBuildings = false;
         } else {
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
+            this.cashedAgGridBuildings = true;
             // document.querySelector('.sidebar__edit-plan_grafici').hidden = false;
         }
     }
@@ -64,7 +67,7 @@ export default class SideBar {
             this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
                 agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu, undefined,
-                undefined,true);
+                undefined,this.cashedAgGridBuildings);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.showExcelButton();

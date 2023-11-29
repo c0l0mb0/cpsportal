@@ -27,6 +27,7 @@ export let agGridParameters = {
             defaultColDef: {
                 resizable: true,
                 editable: true,
+                menuTabs: ['filterMenuTab'],
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
@@ -101,6 +102,7 @@ export let agGridParameters = {
             defaultColDef: {
                 resizable: true,
                 editable: true,
+                menuTabs: ['filterMenuTab'],
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
@@ -763,6 +765,7 @@ export let agGridParameters = {
             defaultColDef: {
                 resizable: true,
                 editable: true,
+                menuTabs: ['filterMenuTab'],
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
@@ -840,6 +843,7 @@ export let agGridParameters = {
             defaultColDef: {
                 resizable: true,
                 editable: true,
+                menuTabs: ['filterMenuTab'],
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
@@ -1122,6 +1126,7 @@ export let agGridParameters = {
             defaultColDef: {
                 resizable: true,
                 editable: true,
+                menuTabs: ['filterMenuTab'],
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
@@ -1142,7 +1147,7 @@ export let agGridParameters = {
                 {
                     headerName: "Название",
                     field: "equip_name",
-                    minWidth: 350,
+                    minWidth: 400,
                     tooltipField: 'area',
                     sortable: true,
                     filter: true,
@@ -1182,6 +1187,7 @@ export let agGridParameters = {
             defaultColDef: {
                 resizable: true,
                 editable: false,
+                menuTabs: ['filterMenuTab'],
             },
             suppressContextMenu: true,
             enableBrowserTooltips: true,

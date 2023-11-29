@@ -262,8 +262,9 @@ export default class ModalForm {
         document.querySelector('#quantity').addEventListener('input', this.validateNumberWithDot);
         this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
             config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
+        this.modalTableAgGrid.gridOptions.api.setFilterModel('222');
         this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
-        this.modalTableAgGrid.setFilterTextBox();
+        // this.modalTableAgGrid.setFilterTextBox();
         this.ui.modalForm.requestMethod = "POST";
         this.setFormWithGridSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;

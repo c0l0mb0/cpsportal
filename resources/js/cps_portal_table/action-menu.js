@@ -3,6 +3,7 @@ import {httpRequest} from "./cps-portal-dao.js";
 import {addCSRF, changePageTitle} from "./helper.js";
 import {agGridParameters} from "./ag-grid-parameters.js";
 import TableAgGrid from "./aggrid";
+import {userRole} from "./app";
 
 export default class ActionMenu {
     tableAgGrid;
@@ -27,6 +28,7 @@ export default class ActionMenu {
     arrangePlanGrafSequence;
     modalPutEquipmentInBuildingHtml;
     modalNewEquipmentInBuildingHtml;
+    cashedAgGridBuildings;
 
 
     hideALl() {
@@ -247,10 +249,12 @@ export default class ActionMenu {
     }
 
     setReturnToBuildingsAction() {
+
         this.returnToBuildings.onclick = () => {
             this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
-                agGridParameters.uneditableBuildingsParameters.agName, this, this.agBuildingId, this.agBuildingFilterState);
+                agGridParameters.uneditableBuildingsParameters.agName, this, this.agBuildingId,
+                this.agBuildingFilterState, this.cashedAgGridBuildings );
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.hideALl();
             this.showExcelButton();
@@ -283,6 +287,9 @@ export default class ActionMenu {
         };
     }
 
+    setPermissions() {
+        this.cashedAgGridBuildings = userRole !== "super-user";
+    }
 }
 
 
