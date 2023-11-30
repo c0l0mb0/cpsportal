@@ -1,0 +1,35 @@
+import {addCSRF} from "./helper";
+import {config, httpRequest} from "./cps-portal-dao";
+
+export default class IdleTimer {
+    IDLE_timerID = undefined;
+
+    constructor() {
+
+        window.onload = this.resetTimer.bind(this);
+        window.onmousemove = this.resetTimer.bind(this);
+        window.onclick = this.resetTimer.bind(this);
+        window.onkeypress = this.resetTimer.bind(this);
+
+        this.setIDLE_timer();
+    }
+
+    setIDLE_timer() {
+        this.IDLE_timerID = setTimeout(this.logOut, 120000);
+    }
+
+    logOut() {
+        alert("вы отключены от сервера из-за бездействия");
+        let _this = this;
+        let tokenCPS = addCSRF({});
+        httpRequest(config.api.postLogOut, 'POST', tokenCPS).then((response) => {
+            window.location.href = config.api.loginURL;
+            _this.IDLE_timerID = undefined;
+        })
+    }
+
+    resetTimer() {
+        clearTimeout(this.IDLE_timerID);
+        this.setIDLE_timer();
+    }
+}

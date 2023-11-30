@@ -31,6 +31,8 @@ export let config = {
         getExportAllData: '/api/export-all-data',
         getUserRoles: '/api/get-user-roles',
         getPutDeleteEquipmentInBuildingWithWorkerChanges: '/api/cps-equipment-buildings-with-worker-changes',
+        postLogOut: '/logout',
+        loginURL: '/login',
     }
 };
 
