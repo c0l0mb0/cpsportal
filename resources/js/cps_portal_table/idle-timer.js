@@ -15,7 +15,7 @@ export default class IdleTimer {
     }
 
     setIDLE_timer() {
-        this.IDLE_timerID = setTimeout(this.logOut, 120000);
+        this.IDLE_timerID = setTimeout(this.logOut, 720000);
     }
 
     logOut() {
