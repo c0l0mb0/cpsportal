@@ -5,6 +5,7 @@ import NumericCellEditor from "./ag_grid_classes/numericCellEditor.js";
 import {lists} from "./lists";
 import CheckboxRenderer from "./ag_grid_classes/check-box-render";
 import {userRole} from "./app";
+import CustomCellEditor from "./ag_grid_classes/custom-cell-editor";
 
 
 export let agGridParameters = {
@@ -756,7 +757,7 @@ export let agGridParameters = {
                     tooltipField: 'equip_comments',
                     sortable: false,
                     filter: false,
-                    editable: true,
+                    cellEditor: 'agLargeTextCellEditor',
                 },
 
 
@@ -766,6 +767,9 @@ export let agGridParameters = {
                 resizable: true,
                 editable: true,
                 menuTabs: ['filterMenuTab'],
+            },
+            onCellEditingStarted: (event) => {
+
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
