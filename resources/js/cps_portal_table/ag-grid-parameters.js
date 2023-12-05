@@ -780,9 +780,10 @@ export let agGridParameters = {
                 if (userRole === "super-user" || userRole === "Nur_master" || userRole === "Yamburg_master" ||
                     userRole === "Zapolyarka_master") {
                     agGridParameters.actionMenu.showDelButton();
+                    agGridParameters.actionMenu.showEditButton();
                 }
                 agGridParameters.actionMenu.showReturnToBuildingsButton();
-                agGridParameters.actionMenu.showEditButton();
+
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
