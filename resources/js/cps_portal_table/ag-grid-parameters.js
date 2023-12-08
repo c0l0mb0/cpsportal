@@ -791,81 +791,6 @@ export let agGridParameters = {
         },
         agName: 'equipmentInBuildings',
     },
-    equipmentInBuildingsParametersForNotSupUser: {
-        gridOptions: {
-            columnDefs: [
-                {
-                    headerName: "Название",
-                    field: "equip_name",
-                    minWidth: 350,
-                    tooltipField: 'equip_name',
-                    sortable: true, filter: true,
-                    editable: false,
-                },
-                {
-                    headerName: "Количество",
-                    field: "quantity",
-                    minWidth: 50,
-                    tooltipField: 'quantity',
-                    sortable: true,
-                    filter: true,
-                    cellEditor: NumericCellEditor,
-                },
-                {
-                    headerName: "Измерение",
-                    field: "measure",
-                    minWidth: 50,
-                    tooltipField: 'measure',
-                    sortable: true,
-                    filter: true,
-                    cellEditor: 'agSelectCellEditor',
-                    singleClickEdit: true,
-                    cellEditorParams: {
-                        values: []
-                    }
-                },
-                {
-                    headerName: "Год",
-                    field: "equip_year",
-                    minWidth: 100,
-                    tooltipField: 'equip_year',
-                    sortable: true,
-                    filter: true,
-                    cellEditor: NumericCellEditor,
-                },
-                {
-                    headerName: "Коментарии",
-                    field: "equip_comments",
-                    minWidth: 100,
-                    tooltipField: 'equip_comments',
-                    sortable: false,
-                    filter: false,
-                    editable: true,
-                },
-
-            ],
-            rowSelection: 'single',
-            defaultColDef: {
-                resizable: true,
-                editable: true,
-                menuTabs: ['filterMenuTab'],
-            },
-            enableBrowserTooltips: true,
-            onCellValueChanged: function (event) {
-                httpRequest(config.api.getPutDeleteEquipmentInBuildingWithWorkerChanges, "PUT",
-                    addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
-            },
-            onRowSelected: function () {
-                agGridParameters.actionMenu.showDelButton();
-                agGridParameters.actionMenu.showReturnToBuildingsButton();
-                agGridParameters.actionMenu.showEditButton();
-            },
-            onFirstDataRendered: (params) => {
-                params.api.sizeColumnsToFit();
-            }
-        },
-        agName: 'equipmentInBuildingsForNotSupUser',
-    },
     tehnObslMonthInBuildingsParameters: {
         gridOptions: {
             columnDefs: [
@@ -1268,11 +1193,7 @@ export function initializeAgGridParameters() {
             columnDefs.hide = true;
         }
     });
-    agGridParameters.equipmentInBuildingsParametersForNotSupUser.gridOptions.columnDefs.forEach((columnDefs) => {
-        if (columnDefs.field === 'measure') {
-            columnDefs.cellEditorParams.values = lists.equipment.measure;
-        }
-    });
+
     agGridParameters.buildingsPlanGrafParameters.gridOptions.columnDefs[1].children.forEach((columnDefs) => {
         if (columnDefs.field === 'plan_graf_name') {
             if (userRole === "super-user" || userRole === "Nur_master" ||
