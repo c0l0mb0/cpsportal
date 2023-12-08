@@ -59,8 +59,8 @@ export default class NumericCellEditor {
     // example - will reject the number if it contains the value 007
     // - not very practical, but demonstrates the method.
     isCancelAfterEnd() {
-        var value = this.getValue();
-        return value.indexOf('007') >= 0;
+        // var value = this.getValue();
+        // return value.indexOf('007') >= 0;
     }
 
     // returns the new value after editing
