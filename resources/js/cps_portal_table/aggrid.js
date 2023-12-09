@@ -5,8 +5,8 @@ import {AG_GRID_LOCALE_RU} from "./ag_grid_classes/local.ru";
 import {lists} from "./lists";
 
 //ag grid wrapper, first field from DAO has to have the name "id".
-// Constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu, idToScroll = undefined,
-// agFilterModel = undefined, cashedGridData = false))
+// constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu, idToScroll = undefined,
+//     agFilterModel = undefined, cashedGridData = undefined)
 export default class TableAgGrid {
     cashedGridData;
     actionMenu;
@@ -21,7 +21,7 @@ export default class TableAgGrid {
     agName;
 
     constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu, idToScroll = undefined,
-                agFilterModel = undefined, cashedGridData = false) {
+                agFilterModel = undefined, cashedGridData = undefined) {
         this.gridOptions = gridOptions;
         this.getDataUrl = getDataUrl;
         this.delUrl = delUrl;
@@ -46,9 +46,8 @@ export default class TableAgGrid {
     }
 
     setGridData() {
-        if (this.cashedGridData === true) {
-            this.gridOptions.api.setRowData(lists.buildings.all);
-            this.scrollAndFilter(lists.buildings.all);
+        if (this.cashedGridData !== undefined) {
+            this.scrollAndFilter(this.cashedGridData);
         } else {
             httpRequest(this.getDataUrl, 'GET').then((data) => {
                 if (data === null) {

@@ -4,6 +4,7 @@ import {addCSRF} from './helper.js'
 import ModalAggrid from "./modal-aggrid.js";
 import {agGridParameters} from "./ag-grid-parameters";
 import {lists} from "./lists";
+import {userRole} from "./app";
 
 export default class ModalForm {
     actionMenu;
@@ -254,8 +255,12 @@ export default class ModalForm {
     }
 
     setModalAgGridWithFilter() {
+        let cashedAgGridEquip = undefined;
+        if (userRole !== "super-user") {
+            cashedAgGridEquip = lists.equipment.all
+        }
         this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
-            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
+            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName, cashedAgGridEquip);
         this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
         this.modalTableAgGrid.setFilterTextBox();
         this.modalTableAgGrid.resetFilter();

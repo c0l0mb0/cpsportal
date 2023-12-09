@@ -4,14 +4,16 @@ import {lists} from "./lists";
 export default class ModalAggrid {
     gridOptions;
     getDataUrl;
+    cashedGridData;
     agName;
     textBoxFilter;
     targetId = 'modal-aggrid';
 
-    constructor(gridOptions, getDataUrl, agName) {
+    constructor(gridOptions, getDataUrl, agName, cashedGridData = undefined) {
         this.gridOptions = gridOptions;
         this.getDataUrl = getDataUrl;
         this.agName = agName;
+        this.cashedGridData = cashedGridData;
         this.renderAgGrid();
     }
 
@@ -36,18 +38,18 @@ export default class ModalAggrid {
     }
 
     setGridData() {
-        this.gridOptions.api.setRowData(lists.equipment.all);
-        // if (this.gridOptions.agName === 'cps_equipment_for_choose') {
-        //
-        // } else {
-        //     console.log('else ffffff')
-        //     httpRequest(this.getDataUrl, 'GET').then((data) => {
-        //         if (data === null) {
-        //             throw 'setGridData data is null';
-        //         }
-        //         this.gridOptions.api.setRowData(data);
-        //     });
-        // }
+        // this.gridOptions.api.setRowData(lists.equipment.all);
+        if (this.cashedGridData !== undefined) {
+            this.gridOptions.api.setRowData(this.cashedGridData);
+        } else {
+            httpRequest(this.getDataUrl, 'GET').then((data) => {
+                if (data === null) {
+                    throw 'setGridData data is null';
+                }
+                this.gridOptions.api.setRowData(data);
+            });
+        }
+
 
     }
 

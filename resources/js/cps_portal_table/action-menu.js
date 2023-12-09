@@ -4,6 +4,7 @@ import {addCSRF, changePageTitle} from "./helper.js";
 import {agGridParameters} from "./ag-grid-parameters.js";
 import TableAgGrid from "./aggrid";
 import {userRole} from "./app";
+import {lists} from "./lists";
 
 export default class ActionMenu {
     tableAgGrid;
@@ -249,12 +250,15 @@ export default class ActionMenu {
     }
 
     setReturnToBuildingsAction() {
-
         this.returnToBuildings.onclick = () => {
+            let cashedAgGridBuildings = undefined;
+            if (userRole !== "super-user") {
+                cashedAgGridBuildings = lists.buildings.all
+            }
             this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
                 agGridParameters.uneditableBuildingsParameters.agName, this, this.agBuildingId,
-                this.agBuildingFilterState, this.cashedAgGridBuildings );
+                this.agBuildingFilterState, cashedAgGridBuildings);
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.hideALl();
             this.showExcelButton();
