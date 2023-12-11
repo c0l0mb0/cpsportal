@@ -673,6 +673,22 @@ export let agGridParameters = {
                     tooltipField: 'brand_name',
                     sortable: true, filter: true,
                 },
+                {
+                    headerName: "ТОостанов",
+                    field: "to_ostanov",
+                    minWidth: 100,
+                    tooltipField: 'to_ostanov',
+                    sortable: true, filter: true,
+                    cellRenderer: CheckboxRenderer,
+                },
+                {
+                    headerName: "ТОостановИТР",
+                    field: "to_ostanov_itr",
+                    minWidth: 50,
+                    tooltipField: 'to_ostanov_itr',
+                    sortable: true, filter: true,
+                    cellRenderer: CheckboxRenderer,
+                },
 
             ],
             rowSelection: 'single',

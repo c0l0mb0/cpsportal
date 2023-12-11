@@ -122,18 +122,6 @@ export default class SideBar {
             this.removeMenuPlanGraf();
             changePageTitle("Отчеты");
         };
-
-        document.querySelector('.sidebar__export-plan_grafici').onclick = () => {
-            this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsPlanGrafikParameters.gridOptions,
-                config.api.getBuildingsPlanGraf, null,
-                agGridParameters.uneditableBuildingsPlanGrafikParameters.agName, this.actionMenu, undefined,
-                undefined, undefined);
-            this.actionMenu.tableAgGrid = this.tableAgGrid;
-            this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.actionMenu.setExportPlanGrafAction();
-            changePageTitle("План-графики экспорт");
-            this.insertPlanGrafMenu();
-        };
         document.querySelector('.sidebar__edit-plan_grafici').onclick = () => {
             this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsPlanGrafParameters.gridOptions,
                 config.api.getBuildingsPlanGrafOrderedByPlGrafNumb, null,
@@ -146,6 +134,18 @@ export default class SideBar {
             this.removeMenuPlanGraf();
             changePageTitle("План-графики редактирование");
         };
+        document.querySelector('.sidebar__export-plan_grafici').onclick = () => {
+            this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsPlanGrafikParameters.gridOptions,
+                config.api.getBuildingsPlanGraf, null,
+                agGridParameters.uneditableBuildingsPlanGrafikParameters.agName, this.actionMenu, undefined,
+                undefined, undefined);
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.setExportPlanGrafAction();
+            changePageTitle("План-графики экспорт");
+            this.insertPlanGrafMenu();
+        };
+
     }
 
     removeMenuPlanGraf() {
