@@ -78,7 +78,7 @@
                             title="изменить прибор" data-target="#modal__new-entry">
                         <img src="{{ asset('icon/edit-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn return-buildings action-menu-btn" data-bs-toggle="tooltip"
+                    <button type="button" class="btn return-back action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom"
                             title="вернуться к зданиям">
                         <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">

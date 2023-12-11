@@ -21,14 +21,14 @@ export default class ActionMenu {
     agBuildingName;
     agBuildingFilterState;
     editTableRow;
-    returnToBuildings;
+    returnBack;
     EditButtonActionEventLister;
     AddButtonActionEventLister;
     innerMonth;
     planGrafSequence;
     arrangePlanGrafSequence;
     modalPutEquipmentInBuildingHtml;
-    modalNewEquipmentInBuildingHtml;
+    returnButtonAction;
     cashedAgGridBuildings;
 
 
@@ -39,7 +39,7 @@ export default class ActionMenu {
         this.fireExamPlusSix.style.display = 'none';
         this.innerEquipment.style.display = 'none';
         this.editTableRow.style.display = 'none';
-        this.returnToBuildings.style.display = 'none';
+        this.returnBack.style.display = 'none';
         this.exportPassport.style.display = 'none';
         this.exportPlanGraf.style.display = 'none';
         this.innerMonth.style.display = 'none';
@@ -129,11 +129,11 @@ export default class ActionMenu {
     }
 
     showReturnToBuildingsButton() {
-        this.returnToBuildings.style.display = 'block';
+        this.returnBack.style.display = 'block';
     }
 
     hideReturnToBuildingsButton() {
-        this.returnToBuildings.style.display = 'none';
+        this.returnBack.style.display = 'none';
     }
 
     hideAllOneRowAction() {
@@ -169,6 +169,7 @@ export default class ActionMenu {
         this.AddButtonActionEventLister = this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm);
         this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
     }
+
 
     setAddButtonActionForNewEquipment() {
         this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
@@ -207,24 +208,32 @@ export default class ActionMenu {
     setEditInnerMonthAction() {
         this.innerMonth.onclick = () => {
             let selectedRow = this.tableAgGrid.getSelectedRow();
+            this.agBuildingId = selectedRow.id;
+            this.agBuildingFilterState = this.tableAgGrid.getAgFilterModel();
             this.tableAgGrid = new TableAgGrid(agGridParameters.tehnObslMonthInBuildingsParameters.gridOptions,
                 config.api.getPutDeleteEquipmentInBuilding + '/' +
                 selectedRow.id, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.tehnObslMonthInBuildingsParameters.agName, this);
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.hideALl();
+            this.showReturnToBuildingsButton();
             changePageTitle('Здание =>' + selectedRow.group_1 + '=>' + selectedRow.shed + "=> ТО по месяцам");
+            this.setReturnToPlanGrafEditingAction();
         };
     }
 
     setEditSequencePlanGrafAction() {
         this.planGrafSequence.onclick = () => {
             let selectedRow = this.tableAgGrid.getSelectedRow();
+            this.agBuildingId = selectedRow.id;
+            this.agBuildingFilterState = this.tableAgGrid.getAgFilterModel();
             this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsPlanGrafSequnceParameters.gridOptions,
                 config.api.getBuildingsPlanGrafOrderedById + '/' +
                 selectedRow.id, config.api.getPutDeleteEquipmentInBuilding, agGridParameters.buildingsPlanGrafSequnceParameters.agName, this);
             this.showArrangePlanGrafSequenceButton();
             this.setArrangeBuildingInPlanGrafAction();
+            this.showReturnToBuildingsButton();
             changePageTitle(' Изменение последовательности зданий в план-графике =>' + selectedRow.plan_graf_name);
+            this.setReturnToPlanGrafEditingAction();
         };
     }
 
@@ -249,21 +258,47 @@ export default class ActionMenu {
         this.modalForm.setEditAddEquipOfBuildingButtonActionForNewEquipInBuildingModal();
     }
 
+
     setReturnToBuildingsAction() {
-        this.returnToBuildings.onclick = () => {
-            let cashedAgGridBuildings = undefined;
-            if (userRole !== "super-user") {
-                cashedAgGridBuildings = lists.buildings.all
-            }
-            this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
-                config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
-                agGridParameters.uneditableBuildingsParameters.agName, this, this.agBuildingId,
-                this.agBuildingFilterState, cashedAgGridBuildings);
-            this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.hideALl();
-            this.showExcelButton();
-            changePageTitle("Здания");
-        };
+        this.assignReturnButtonEventListener(this.returnToBuildingsAction);
+    }
+
+    setReturnToPlanGrafEditingAction() {
+        this.assignReturnButtonEventListener(this.returnToPlanGrafEditingAction);
+    }
+
+    assignReturnButtonEventListener(returnButtonActonArg) {
+        if (this.returnButtonAction !== undefined) {
+            this.returnBack.removeEventListener('click', this.returnButtonAction);
+        }
+        this.returnButtonAction = returnButtonActonArg.bind(this);
+        this.returnBack.addEventListener('click', this.returnButtonAction);
+    }
+
+
+    returnToPlanGrafEditingAction() {
+        this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsPlanGrafParameters.gridOptions,
+            config.api.getBuildingsPlanGrafOrderedByPlGrafNumb, null,
+            agGridParameters.buildingsPlanGrafParameters.agName, this, this.agBuildingId,
+            this.agBuildingFilterState, undefined);
+        this.modalForm.tableAgGrid = this.tableAgGrid;
+        this.hideALl();
+        changePageTitle("План-графики редактирование");
+    }
+
+    returnToBuildingsAction() {
+        let cashedAgGridBuildings = undefined;
+        if (userRole !== "super-user") {
+            cashedAgGridBuildings = lists.buildings.all
+        }
+        this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
+            config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
+            agGridParameters.uneditableBuildingsParameters.agName, this, this.agBuildingId,
+            this.agBuildingFilterState, cashedAgGridBuildings);
+        this.modalForm.tableAgGrid = this.tableAgGrid;
+        this.hideALl();
+        this.showExcelButton();
+        changePageTitle("Здания");
     }
 
     setExportPassportAction() {

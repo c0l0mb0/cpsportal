@@ -37,7 +37,7 @@ function init() {
     actionMenu.fireExamPlusSix = document.querySelector('.plus-six-month');
     actionMenu.innerEquipment = document.querySelector('.inner-equip');
     actionMenu.editTableRow = document.querySelector('.edit-table-row');
-    actionMenu.returnToBuildings = document.querySelector('.return-buildings');
+    actionMenu.returnBack = document.querySelector('.return-back');
     actionMenu.exportPassport = document.querySelector('.excel-export-passport');
     actionMenu.exportPlanGraf = document.querySelector('.excel-export-plangrafic');
     actionMenu.innerMonth = document.querySelector('.excel-inner-month');
