@@ -4,6 +4,7 @@ namespace App\Export;
 
 use Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Ods;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
@@ -45,7 +46,9 @@ abstract class ExcelExport
 
     private function exportFile()
     {
+
         $writer = new Xlsx($this->spreadsheet);
+//        $writer = new Ods($this->spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . urlencode($this->fileName) . '"');
         $writer->save('php://output');

@@ -40,7 +40,8 @@ class ExelExportPlanGrafic extends ExcelExport
     public function createHead()
     {
         $this->spreadsheet->getDefaultStyle()->getFont()->setSize(13);
-        $this->sheet->getPageMargins()->setTop(0)->setRight(0)->setLeft(0)->setBottom(0);
+        $this->sheet->getPageMargins()->setTop(0.25)->setRight(0.25)->setLeft(0.25)
+            ->setBottom(0.25);
         $this->sheet->getPageSetup()
             ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
         $this->sheet->getPageSetup()
@@ -125,6 +126,16 @@ class ExelExportPlanGrafic extends ExcelExport
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
             array('empty', $this->whoAssignPosition, 'empty', 'empty', 'empty', $this->whoAssignFio,), null, null);
         $this->sheet->getPageSetup()->setPrintArea('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow());
+
+//        for ($i = 1; $i <= $this->sheet->getHighestRow(); $i++) {
+//            $this->sheet->getRowDimension($i)->setRowHeight(14.5 * (substr_count($sheet->getCell('A1')->getValue(), "\n") + 1);;
+//        }
+////        $styleShrinkToFit = ['alignment' => ['shrinkToFit' => true,]];
+//        $this->sheet->getStyle('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow())->setRowHeight(100, 'pt');;
+//
+//        $styleShrinkToFit = ['alignment' => ['shrinkToFit' => true,]];
+//        $this->sheet->getStyle('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow())->applyFromArray($styleShrinkToFit);
+
     }
 
 

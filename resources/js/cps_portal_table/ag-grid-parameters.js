@@ -228,6 +228,14 @@ export let agGridParameters = {
                     cellEditor: NumericCellEditor,
                 },
                 {
+                    headerName: "Назв.ППК",
+                    field: "equip_master_type",
+                    minWidth: 100,
+                    tooltipField: 'equip_master_type',
+                    sortable: true,
+                    filter: true,
+                },
+                {
                     headerName: "АУПС",
                     field: "type_aups",
                     minWidth: 100,
