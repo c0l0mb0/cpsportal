@@ -11,7 +11,7 @@ class ExelExportPlanGrafic extends ExcelExport
 {
     public $listSize = 1500;//1404
     public $listUsedHeight = 0;
-    public $listHeaderHeight = 30;
+    public $listHeaderHeight = 40;
     public $firstSheetHeaderRowHeight = 30;
     public $buildingUpperHeaderHeight = 22;
     public $buildingLowerHeaderHeight = 150;
@@ -74,7 +74,8 @@ class ExelExportPlanGrafic extends ExcelExport
             'font' => [
                 'bold' => true,
                 'size' => 23,
-            ],];
+            ],
+            'height' => $this->firstSheetHeaderRowHeight];
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('УТВЕРЖДАЮ'), null, $styleArray);
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array($this->whoApprovePosition), null, $styleArray);
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('ООО "Газпром добыча Ямбург"'), null, $styleArray);
@@ -85,6 +86,9 @@ class ExelExportPlanGrafic extends ExcelExport
         $this->excelColumnCursor = 1;
         $this->sheet->mergeCells('A8:P8');
 
+        for ($i = 1; $i <= 6; $i++) {
+            $this->sheet->mergeCells('L' . $i . ':O' . $i);
+        }
 
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('План-график проведения технического обслуживания и ремонта систем пожарной сигнализации, пожаротушения и управления эвакуацией ' . $this->planGrafName), null, $styleArray);
         $this->sheet->getStyle('A8')
@@ -126,15 +130,8 @@ class ExelExportPlanGrafic extends ExcelExport
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
             array('empty', $this->whoAssignPosition, 'empty', 'empty', 'empty', $this->whoAssignFio,), null, null);
         $this->sheet->getPageSetup()->setPrintArea('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow());
+        $this->sheet->mergeCells('B' . $this->excelRowCursor . ':D' . $this->excelRowCursor);
 
-//        for ($i = 1; $i <= $this->sheet->getHighestRow(); $i++) {
-//            $this->sheet->getRowDimension($i)->setRowHeight(14.5 * (substr_count($sheet->getCell('A1')->getValue(), "\n") + 1);;
-//        }
-////        $styleShrinkToFit = ['alignment' => ['shrinkToFit' => true,]];
-//        $this->sheet->getStyle('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow())->setRowHeight(100, 'pt');;
-//
-//        $styleShrinkToFit = ['alignment' => ['shrinkToFit' => true,]];
-//        $this->sheet->getStyle('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow())->applyFromArray($styleShrinkToFit);
 
     }
 
@@ -229,7 +226,8 @@ class ExelExportPlanGrafic extends ExcelExport
                 $this->excelColumnCursor++;
                 return true;
             } elseif ($fieldName == $month and $buildingsWithEquipmentEntry->$fieldNameGray !== true) {
-                $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor], $buildingsWithEquipmentEntry->$month);
+                $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor],
+                    $buildingsWithEquipmentEntry->$month);
                 $this->excelColumnCursor++;
                 return true;
             }
@@ -238,7 +236,8 @@ class ExelExportPlanGrafic extends ExcelExport
         return false;
     }
 
-    public function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames, $isOneEntry = false, $workBookNumber, $styleArray, $pageBreakEquipNumber = null)
+    public function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames, $isOneEntry = false,
+                                     $workBookNumber, $styleArray, $pageBreakEquipNumber = null)
     {
         $this->excelRowCursor = $excelRowStart;
         $this->excelColumnCursor = $excelColumnStart;
@@ -320,16 +319,18 @@ class ExelExportPlanGrafic extends ExcelExport
 
         if (!is_null($styleArray)) {
             $this->sheet->getStyle($range)->applyFromArray($styleArray);
+//            throw new Exception('Division by zero.');
             foreach ($styleArray as $styleEntry => $styleValue) {
                 if ($styleEntry === "height") {
                     $firstLastRowArr = $this->getFirstAndLastRowFromFullExcelRange($range);
                     for ($i = $firstLastRowArr[0]; $i <= $firstLastRowArr[1]; $i++) {
                         if (!is_null($pageBreakEquipNumber) and ($firstLastRowArr[0] + $pageBreakEquipNumber) == $i) {
+//                            throw new Exception($pageBreakEquipNumber);
                             $this->sheet->getRowDimension($i)->setRowHeight($this->listHeaderHeight);
-                            continue;
+//                            continue;
                         }
-                        $styleShrinkToFit = ['alignment' => ['wrapText' => true, 'shrinkToFit' => true,]];
-                        $this->sheet->getStyle('A' . $i . ':P' . $i)->applyFromArray($styleShrinkToFit);
+//                        $styleShrinkToFit = ['alignment' => ['wrapText' => true, 'shrinkToFit' => true,]];
+//                        $this->sheet->getStyle('A' . $i . ':P' . $i)->applyFromArray($styleShrinkToFit);
                     }
                 }
             }

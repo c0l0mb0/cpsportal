@@ -158,6 +158,7 @@ abstract class ExcelExport
 
     abstract public function checkAdditionalFieldConditionals($fieldName, $fieldPipeSeparated, $buildingsWithEquipmentEntry);
 
+//    return excel char range
     protected function getLetterCoordinates($excelColumnFirst, $excelRowFirst, $excelColumnLast, $excelRowLast,)
     {
         $excelColumnFirstLetter = $this->getNameFromNumber($excelColumnFirst);
