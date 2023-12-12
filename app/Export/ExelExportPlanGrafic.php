@@ -130,7 +130,7 @@ class ExelExportPlanGrafic extends ExcelExport
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
             array('empty', $this->whoAssignPosition, 'empty', 'empty', 'empty', $this->whoAssignFio,), null, null);
         $this->sheet->getPageSetup()->setPrintArea('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow());
-        $this->sheet->mergeCells('B' . $this->excelRowCursor . ':D' . $this->excelRowCursor);
+        $this->sheet->mergeCells('B' . $this->excelRowCursor-1 . ':D' . $this->excelRowCursor-1);
 
 
     }
