@@ -12,6 +12,7 @@ class ExelExportPlanGrafic extends ExcelExport
     public $listSize = 1500;//1404
     public $listUsedHeight = 0;
     public $listHeaderHeight = 40;
+    public $itrEquipHeidht = 35;
     public $firstSheetHeaderRowHeight = 30;
     public $buildingUpperHeaderHeight = 22;
     public $buildingLowerHeaderHeight = 150;
@@ -69,7 +70,7 @@ class ExelExportPlanGrafic extends ExcelExport
 
         $this->sheet->getStyle('A10:G14')->getAlignment()->setWrapText(true);
         $this->excelRowCursor = 1;
-        $this->excelColumnCursor = 12;
+        $this->excelColumnCursor = 14;
         $styleArray = [
             'font' => [
                 'bold' => true,
@@ -87,7 +88,7 @@ class ExelExportPlanGrafic extends ExcelExport
         $this->sheet->mergeCells('A8:P8');
 
         for ($i = 1; $i <= 6; $i++) {
-            $this->sheet->mergeCells('L' . $i . ':O' . $i);
+            $this->sheet->mergeCells('N' . $i . ':P' . $i);
         }
 
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('План-график проведения технического обслуживания и ремонта систем пожарной сигнализации, пожаротушения и управления эвакуацией ' . $this->planGrafName), null, $styleArray);
@@ -130,11 +131,21 @@ class ExelExportPlanGrafic extends ExcelExport
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
             array('empty', $this->whoAssignPosition, 'empty', 'empty', 'empty', $this->whoAssignFio,), null, null);
         $this->sheet->getPageSetup()->setPrintArea('A1:' . $this->sheet->getHighestColumn() . $this->sheet->getHighestRow());
-        $this->sheet->mergeCells('B' . $this->excelRowCursor-1 . ':D' . $this->excelRowCursor-1);
+        $this->sheet->mergeCells('B' . $this->excelRowCursor - 1 . ':D' . $this->excelRowCursor - 1);
 
-
+        $this->setItrEquipHeight();
     }
 
+    public function setItrEquipHeight()
+    {
+        for ($i = 1; $i <= $this->sheet->getHighestRow(); $i++) {
+            $cellValue = $this->sheet->getCell([1, $i])->getValue();
+            if (str_contains($cellValue, ' (на план. останове. Указать дату, ФИО, подпись ИТР проводящего ТО)')) {
+                $this->sheet->getRowDimension($i)->setRowHeight($this->itrEquipHeidht);
+            }
+        }
+
+    }
 
     public function insertBuildingData($planGrafBuilding, $amountOfEquipmentRowsFittedOnSheet = null)
     {
@@ -203,7 +214,7 @@ class ExelExportPlanGrafic extends ExcelExport
                 ],
             ],
             'height' => $this->listHeaderHeight];
-        $rowsData = array(' Наименование оборудования', 'Кол-во', 'Ед. изм-ия', '№ по переч. Работ', 'январь', 'февраль',
+        $rowsData = array(' Наименование оборудования', 'Кол-во', 'Ед. изм-ия', '№ по переч. работ', 'январь', 'февраль',
             'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь');
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
     }
@@ -252,10 +263,10 @@ class ExelExportPlanGrafic extends ExcelExport
                 if ($fieldName == 'equip_name') {
                     $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
                     $richText->createText($buildingsWithEquipmentEntry->equip_name);
-                    if ($buildingsWithEquipmentEntry->to_ostanov) {
-                        $payable = $richText->createTextRun(' (на план. останове)');
-                        $payable->getFont()->setBold(true);
-                    }
+//                    if ($buildingsWithEquipmentEntry->to_ostanov) {
+//                        $payable = $richText->createTextRun(' (на план. останове)');
+//                        $payable->getFont()->setBold(true);
+//                    }
 
                     if ($buildingsWithEquipmentEntry->to_ostanov_itr) {
                         $payable = $richText->createTextRun(' (на план. останове. Указать дату, ФИО, подпись ИТР проводящего ТО)');
@@ -325,7 +336,6 @@ class ExelExportPlanGrafic extends ExcelExport
                     $firstLastRowArr = $this->getFirstAndLastRowFromFullExcelRange($range);
                     for ($i = $firstLastRowArr[0]; $i <= $firstLastRowArr[1]; $i++) {
                         if (!is_null($pageBreakEquipNumber) and ($firstLastRowArr[0] + $pageBreakEquipNumber) == $i) {
-//                            throw new Exception($pageBreakEquipNumber);
                             $this->sheet->getRowDimension($i)->setRowHeight($this->listHeaderHeight);
 //                            continue;
                         }

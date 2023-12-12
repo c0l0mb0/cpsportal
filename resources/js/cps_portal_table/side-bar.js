@@ -143,6 +143,7 @@ export default class SideBar {
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.setExportPlanGrafAction();
             changePageTitle("План-графики экспорт");
+            this.removeMenuPlanGraf();
             this.insertPlanGrafMenu();
         };
 
