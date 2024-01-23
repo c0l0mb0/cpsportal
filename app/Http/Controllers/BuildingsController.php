@@ -149,7 +149,10 @@ class BuildingsController extends Controller
         return DB::table('buildings')
             ->select('*')
             ->where($whereArr)
-            ->where('on_conserv', '<>', true)
+            ->where(function ($query) {
+                $query->where('on_conserv', '=', false)
+                    ->orWhereNull('on_conserv');
+            })
             ->orderBy('gr_numb', 'asc')
             ->get();
     }
