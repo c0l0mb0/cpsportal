@@ -41,7 +41,7 @@ class ExelExportPlanGrafic extends ExcelExport
     public function createHead()
     {
         $this->spreadsheet->getDefaultStyle()->getFont()->setSize(13);
-        $this->sheet->getPageMargins()->setTop(0.25)->setRight(0.25)->setLeft(0.25)
+        $this->sheet->getPageMargins()->setTop(0.25)->setRight(0.25)->setLeft(0.6)
             ->setBottom(0.25);
         $this->sheet->getPageSetup()
             ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);

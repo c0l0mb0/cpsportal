@@ -12,6 +12,7 @@ export default class ModalForm {
     modalTableAgGrid;
     agBuildingId;
     agBuildingName;
+    modalFormWithTexboxesTarget;
     modalHtml = {};
     ui = {
         modalForm: {
@@ -37,20 +38,27 @@ export default class ModalForm {
     constructor() {
         this.initiateModalHtml();
     }
-
+    setDefaultValuesImplicitly (httpData) {
+        if (this.modalFormWithTexboxesTarget === 'buildings') {
+            httpData.on_conserv = false;
+        }
+    }
     modalformWithTexboxesCallback = event => {
         let _this = this;
         event.preventDefault();
         let inputValues = _this.getInputsArr();
+        this.setDefaultValuesImplicitly (inputValues);
         httpRequest(_this.ui.modalForm.requestUrl, 'POST', inputValues).then((e) => {
             _this._hideError();
             _this.hideModal();
             event.target.reset();
             _this.tableAgGrid.setGridData(e.id);
             _this.actionMenu.hideAllOneRowAction();
+            _this.modalFormWithTexboxesTarget = undefined;
         }).catch((e) => {
             _this._hideError();
             _this._showError(e);
+            _this.modalFormWithTexboxesTarget = undefined;
         });
     }
 
@@ -156,12 +164,12 @@ export default class ModalForm {
     getInputsArr() {
         let data = {};
         let formData = $('#form__new-entry').serializeArray();
-        console.log(formData)
         formData.forEach(function (arrayItem) {
             if (arrayItem.value !== '') {
                 data[arrayItem.name] = arrayItem.value;
             }
         });
+
         data = addCSRF(data);
         return data;
     }
@@ -216,7 +224,7 @@ export default class ModalForm {
             this.ui.modalForm.group_2.disabled = false;
             listsGroup_1SelectedValue = this.ui.modalForm.group_1.value;
             this.removeOptions(this.ui.modalForm.group_2);
-            this.ui.modalForm.group_2.add(new Option('', ''));
+            this.ui.modalForm.group_2.add(new Option('', '00'));
             let group2Count = 0;
             lists.buildings.group_2.forEach((elem) => {
                 if (elem.area === listsAreaSelectedValue && elem.group_1 === listsGroup_1SelectedValue) {
@@ -240,6 +248,7 @@ export default class ModalForm {
     setModalCpsBuildingsFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить здание';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewBuilding;
+        this.modalFormWithTexboxesTarget = 'buildings';
         this.setModalCpsBuildingsFormHtmlListsListeners();
         this.setFormWithTexboxesSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;

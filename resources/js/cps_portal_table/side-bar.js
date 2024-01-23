@@ -205,10 +205,10 @@ export default class SideBar {
             `
         pageContent.prepend(this.menuPlanGraf);
         document.querySelector('#year_pl_gr').value = "2024";
-        document.querySelector('#who_approve_fio').value = "М.А. Баязитов";
+        document.querySelector('#who_approve_fio').value = "А.Н. Ильин";
         document.querySelector('#who_approve_position').value = "Зам.нач. цеха";
-        document.querySelector('#who_assign_fio').value = "М.А. Баязитов";
-        document.querySelector('#who_assign_position').value = "Зам.нач. цеха";
+        document.querySelector('#who_assign_fio').value = "Д.С. Коротун";
+        document.querySelector('#who_assign_position').value = "Нач.участка";
     }
 
     addLinkToReports(linkName, LinkURL) {

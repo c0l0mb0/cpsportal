@@ -38,7 +38,7 @@ export default class NumericCellEditor {
     }
 
     isCharNumeric(charStr) {
-        return charStr && !!/\d/.test(charStr);
+        return charStr && !!/\d|\./.test(charStr);
     }
 
     // gets called once when grid ready to insert the element
