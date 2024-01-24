@@ -100,6 +100,18 @@ class BuildEquipController extends Controller
         return response()->json('Equipment that created by worker is deleted');
     }
 
+    public static function getBuildingsWhereEquipmentItemIsUsed($id)
+    {
+        $buildings = DB::table('build_equip')
+            ->select(DB::raw('*, equipment.id as id'))
+            ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
+            ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
+            ->where('equipment.id', $id)
+            ->orderBy('build_equip.id', 'asc')
+            ->get();
+        return response()->json($buildings);
+    }
+
     //    excel export DAO
     public static function getBuildingWithEquipmentByBuildingId($whereArr)
     {

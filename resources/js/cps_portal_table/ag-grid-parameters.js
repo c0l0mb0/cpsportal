@@ -627,6 +627,85 @@ export let agGridParameters = {
         },
         agName: 'uneditableBuildingsPlanGrafik',
     },
+    uneditableEquipmentItemBuildingsUsageParameters: {
+        gridOptions: {
+            columnDefs: [
+                {
+                    headerName: "Участок",
+                    field: "area",
+                    minWidth: 100,
+                    tooltipField: 'area',
+                    filter: true,
+                },
+                {
+                    headerName: "Группа",
+                    field: "group_1",
+                    minWidth: 100,
+                    tooltipField: 'group_1',
+                    filter: true,
+                },
+                {
+                    headerName: "Подгруппа",
+                    field: "group_2",
+                    minWidth: 100,
+                    tooltipField: 'group_2',
+                    filter: true,
+                },
+                {
+                    headerName: "Здание",
+                    field: "shed",
+                    minWidth: 200,
+                    tooltipField: 'shed',
+                    filter: true,
+                },
+                {
+                    headerName: "Очередь",
+                    field: "queue",
+                    minWidth: 100,
+                    tooltipField: 'queue',
+                    filter: true,
+                },
+                {
+                    headerName: "Филиал",
+                    field: "affiliate",
+                    minWidth: 100,
+                    tooltipField: 'affiliate',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "Количество",
+                    field: "quantity",
+                    minWidth: 100,
+                    tooltipField: 'quantity',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "Измерение",
+                    field: "measure",
+                    minWidth: 100,
+                    tooltipField: 'measure',
+                    sortable: true,
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                },
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: false,
+                menuTabs: ['filterMenuTab'],
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: null,
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            }
+        },
+        agName: 'uneditableBuildingsPlanGrafik',
+    },
     equipmentParameters: {
         gridOptions: {
             columnDefs: [
@@ -686,7 +765,9 @@ export let agGridParameters = {
                     field: "to_ostanov",
                     minWidth: 100,
                     tooltipField: 'to_ostanov',
-                    sortable: true, filter: true,
+                    sortable: true,
+                    filter: true,
+                    editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
                 {
@@ -694,7 +775,9 @@ export let agGridParameters = {
                     field: "to_ostanov_itr",
                     minWidth: 50,
                     tooltipField: 'to_ostanov_itr',
-                    sortable: true, filter: true,
+                    sortable: true,
+                    filter: true,
+                    editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
 
@@ -712,6 +795,7 @@ export let agGridParameters = {
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.showDelButton();
+                agGridParameters.actionMenu.showEquipUsageButton();
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();

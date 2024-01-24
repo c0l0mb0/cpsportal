@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('cps-equipment-buildings', [BuildEquipController::class, 'create']);
     Route::put('cps-equipment-buildings/{id}', [BuildEquipController::class, 'update']);
     Route::delete('cps-equipment-buildings/{id}', [BuildEquipController::class, 'destroy']);
+    Route::get('cps-equipment-usage/{id}', [BuildEquipController::class, 'getBuildingsWhereEquipmentItemIsUsed']);
 
 
     Route::get('export-normi-zapasa-kip', [ExcelExportController::class, 'exportNormiZapasaKip']);

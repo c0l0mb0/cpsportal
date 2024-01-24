@@ -43,6 +43,7 @@ function init() {
     actionMenu.innerMonth = document.querySelector('.excel-inner-month');
     actionMenu.planGrafSequence = document.querySelector('.plangraf-sequence');
     actionMenu.arrangePlanGrafSequence = document.querySelector('.plangraf-arrange-numbers');
+    actionMenu.equipUsage = document.querySelector('.equip-usage');
 
     let idleTimer = new IdleTimer();
 }

@@ -30,6 +30,7 @@ export default class ActionMenu {
     modalPutEquipmentInBuildingHtml;
     returnButtonAction;
     cashedAgGridBuildings;
+    equipUsage;
 
 
     hideALl() {
@@ -45,6 +46,15 @@ export default class ActionMenu {
         this.innerMonth.style.display = 'none';
         this.planGrafSequence.style.display = 'none';
         this.arrangePlanGrafSequence.style.display = 'none';
+        this.equipUsage.style.display = 'none';
+    }
+
+    hideEquipUsageButton() {
+        this.equipUsage.style.display = 'none';
+    }
+
+    showEquipUsageButton() {
+        this.equipUsage.style.display = 'block';
     }
 
     hideArrangePlanGrafSequenceButton() {
@@ -181,6 +191,19 @@ export default class ActionMenu {
         this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
         this.AddButtonActionEventLister = this.modalForm.setModalCpsBuildingsFormHtml.bind(this.modalForm);
         this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+    }
+
+    setEquipUsageAction() {
+        this.equipUsage.addEventListener('click', () => {
+            let selectedRow = this.tableAgGrid.getSelectedRow();
+            let equipItemId = selectedRow.id;
+            this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableEquipmentItemBuildingsUsageParameters.gridOptions,
+                config.api.getEquipmentUsage + '/' +
+                equipItemId, undefined, agGridParameters.uneditableEquipmentItemBuildingsUsageParameters.agName, this);
+            this.hideALl();
+            this.showExcelButton();
+            changePageTitle( selectedRow.equip_name + ' используется:');
+        });
     }
 
     setEditInnerAction() {

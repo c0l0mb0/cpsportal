@@ -19,7 +19,7 @@ function isIE11() {
 };
 
 export function getRole() {
-    return httpRequest(config.api.getUserRole, 'GET')
+    return httpRequest(config.api.getUserRole, 'GET');
 }
 
 

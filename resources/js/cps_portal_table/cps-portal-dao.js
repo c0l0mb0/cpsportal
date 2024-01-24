@@ -22,6 +22,7 @@ export let config = {
         getEquipmentALl: '/api/cps-equipment-all',
         postPutDeleteEquipment: '/api/cps-equipment',
         getPutDeleteEquipmentInBuilding: '/api/cps-equipment-buildings',
+        getEquipmentUsage: '/api/cps-equipment-usage',
         getUserRole: '/api/get-user-role',
         getExportNormiZapasaKip: '/api/export-normi-zapasa-kip',
         getExportPotrebnostMtr: '/api/export-potrebnost-mtr',

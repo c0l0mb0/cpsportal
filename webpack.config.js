@@ -8,7 +8,7 @@ module.exports = {
         cps_portal: path.resolve(__dirname, './resources/js/cps_portal_table/app.js'),
     },
     output: {
-        filename: '[name].js',
+        filename: '[name].[contenthash].js',
         environment: {
             arrowFunction: false,
         },

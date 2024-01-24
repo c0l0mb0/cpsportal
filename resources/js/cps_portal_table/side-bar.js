@@ -72,6 +72,7 @@ export default class SideBar {
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.setAddButtonActionForNewEquipment();
+            this.actionMenu.setEquipUsageAction();
             this.actionMenu.showPlusAndExcelButton();
             this.removeMenuPlanGraf();
             changePageTitle("Оборудование");

@@ -96,10 +96,6 @@
                             data-bs-placement="bottom" title="оборудование">
                         <img src="{{ asset('icon/chip-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Экспорт в Excel">
-                        <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
-                    </button>
                     <button type="button" class="btn excel-export-passport action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Паспорт здания">
                         <img src="{{ asset('icon/passport.svg') }}" class="row-menue__icon">
@@ -119,6 +115,14 @@
                     <button type="button" class="btn plangraf-arrange-numbers action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Расставить номера">
                         <img src="{{ asset('icon/arrange-build-plgraf.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn equip-usage action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Где используется">
+                        <img src="{{ asset('icon/chart-tree.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Экспорт в Excel">
+                        <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
                     </button>
                 </div>
                 <div class="justify-content-end navbar-btn-logout-wrapper">
@@ -200,8 +204,13 @@
 <script src="{{ asset('js/libs/popper.min.js') }}"></script>
 <script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
 
-
-<script src="{{ asset('js/cps_table/cps_portal.js') }}"></script>
+{{--@php--}}
+{{--    {{scandir("path/to/file/")[2];}}--}}
+{{--@endphp--}}
+<script src="@php
+    {{echo ('js/cps_table/' . scandir("js/cps_table/")[2]);}}
+@endphp"></script>
+{{--<script src="{{ asset('js/cps_table/cps_portal.js') }}"></script>--}}
 
 </body>
 </html>
