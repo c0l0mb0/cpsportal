@@ -55,7 +55,6 @@ class BuildEquipController extends Controller
             'id_equip' => 'required',
             'quantity' => 'required|numeric|min:0|not_in:0',
             'measure' => 'required',
-//            'equip_comments' => 'required',
         ]);
         $buildingAndEquip = BuildEquip::findOrFail($id);
         $userRole = Auth::user()->roles->pluck('name')[0];
@@ -72,6 +71,29 @@ class BuildEquipController extends Controller
         $buildingAndEquip->update($request->all());
 
         return response()->json($buildingAndEquip);
+    }
+
+    public function copyEquipmentFromFromOneBuildingToAnother(Request $request)
+    {
+//        $this->validate($request, [
+//            'id_build_from' => 'required',
+//            'id_equip_to' => 'required',
+//        ]);
+//        $buildingAndEquip = BuildEquip::findOrFail($id);
+//        $userRole = Auth::user()->roles->pluck('name')[0];
+//        if ($userRole != 'super-user' and $userRole != 'Nur_master' and $userRole != 'Yamburg_master' and
+//            $userRole != 'Zapolyarka_master' and BuildEquip::where('created_by_worker', true)
+//                ->where('id', $id)->doesntExist()) {
+//            $this->createWorkerChangesLog();
+//            $this->workerChangesLog->logUpdatedItem($id, $buildingAndEquip->id_build, $buildingAndEquip->id_equip,
+//                $buildingAndEquip->quantity, $buildingAndEquip->measure, $buildingAndEquip->equip_year,
+//                $buildingAndEquip->equip_comments,);
+//            BuildEquip::where('id', $id)->update(['edited_by_worker' => true]);
+//        }
+//
+//        $buildingAndEquip->update($request->all());
+//
+//        return response()->json($buildingAndEquip);
     }
 
     private function createWorkerChangesLog()

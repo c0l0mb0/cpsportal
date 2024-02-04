@@ -59,6 +59,12 @@ export default class TableAgGrid {
 
     }
 
+    setAndScrollToId(id) {
+        this.setGridData();
+        this.idToScroll = id;
+        this.scrollToid();
+    }
+
     scrollAndFilter(data) {
         this.gridOptions.api.setRowData(data);
         if (this.idToScroll !== undefined) {

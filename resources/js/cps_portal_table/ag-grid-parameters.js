@@ -299,6 +299,7 @@ export let agGridParameters = {
             onRowSelected: function () {
                 agGridParameters.actionMenu.showDelButton();
                 agGridParameters.actionMenu.showPassportButton();
+                agGridParameters.actionMenu.showCopyEquipOfBuildingButton();
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
@@ -378,6 +379,72 @@ export let agGridParameters = {
             }
         },
         agName: 'uneditableBuildings',
+    },
+    uneditableCopyEquipToBuildingParameters: {
+        gridOptions: {
+            columnDefs: [
+                {
+                    headerName: "Участок",
+                    field: "area",
+                    width: 100,
+                    tooltipField: 'area',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "Группа",
+                    field: "group_1",
+                    width: 100,
+                    tooltipField: 'group_1',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "Подгруппа",
+                    field: "group_2",
+                    width: 50,
+                    tooltipField: 'group_2',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "Здание",
+                    field: "shed",
+                    minWidth: 300,
+                    tooltipField: 'shed',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "Очередь",
+                    field: "queue",
+                    width: 100,
+                    tooltipField: 'queue',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "Филиал",
+                    field: "affiliate",
+                    minWidth: 100,
+                    tooltipField: 'affiliate',
+                    sortable: true,
+                    filter: true,
+                },
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: false,
+                menuTabs: ['filterMenuTab'],
+            },
+            enableBrowserTooltips: true,
+            // onFirstDataRendered: (params) => {
+            //     params.api.sizeColumnsToFit();
+            // }
+        },
+        agName: 'uneditableCopyEquipToBuildingParameters',
     },
     buildingsPlanGrafParameters: {
         gridOptions: {
@@ -857,6 +924,16 @@ export let agGridParameters = {
                     cellStyle: {'font-weight': 'bold'}
                 },
                 {
+                    headerName: "Коментарии",
+                    field: "equip_comments",
+                    minWidth: 100,
+                    tooltipField: 'equip_comments',
+                    sortable: false,
+                    filter: false,
+                    cellEditor: 'agLargeTextCellEditor',
+
+                },
+                {
                     headerName: "Удалить",
                     field: "deleted_by_worker",
                     minWidth: 50,
@@ -865,6 +942,7 @@ export let agGridParameters = {
                     filter: true,
                     editable: true,
                     cellRenderer: CheckboxRenderer,
+                    cellStyle: {'background-color': '#b6bec5'}
                 },
                 {
                     headerName: "Ред",
@@ -876,6 +954,7 @@ export let agGridParameters = {
                     editable: false,
                     hide: true,
                     cellRenderer: CheckboxRenderer,
+                    cellStyle: {'background-color': '#b6bec5'}
                 },
                 {
                     headerName: "Созд",
@@ -887,16 +966,9 @@ export let agGridParameters = {
                     editable: false,
                     hide: true,
                     cellRenderer: CheckboxRenderer,
+                    cellStyle: {'background-color': '#b6bec5'}
                 },
-                {
-                    headerName: "Коментарии",
-                    field: "equip_comments",
-                    minWidth: 100,
-                    tooltipField: 'equip_comments',
-                    sortable: false,
-                    filter: false,
-                    cellEditor: 'agLargeTextCellEditor',
-                },
+
 
 
             ],

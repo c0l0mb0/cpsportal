@@ -12,13 +12,14 @@ export default class ModalForm {
     modalTableAgGrid;
     agBuildingId;
     agBuildingName;
-    modalFormWithTexboxesTarget;
+    modalFormPurpose;
     modalHtml = {};
     ui = {
         modalForm: {
             caption: document.getElementById('modal__caption'),
             modal: document.getElementById('modal__new-entry'),
             modalBody: document.querySelector('.modal__form__body'),
+            modalForm: document.querySelector('.modal-form'),
             form: document.getElementById('form__new-entry'),
             error: document.getElementById('form__error'),
             listsArea: undefined,
@@ -34,116 +35,110 @@ export default class ModalForm {
         requestUrl: undefined,
         requestMethod: 'POST',
     };
+    putId;
 
     constructor() {
         this.initiateModalHtml();
-    }
-    setDefaultValuesImplicitly (httpData) {
-        if (this.modalFormWithTexboxesTarget === 'buildings') {
-            httpData.on_conserv = false;
-        }
-    }
-    modalformWithTexboxesCallback = event => {
-        let _this = this;
-        event.preventDefault();
-        let inputValues = _this.getInputsArr();
-        this.setDefaultValuesImplicitly (inputValues);
-        httpRequest(_this.ui.modalForm.requestUrl, 'POST', inputValues).then((e) => {
-            _this._hideError();
-            _this.hideModal();
-            event.target.reset();
-            _this.tableAgGrid.setGridData(e.id);
-            _this.actionMenu.hideAllOneRowAction();
-            _this.modalFormWithTexboxesTarget = undefined;
-        }).catch((e) => {
-            _this._hideError();
-            _this._showError(e);
-            _this.modalFormWithTexboxesTarget = undefined;
-        });
+        this.setFormSubmitHandler();
     }
 
-    modalformWithGridCallback = event => {
-        let _this = this;
-        event.preventDefault();
-        let selectedRow = _this.modalTableAgGrid.getSelectedRow();
-        if (selectedRow === undefined) {
-            this._hideError();
-            let massage = {}
-            massage.status = 'ошибка ввода'
-            massage.statusText = 'прибор не выбран'
-            this._showError(massage);
-            return;
+    addExtraValuesRequestData(RequestData) {
+        if (this.modalFormPurpose === 'buildings') {
+            RequestData.on_conserv = false;
         }
-        let equipmentId = selectedRow.id;
-        let requestBody = {};
-        requestBody.id_equip = equipmentId;
-        let requestUrl = _this.ui.modalForm.requestUrl
-        if (_this.ui.modalForm.requestMethod === 'POST') {
-            if (document.querySelector('#quantity') !== null) {
-                requestBody.quantity = document.querySelector('#quantity').value;
-                if (parseFloat(document.querySelector('#quantity').value) === 0) {
-                    this._hideError();
-                    let massage = {}
-                    massage.status = 'ошибка ввода'
-                    massage.statusText = 'количество равно 0!'
-                    this._showError(massage);
-                    return;
+        if (this.modalFormPurpose === 'editEquipmentInBuilding' || this.modalFormPurpose === 'addEquipmentInBuilding') {
+            RequestData.id_build = this.agBuildingId;
+        }
+    }
+
+    setRequestData() {
+        let requestData = {};
+        for (const child of this.ui.modalForm.modalBody.children) {
+            if (child.classList.contains('modal-aggrid-wrapper')) {
+                let selectedRow = this.modalTableAgGrid.getSelectedRow();
+                if (selectedRow === undefined) {
+                    this.errorModalAgGridItemSelect();
+                }
+                if (this.modalFormPurpose === 'newEquipment' || this.modalFormPurpose === 'editEquipmentInBuilding' ||
+                    this.modalFormPurpose === 'addEquipmentInBuilding') {
+                    requestData.id_equip = selectedRow.id;
+                }
+                if (this.modalFormPurpose === 'editEquipmentInBuilding') {
+                    let selectedRowEquipInBuilding = this.tableAgGrid.getSelectedRow();
+                    requestData.quantity = selectedRowEquipInBuilding.quantity;
+                    requestData.measure = selectedRowEquipInBuilding.measure;
+                    requestData.id_build = selectedRowEquipInBuilding.id_build;
+                    this.putId = selectedRowEquipInBuilding.id;
+                    if (requestData.quantity === 0) {
+                        let massage = {};
+                        massage.status = 'ошибка ввода';
+                        massage.statusText = 'количество равно 0';
+                        this._showError(massage);
+                        throw('quantity===0');
+                    }
                 }
             }
-
-            if (document.querySelector('#measure') !== null) {
-                requestBody.measure = document.querySelector('#measure').value;
-            }
-            if (document.querySelector('#equip_name') !== null) {
-                requestBody.equip_name = document.querySelector('#equip_name').value;
-            }
-            if (document.querySelector('#brand_name') !== null) {
-                requestBody.brand_name = document.querySelector('#brand_name').value;
-            }
-            if (_this.agBuildingId !== null) {
-                requestBody.id_build = _this.agBuildingId;
-            }
         }
-        if (_this.ui.modalForm.requestMethod === 'PUT') {
-            let selectedRowEquipInBuilding = _this.tableAgGrid.getSelectedRow();
-            let buildEquipId = selectedRowEquipInBuilding.id;
-            requestBody.id_build = selectedRowEquipInBuilding.id_build;
-            requestBody.quantity = selectedRowEquipInBuilding.quantity;
-            requestBody.measure = selectedRowEquipInBuilding.measure;
-            requestBody.equip_year = selectedRowEquipInBuilding.equip_year;
-            requestBody.equip_comments = selectedRowEquipInBuilding.equip_comments;
-            requestUrl = requestUrl + '/' + buildEquipId;
-        }
-        requestBody = addCSRF(requestBody);
-        httpRequest(requestUrl, _this.ui.modalForm.requestMethod, requestBody).then((e) => {
-            _this._hideError();
-            _this.hideModal();
-            event.target.reset();
-            _this.modalTableAgGrid.resetFilter();
-            _this.tableAgGrid.idToScroll = e.id;
+        const formInputs = Array.from(this.ui.modalForm.modalForm.getElementsByClassName('form-control'));
+        formInputs.forEach((element) => {
+            if (element.id !== 'aggrid_search' && element.value !== '') {
+                requestData[element.id] = element.value;
+            }
+        });
+        requestData = addCSRF(requestData);
+        this.addExtraValuesRequestData(requestData);
+        return requestData;
+    }
 
-            _this.tableAgGrid.setGridData();
-            _this.actionMenu.hideAllOneRowAction();
-        }).catch((e) => {
-            _this._hideError();
-            _this._showError(e);
+    errorModalAgGridItemSelect() {
+        this._hideError();
+        let massage = {}
+        if (this.modalFormPurpose === 'copyEquipFromBuilding' || this.modalFormPurpose === 'buildings'
+        ) {
+            massage.status = 'ошибка ввода'
+            massage.statusText = 'здание не выбрано'
+        }
+        if (this.modalFormPurpose === 'newEquipment' || this.modalFormPurpose === 'editEquipmentInBuilding' ||
+            this.modalFormPurpose === 'addEquipmentInBuilding') {
+            massage.status = 'ошибка ввода'
+            massage.statusText = 'прибор не выбран'
+        }
+        this._showError(massage);
+        throw 'ошибка ввода'
+    }
+
+    modalFormCallback = event => {
+        event.preventDefault();
+        try {
+            let requestData = this.setRequestData();
+            let requestUrl = this.ui.modalForm.requestUrl;
+            if (this.ui.modalForm.requestMethod === 'PUT') {
+                if (this.putId === undefined) {
+                    throw ('putId error');
+                }
+                requestUrl += '/' + this.putId;
+            }
+            let _this = this;
+            httpRequest(requestUrl, this.ui.modalForm.requestMethod, requestData).then((e) => {
+                _this._hideError();
+                _this.hideModal();
+                event.target.reset();
+                _this.tableAgGrid.setAndScrollToId(e.id);
+                _this.actionMenu.hideAllOneRowAction();
+                _this.modalFormPurpose = undefined;
+            }).catch((e) => {
+                _this._hideError();
+                _this._showError(e);
+            });
+        } catch (e) {
             console.log(e);
-        })
+        }
+
     }
 
-    deleteAllSubmitModalFormHandler() {
-        this.ui.modalForm.form.removeEventListener('submit', this.modalformWithTexboxesCallback);
-        this.ui.modalForm.form.removeEventListener('submit', this.modalformWithGridCallback);
-    }
-
-    setFormWithTexboxesSubmitHandler() {
-        this.deleteAllSubmitModalFormHandler();
-        this.ui.modalForm.form.addEventListener('submit', this.modalformWithTexboxesCallback);
-    }
-
-    setFormWithGridSubmitHandler() {
-        this.deleteAllSubmitModalFormHandler();
-        this.ui.modalForm.form.addEventListener('submit', this.modalformWithGridCallback);
+    setFormSubmitHandler() {
+        // this.ui.modalForm.form.removeEventListener('submit', this.modalFormCallback);
+        this.ui.modalForm.form.addEventListener('submit', this.modalFormCallback);
     }
 
     _showError(message) {
@@ -152,7 +147,11 @@ export default class ModalForm {
             this.ui.modalForm.error.classList.remove('d-none');
             return;
         }
-        this.ui.modalForm.error.innerHTML += 'Ошибка: ' + message.status + ' | ' + message.statusText + ' | ' + message.data;
+        this.ui.modalForm.error.innerHTML += 'Ошибка: ' + message.status + ' | ' + message.statusText
+        if (message.data !== undefined) {
+            this.ui.modalForm.error.innerHTML += ' | ' + message.data;
+        }
+
         this.ui.modalForm.error.classList.remove('d-none');
     }
 
@@ -161,7 +160,7 @@ export default class ModalForm {
         this.ui.modalForm.error.classList.add('d-none');
     }
 
-    getInputsArr() {
+    addInputsDataToRequestData(requestData) {
         let data = {};
         let formData = $('#form__new-entry').serializeArray();
         formData.forEach(function (arrayItem) {
@@ -224,7 +223,7 @@ export default class ModalForm {
             this.ui.modalForm.group_2.disabled = false;
             listsGroup_1SelectedValue = this.ui.modalForm.group_1.value;
             this.removeOptions(this.ui.modalForm.group_2);
-            this.ui.modalForm.group_2.add(new Option('', '00'));
+            this.ui.modalForm.group_2.add(new Option('', ''));
             let group2Count = 0;
             lists.buildings.group_2.forEach((elem) => {
                 if (elem.area === listsAreaSelectedValue && elem.group_1 === listsGroup_1SelectedValue) {
@@ -248,42 +247,72 @@ export default class ModalForm {
     setModalCpsBuildingsFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить здание';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewBuilding;
-        this.modalFormWithTexboxesTarget = 'buildings';
+        this.modalFormPurpose = 'buildings';
         this.setModalCpsBuildingsFormHtmlListsListeners();
-        this.setFormWithTexboxesSubmitHandler();
+        // this.setFormWithTexboxesSubmitHandler();
+        // this.setFormSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;
+    }
+
+    setModalCopyEquipmentToBuildingFormHtml() {
+        let selectedRow = this.tableAgGrid.getSelectedRow();
+        this.agBuildingId = selectedRow.id;
+        this.agBuildingName = selectedRow.shed;
+
+        this.ui.modalForm.caption.innerHTML = 'Копировать оборудование в ' + this.agBuildingName + ' из здания:';
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalCopyEquipmentFromBuilding;
+        this.setModalAgGridBuildings();
+
+        this.ui.modalForm.requestMethod = "POST"
+        this.modalFormPurpose = 'copyEquipFromBuilding';
+        this.ui.modalForm.requestUrl = config.api.postCopyEquipmentFromFromOneBuildingToAnother;
+        // this.setFormSubmitHandler();
     }
 
     setModalCpsEquipmentFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipment;
-        this.setModalAgGridWithFilter();
+        this.setModalAgGridEquipmentWithFilter();
+        this.modalFormPurpose = 'newEquipment';
         this.ui.modalForm.requestMethod = "POST";
-        this.setFormWithGridSubmitHandler();
+        // this.setFormWithGridSubmitHandler();
+        // this.setFormSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteEquipment;
     }
 
-    setModalAgGridWithFilter() {
+    setModalAgGridEquipmentWithFilter() {
         let cashedAgGridEquip = undefined;
         if (userRole !== "super-user") {
             cashedAgGridEquip = lists.equipment.all
         }
         this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
             config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName, cashedAgGridEquip);
-        this.modalTableAgGrid.textBoxFilter = document.querySelector('#equip_search');
+        this.modalTableAgGrid.textBoxFilter = document.querySelector('#aggrid_search');
         this.modalTableAgGrid.setFilterTextBox();
         this.modalTableAgGrid.resetFilter();
     }
 
+    setModalAgGridBuildings() {
+        // let cashedAgGridEquip = undefined;
+        // if (userRole !== "super-user") {
+        //     cashedAgGridEquip = lists.equipment.all
+        // }
+        this.modalTableAgGrid = new ModalAggrid(agGridParameters.uneditableCopyEquipToBuildingParameters.gridOptions,
+            config.api.getBuildingsALl, agGridParameters.uneditableCopyEquipToBuildingParameters.agName, undefined);
+        // this.modalTableAgGrid.textBoxFilter = document.querySelector('#aggrid_search');
+        // this.modalTableAgGrid.setFilterTextBox();
+        // this.modalTableAgGrid.resetFilter();
+    }
 
     setModalNewEquipmentInBuildingHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование в ' + this.agBuildingName;
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipmentInBuilding;
         document.querySelector('#quantity').addEventListener('input', this.validateNumberWithDot);
-        this.setModalAgGridWithFilter();
+        this.setModalAgGridEquipmentWithFilter();
         this.ui.modalForm.requestMethod = "POST";
-        this.setFormWithGridSubmitHandler();
+        this.modalFormPurpose = 'addEquipmentInBuilding';
         this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
+        // this.setFormSubmitHandler();
     }
 
     setModalPutEquipmentInBuildingHtml() {
@@ -291,10 +320,11 @@ export default class ModalForm {
         let equipmentName = selectedRow.equip_name;
         this.ui.modalForm.caption.innerHTML = 'Заменить ' + equipmentName + ' в ' + this.agBuildingName + ' на';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalPutEquipmentInBuilding;
-        this.setModalAgGridWithFilter();
+        this.setModalAgGridEquipmentWithFilter();
         this.ui.modalForm.requestMethod = "PUT";
-        this.setFormWithGridSubmitHandler();
+        this.modalFormPurpose = 'editEquipmentInBuilding';
         this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
+        // this.setFormSubmitHandler();
     }
 
     validateNumberWithDot(e) {
@@ -320,10 +350,10 @@ export default class ModalForm {
         this.modalHtml.modalNewEquipmentInBuilding = `
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="equip_search" class="col-form-label">Поиск</label>
+                                <label for="aggrid_search" class="col-form-label">Поиск</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="equip_search"  name="equip_search">
+                                 <input type="text"  id="aggrid_search" class="form-control" name="aggrid_search">
                             </div>
                         </div>
                         <div class="modal-aggrid-wrapper">
@@ -351,12 +381,16 @@ export default class ModalForm {
         this.modalHtml.modalPutEquipmentInBuilding = `
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="equip_search" class="col-form-label">Поиск</label>
+                                <label for="aggrid_search" class="col-form-label">Поиск</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="equip_search"  name="equip_search">
+                                 <input type="text"  id="aggrid_search" class="form-control" name="aggrid_search">
                             </div>
                         </div>
+                        <div class="modal-aggrid-wrapper">
+                            <div id="modal-aggrid" style="width: 100%; height: 100%;"></div>
+                        </div>`;
+        this.modalHtml.modalCopyEquipmentFromBuilding = `
                         <div class="modal-aggrid-wrapper">
                             <div id="modal-aggrid" style="width: 100%; height: 100%;"></div>
                         </div>`;
@@ -424,7 +458,7 @@ export default class ModalForm {
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="Queue" class="col-form-label">Очередь</label>
+                                <label for="queue" class="col-form-label">Очередь</label>
                             </div>
                             <div class="col-9">
                                   <select class="form-control" id="queue"  name="queue"">` + this.makeOptionsFromArray(lists.buildings.queue) +
@@ -521,10 +555,10 @@ export default class ModalForm {
                         </div>
                          <div class="row p-2">
                             <div class="col-3">
-                                <label for="equip_search" class="col-form-label">Поиск</label>
+                                <label for="aggrid_search" class="col-form-label">Поиск</label>
                             </div>
                             <div class="col-9">
-                                 <input type="text" class="form-control" id="equip_search"  name="equip_search">
+                                 <input type="text"  id="aggrid_search" class="form-control"  name="aggrid_search">
                             </div>
                         </div>
                         </div>
@@ -548,6 +582,39 @@ export default class ModalForm {
                             </div>
                         </div>
                         `;
+        // this.modalHtml.modalNewEquipment = `
+        //                 <div class="col-9">
+        //                      <div>Здание с уже существующими приборами:</div>
+        //                 </div>
+        //                  <div class="row p-2">
+        //                     <div class="col-3">
+        //                         <label for="aggrid_search" class="col-form-label">Поиск</label>
+        //                     </div>
+        //                     <div class="col-9">
+        //                          <input type="text"  id="aggrid_search"  class="form-control" name="aggrid_search">
+        //                     </div>
+        //                 </div>
+        //                 </div>
+        //                 <div class="modal-aggrid-wrapper">
+        //                     <div id="modal-aggrid" style="width: 100%; height: 100%;"></div>
+        //                 </div>
+        //                 <div class="row p-2">
+        //                     <div class="col-3">
+        //                         <label for="equip_name" class="col-form-label">Название нового прибора</label>
+        //                     </div>
+        //                     <div class="col-9">
+        //                          <input type="text" class="form-control" id="equip_name" required name="equip_name">
+        //                     </div>
+        //                 </div>
+        //                 <div class="row p-2">
+        //                     <div class="col-3">
+        //                         <label for="brand_name" class="col-form-label">Производитель</label>
+        //                     </div>
+        //                     <div class="col-9">
+        //                          <input type="text" class="form-control" id="brand_name" required name="brand_name">
+        //                     </div>
+        //                 </div>
+        //                 `;
     }
 }
 

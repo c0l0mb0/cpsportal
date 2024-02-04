@@ -44,6 +44,7 @@ function init() {
     actionMenu.planGrafSequence = document.querySelector('.plangraf-sequence');
     actionMenu.arrangePlanGrafSequence = document.querySelector('.plangraf-arrange-numbers');
     actionMenu.equipUsage = document.querySelector('.equip-usage');
+    actionMenu.copyEquipOfBuilding = document.querySelector('.copy-all-building-equipment');
 
     let idleTimer = new IdleTimer();
 }

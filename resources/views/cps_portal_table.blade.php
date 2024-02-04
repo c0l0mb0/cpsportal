@@ -120,6 +120,12 @@
                             data-bs-placement="bottom" title="Где используется">
                         <img src="{{ asset('icon/chart-tree.svg') }}" class="row-menue__icon">
                     </button>
+                    <button type="button" class="btn copy-all-building-equipment action-menu-btn"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="копировать оборудование в текущее здание"
+                            data-toggle="modal" data-target="#modal__new-entry">
+                        <img src="{{ asset('icon/copy.svg') }}" class="row-menue__icon">
+                    </button>
                     <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Экспорт в Excel">
                         <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
@@ -204,13 +210,10 @@
 <script src="{{ asset('js/libs/popper.min.js') }}"></script>
 <script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
 
-{{--@php--}}
-{{--    {{scandir("path/to/file/")[2];}}--}}
-{{--@endphp--}}
+
 <script src="@php
     {{echo ('js/cps_table/' . scandir("js/cps_table/")[2]);}}
 @endphp"></script>
-{{--<script src="{{ asset('js/cps_table/cps_portal.js') }}"></script>--}}
 
 </body>
 </html>

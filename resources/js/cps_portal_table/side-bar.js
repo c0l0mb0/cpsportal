@@ -86,6 +86,7 @@ export default class SideBar {
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.setAddButtonActionForNewBuilding();
+            this.actionMenu.setCopyEquipToBuildingAction();
             this.actionMenu.showPlusAndExcelButton();
             this.actionMenu.setExportPassportAction();
             this.removeMenuPlanGraf();

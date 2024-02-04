@@ -300,6 +300,10 @@ div.ag-root .ag-cell-focus {
     height: 60vh;
 }
 
+#equip_search {
+
+}
+
 #modal-aggrid {
     flex-grow: 1;
 }

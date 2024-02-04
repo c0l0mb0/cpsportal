@@ -22,8 +22,8 @@ export default class ActionMenu {
     agBuildingFilterState;
     editTableRow;
     returnBack;
-    EditButtonActionEventLister;
-    AddButtonActionEventLister;
+    addButtonActionEventLister;
+    copyEquipToBuildingEventLister;
     innerMonth;
     planGrafSequence;
     arrangePlanGrafSequence;
@@ -31,6 +31,7 @@ export default class ActionMenu {
     returnButtonAction;
     cashedAgGridBuildings;
     equipUsage;
+    copyEquipOfBuilding;
 
 
     hideALl() {
@@ -47,6 +48,15 @@ export default class ActionMenu {
         this.planGrafSequence.style.display = 'none';
         this.arrangePlanGrafSequence.style.display = 'none';
         this.equipUsage.style.display = 'none';
+        this.copyEquipOfBuilding.style.display = 'none';
+    }
+
+    hideCopyEquipOfBuildingButton() {
+        this.copyEquipOfBuilding.style.display = 'none';
+    }
+
+    showCopyEquipOfBuildingButton() {
+        this.copyEquipOfBuilding.style.display = 'block';
     }
 
     hideEquipUsageButton() {
@@ -175,22 +185,27 @@ export default class ActionMenu {
         this.modalPutEquipmentInBuildingHtml = this.modalForm.setModalPutEquipmentInBuildingHtml.bind(this.modalForm);
         this.editTableRow.addEventListener('click', this.modalPutEquipmentInBuildingHtml);
 
-        this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
-        this.AddButtonActionEventLister = this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm);
-        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+        this.newTableRow.removeEventListener('click', this.addButtonActionEventLister);
+        this.addButtonActionEventLister = this.modalForm.setModalNewEquipmentInBuildingHtml.bind(this.modalForm);
+        this.newTableRow.addEventListener('click', this.addButtonActionEventLister);
     }
 
 
     setAddButtonActionForNewEquipment() {
-        this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
-        this.AddButtonActionEventLister = this.modalForm.setModalCpsEquipmentFormHtml.bind(this.modalForm);
-        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+        this.newTableRow.removeEventListener('click', this.addButtonActionEventLister);
+        this.addButtonActionEventLister = this.modalForm.setModalCpsEquipmentFormHtml.bind(this.modalForm);
+        this.newTableRow.addEventListener('click', this.addButtonActionEventLister);
     }
 
     setAddButtonActionForNewBuilding() {
-        this.newTableRow.removeEventListener('click', this.AddButtonActionEventLister);
-        this.AddButtonActionEventLister = this.modalForm.setModalCpsBuildingsFormHtml.bind(this.modalForm);
-        this.newTableRow.addEventListener('click', this.AddButtonActionEventLister);
+        this.newTableRow.removeEventListener('click', this.addButtonActionEventLister);
+        this.addButtonActionEventLister = this.modalForm.setModalCpsBuildingsFormHtml.bind(this.modalForm);
+        this.newTableRow.addEventListener('click', this.addButtonActionEventLister);
+    }
+    setCopyEquipToBuildingAction() {
+        this.copyEquipOfBuilding.removeEventListener('click', this.copyEquipToBuildingEventLister);
+        this.copyEquipToBuildingEventLister = this.modalForm.setModalCopyEquipmentToBuildingFormHtml.bind(this.modalForm);
+        this.copyEquipOfBuilding.addEventListener('click', this.copyEquipToBuildingEventLister);
     }
 
     setEquipUsageAction() {
@@ -202,7 +217,7 @@ export default class ActionMenu {
                 equipItemId, undefined, agGridParameters.uneditableEquipmentItemBuildingsUsageParameters.agName, this);
             this.hideALl();
             this.showExcelButton();
-            changePageTitle( selectedRow.equip_name + ' используется:');
+            changePageTitle(selectedRow.equip_name + ' используется:');
         });
     }
 
@@ -227,6 +242,8 @@ export default class ActionMenu {
 
         };
     }
+
+
 
     setEditInnerMonthAction() {
         this.innerMonth.onclick = () => {

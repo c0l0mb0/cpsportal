@@ -26,28 +26,29 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('workers-add-six-month', [WorkersController::class, 'addSixMonthFromLastDateToNextDate']);
     Route::delete('workers/{id}', [WorkersController::class, 'destroy']);
 
-    Route::get('cps-buildings-all', [BuildingsController::class, 'index']);
-    Route::get('cps-buildings-and-orederedplangraf', [BuildingsController::class, 'getBuildingsAndPlanGrafDataOrderedByPlanGraf']);
-    Route::get('cps-buildings-group1', [BuildingsController::class, 'indexGroup1']);
-    Route::get('cps-buildings-group2', [BuildingsController::class, 'indexGroup2']);
-    Route::get('cps-buildings-plangraf', [BuildingsController::class, 'indexPlanGraf']);
-    Route::get('cps-buildings-affiliate', [BuildingsController::class, 'indexAffiliate']);
-    Route::get('cps-buildings-plangraf-by-id/{id}', [BuildingsController::class, 'getBuildingPlanGrafById']);
-    Route::post('cps-buildings', [BuildingsController::class, 'create']);
-    Route::put('cps-buildings/{id}', [BuildingsController::class, 'update']);
-    Route::put('cps-update-buildingplangraf-seq', [BuildingsController::class, 'updateBuildingSequenceOfPlanGraf']);
-    Route::delete('cps-buildings/{id}', [BuildingsController::class, 'destroy']);
+    Route::get('buildings-all', [BuildingsController::class, 'index']);
+    Route::get('buildings-and-orederedplangraf', [BuildingsController::class, 'getBuildingsAndPlanGrafDataOrderedByPlanGraf']);
+    Route::get('buildings-group1', [BuildingsController::class, 'indexGroup1']);
+    Route::get('buildings-group2', [BuildingsController::class, 'indexGroup2']);
+    Route::get('buildings-plangraf', [BuildingsController::class, 'indexPlanGraf']);
+    Route::get('buildings-affiliate', [BuildingsController::class, 'indexAffiliate']);
+    Route::get('buildings-plangraf-by-id/{id}', [BuildingsController::class, 'getBuildingPlanGrafById']);
+    Route::post('buildings', [BuildingsController::class, 'create']);
+    Route::put('buildings/{id}', [BuildingsController::class, 'update']);
+    Route::put('update-buildingplangraf-seq', [BuildingsController::class, 'updateBuildingSequenceOfPlanGraf']);
+    Route::delete('buildings/{id}', [BuildingsController::class, 'destroy']);
 
-    Route::get('cps-equipment-all', [EquipmentController::class, 'index']);
-    Route::post('cps-equipment', [EquipmentController::class, 'create']);
-    Route::put('cps-equipment/{id}', [EquipmentController::class, 'update']);
-    Route::delete('cps-equipment/{id}', [EquipmentController::class, 'destroy']);
+    Route::get('equipment-all', [EquipmentController::class, 'index']);
+    Route::post('equipment', [EquipmentController::class, 'create']);
+    Route::put('equipment/{id}', [EquipmentController::class, 'update']);
+    Route::delete('equipment/{id}', [EquipmentController::class, 'destroy']);
 
-    Route::get('cps-equipment-buildings/{id}', [BuildEquipController::class, 'index']);
-    Route::post('cps-equipment-buildings', [BuildEquipController::class, 'create']);
-    Route::put('cps-equipment-buildings/{id}', [BuildEquipController::class, 'update']);
-    Route::delete('cps-equipment-buildings/{id}', [BuildEquipController::class, 'destroy']);
-    Route::get('cps-equipment-usage/{id}', [BuildEquipController::class, 'getBuildingsWhereEquipmentItemIsUsed']);
+    Route::get('equipment-buildings/{id}', [BuildEquipController::class, 'index']);
+    Route::post('equipment-buildings', [BuildEquipController::class, 'create']);
+    Route::put('equipment-buildings/{id}', [BuildEquipController::class, 'update']);
+    Route::delete('equipment-buildings/{id}', [BuildEquipController::class, 'destroy']);
+    Route::get('equipment-usage/{id}', [BuildEquipController::class, 'getBuildingsWhereEquipmentItemIsUsed']);
+    Route::post('copy-equip-to-build', [BuildEquipController::class, 'copyEquipmentFromFromOneBuildingToAnother']);
 
 
     Route::get('export-normi-zapasa-kip', [ExcelExportController::class, 'exportNormiZapasaKip']);
