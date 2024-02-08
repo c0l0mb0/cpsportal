@@ -102,9 +102,12 @@ class BuildingsController extends Controller
             'shed' => 'required',
             'affiliate' => 'required',
         ]);
-        $building = Buildings::create($request->all());
 
-        return response()->json($building);
+        $maintainerRole = $this->getMaintainerRole($request->area, $request->group_1);
+        $building = Buildings::create($request->all());
+        Buildings::where('id', '=', $building->id)->update(['maintainer_role' => $maintainerRole]);
+        $buildingWithMaintainerRole = Buildings::where('id', '=', $building->id)->first();
+        return response()->json($buildingWithMaintainerRole);
     }
 
     public function update($id, Request $request)
@@ -165,6 +168,33 @@ class BuildingsController extends Controller
             ->where($whereArr)
             ->orderBy('affiliate', 'asc')
             ->get();
+    }
+
+    private function getMaintainerRole($areaRequest, $group1Request): string
+    {
+        $maintainerRolesAreas = array("Новый Уренгой" => "Nur_master", "Ямбург" => "Yamburg_master",
+            "ПС САП" => "Zapolyarka_master", "ГП" => "GP");
+        $maintainerRolesGp = array("ВЖК-1" => "workerGP1", "ГП-1" => "workerGP1", "ГП-1В" => "workerGP1v",
+            "ВЖК-2" => "workerGP2", "ГП-2" => "workerGP2", "ГП-3" => "workerGP3", "ВЖК-4" => "workerGP4",
+            "ГП-4" => "workerGP4", "ГП-5" => "workerGP5", "ГП-6" => "workerGP6", "ГП-7" => "workerGP7",
+            "ГП-9" => "workerGP9", "ВЖК-9" => "workerGP9", "ГТЭС-15" => "workerGP9", "ВЖК-6" => "workerVGK6");
+        $maintainerRole = '';
+        foreach ($maintainerRolesAreas as $area => $maintainerRoleArea) {
+            if ($area === $areaRequest) {
+                $maintainerRole = $maintainerRoleArea;
+
+                break;
+            }
+        }
+        if ($maintainerRole === "GP") {
+            foreach ($maintainerRolesGp as $group1gp => $maintainerRoleGp) {
+                if ($group1gp === $group1Request) {
+                    $maintainerRole = $maintainerRoleGp;
+                    break;
+                }
+            }
+        }
+        return $maintainerRole;
     }
 
 

@@ -122,7 +122,7 @@
                     </button>
                     <button type="button" class="btn copy-all-building-equipment action-menu-btn"
                             data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="копировать оборудование в текущее здание"
+                            data-bs-placement="bottom" title="копировать оборудование текущего здания"
                             data-toggle="modal" data-target="#modal__new-entry">
                         <img src="{{ asset('icon/copy.svg') }}" class="row-menue__icon">
                     </button>

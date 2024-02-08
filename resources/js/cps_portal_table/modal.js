@@ -12,7 +12,6 @@ export default class ModalForm {
     modalTableAgGrid;
     agBuildingId;
     agBuildingName;
-    modalFormPurpose;
     modalHtml = {};
     ui = {
         modalForm: {
@@ -34,6 +33,7 @@ export default class ModalForm {
         modalDialog: document.querySelector('.modal-dialog'),
         requestUrl: undefined,
         requestMethod: 'POST',
+        modalFormPurpose: undefined,
     };
     putId;
 
@@ -43,10 +43,10 @@ export default class ModalForm {
     }
 
     addExtraValuesRequestData(RequestData) {
-        if (this.modalFormPurpose === 'buildings') {
+        if (this.ui.modalFormPurpose === 'buildings') {
             RequestData.on_conserv = false;
         }
-        if (this.modalFormPurpose === 'editEquipmentInBuilding' || this.modalFormPurpose === 'addEquipmentInBuilding') {
+        if (this.ui.modalFormPurpose === 'editEquipmentInBuilding' || this.ui.modalFormPurpose === 'addEquipmentInBuilding') {
             RequestData.id_build = this.agBuildingId;
         }
     }
@@ -59,11 +59,15 @@ export default class ModalForm {
                 if (selectedRow === undefined) {
                     this.errorModalAgGridItemSelect();
                 }
-                if (this.modalFormPurpose === 'newEquipment' || this.modalFormPurpose === 'editEquipmentInBuilding' ||
-                    this.modalFormPurpose === 'addEquipmentInBuilding') {
+                if (this.ui.modalFormPurpose === 'newEquipment' || this.ui.modalFormPurpose === 'editEquipmentInBuilding' ||
+                    this.ui.modalFormPurpose === 'addEquipmentInBuilding') {
                     requestData.id_equip = selectedRow.id;
                 }
-                if (this.modalFormPurpose === 'editEquipmentInBuilding') {
+                if (this.ui.modalFormPurpose === 'copyEquipFromBuilding') {
+                    requestData.id_build_to = selectedRow.id;
+                    requestData.id_build_from = this.tableAgGrid.getSelectedRow().id;
+                }
+                if (this.ui.modalFormPurpose === 'editEquipmentInBuilding') {
                     let selectedRowEquipInBuilding = this.tableAgGrid.getSelectedRow();
                     requestData.quantity = selectedRowEquipInBuilding.quantity;
                     requestData.measure = selectedRowEquipInBuilding.measure;
@@ -93,13 +97,13 @@ export default class ModalForm {
     errorModalAgGridItemSelect() {
         this._hideError();
         let massage = {}
-        if (this.modalFormPurpose === 'copyEquipFromBuilding' || this.modalFormPurpose === 'buildings'
+        if (this.ui.modalFormPurpose === 'copyEquipFromBuilding' || this.ui.modalFormPurpose === 'buildings'
         ) {
             massage.status = 'ошибка ввода'
             massage.statusText = 'здание не выбрано'
         }
-        if (this.modalFormPurpose === 'newEquipment' || this.modalFormPurpose === 'editEquipmentInBuilding' ||
-            this.modalFormPurpose === 'addEquipmentInBuilding') {
+        if (this.ui.modalFormPurpose === 'newEquipment' || this.ui.modalFormPurpose === 'editEquipmentInBuilding' ||
+            this.ui.modalFormPurpose === 'addEquipmentInBuilding') {
             massage.status = 'ошибка ввода'
             massage.statusText = 'прибор не выбран'
         }
@@ -125,7 +129,7 @@ export default class ModalForm {
                 event.target.reset();
                 _this.tableAgGrid.setAndScrollToId(e.id);
                 _this.actionMenu.hideAllOneRowAction();
-                _this.modalFormPurpose = undefined;
+                _this.ui.modalFormPurpose = undefined;
             }).catch((e) => {
                 _this._hideError();
                 _this._showError(e);
@@ -137,7 +141,6 @@ export default class ModalForm {
     }
 
     setFormSubmitHandler() {
-        // this.ui.modalForm.form.removeEventListener('submit', this.modalFormCallback);
         this.ui.modalForm.form.addEventListener('submit', this.modalFormCallback);
     }
 
@@ -158,19 +161,6 @@ export default class ModalForm {
     _hideError() {
         this.ui.modalForm.error.innerHTML = '';
         this.ui.modalForm.error.classList.add('d-none');
-    }
-
-    addInputsDataToRequestData(requestData) {
-        let data = {};
-        let formData = $('#form__new-entry').serializeArray();
-        formData.forEach(function (arrayItem) {
-            if (arrayItem.value !== '') {
-                data[arrayItem.name] = arrayItem.value;
-            }
-        });
-
-        data = addCSRF(data);
-        return data;
     }
 
     hideModal() {
@@ -247,10 +237,9 @@ export default class ModalForm {
     setModalCpsBuildingsFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить здание';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewBuilding;
-        this.modalFormPurpose = 'buildings';
         this.setModalCpsBuildingsFormHtmlListsListeners();
-        // this.setFormWithTexboxesSubmitHandler();
-        // this.setFormSubmitHandler();
+        this.ui.modalFormPurpose = 'buildings';
+        this.ui.modalForm.requestMethod = "POST"
         this.ui.modalForm.requestUrl = config.api.postPutDeleteBuildings;
     }
 
@@ -259,37 +248,43 @@ export default class ModalForm {
         this.agBuildingId = selectedRow.id;
         this.agBuildingName = selectedRow.shed;
 
-        this.ui.modalForm.caption.innerHTML = 'Копировать оборудование в ' + this.agBuildingName + ' из здания:';
+        this.ui.modalForm.caption.innerHTML = 'Копировать оборудование ' + this.agBuildingName + ' в здание:';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalCopyEquipmentFromBuilding;
         this.setModalAgGridBuildings();
 
         this.ui.modalForm.requestMethod = "POST"
-        this.modalFormPurpose = 'copyEquipFromBuilding';
+        this.ui.modalFormPurpose = 'copyEquipFromBuilding';
         this.ui.modalForm.requestUrl = config.api.postCopyEquipmentFromFromOneBuildingToAnother;
-        // this.setFormSubmitHandler();
     }
 
     setModalCpsEquipmentFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
         this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipment;
         this.setModalAgGridEquipmentWithFilter();
-        this.modalFormPurpose = 'newEquipment';
+        this.ui.modalFormPurpose = 'newEquipment';
         this.ui.modalForm.requestMethod = "POST";
-        // this.setFormWithGridSubmitHandler();
-        // this.setFormSubmitHandler();
         this.ui.modalForm.requestUrl = config.api.postPutDeleteEquipment;
     }
 
-    setModalAgGridEquipmentWithFilter() {
-        let cashedAgGridEquip = undefined;
-        if (userRole !== "super-user") {
-            cashedAgGridEquip = lists.equipment.all
-        }
-        this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
-            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName, cashedAgGridEquip);
-        this.modalTableAgGrid.textBoxFilter = document.querySelector('#aggrid_search');
-        this.modalTableAgGrid.setFilterTextBox();
-        this.modalTableAgGrid.resetFilter();
+    setModalNewEquipmentInBuildingHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить оборудование в ' + this.agBuildingName;
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipmentInBuilding;
+        document.querySelector('#quantity').addEventListener('input', this.validateNumberWithDot);
+        this.setModalAgGridEquipmentWithFilter();
+        this.ui.modalForm.requestMethod = "POST";
+        this.ui.modalFormPurpose = 'addEquipmentInBuilding';
+        this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
+    }
+
+    setModalPutEquipmentInBuildingHtml() {
+        let selectedRow = this.tableAgGrid.getSelectedRow();
+        let equipmentName = selectedRow.equip_name;
+        this.ui.modalForm.caption.innerHTML = 'Заменить ' + equipmentName + ' в ' + this.agBuildingName + ' на';
+        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalPutEquipmentInBuilding;
+        this.setModalAgGridEquipmentWithFilter();
+        this.ui.modalForm.requestMethod = "PUT";
+        this.ui.modalFormPurpose = 'editEquipmentInBuilding';
+        this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
     }
 
     setModalAgGridBuildings() {
@@ -304,27 +299,16 @@ export default class ModalForm {
         // this.modalTableAgGrid.resetFilter();
     }
 
-    setModalNewEquipmentInBuildingHtml() {
-        this.ui.modalForm.caption.innerHTML = 'Добавить оборудование в ' + this.agBuildingName;
-        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalNewEquipmentInBuilding;
-        document.querySelector('#quantity').addEventListener('input', this.validateNumberWithDot);
-        this.setModalAgGridEquipmentWithFilter();
-        this.ui.modalForm.requestMethod = "POST";
-        this.modalFormPurpose = 'addEquipmentInBuilding';
-        this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
-        // this.setFormSubmitHandler();
-    }
-
-    setModalPutEquipmentInBuildingHtml() {
-        let selectedRow = this.tableAgGrid.getSelectedRow();
-        let equipmentName = selectedRow.equip_name;
-        this.ui.modalForm.caption.innerHTML = 'Заменить ' + equipmentName + ' в ' + this.agBuildingName + ' на';
-        this.ui.modalForm.modalBody.innerHTML = this.modalHtml.modalPutEquipmentInBuilding;
-        this.setModalAgGridEquipmentWithFilter();
-        this.ui.modalForm.requestMethod = "PUT";
-        this.modalFormPurpose = 'editEquipmentInBuilding';
-        this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
-        // this.setFormSubmitHandler();
+    setModalAgGridEquipmentWithFilter() {
+        let cashedAgGridEquip = undefined;
+        if (userRole !== "super-user") {
+            cashedAgGridEquip = lists.equipment.all
+        }
+        this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
+            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName, cashedAgGridEquip);
+        this.modalTableAgGrid.textBoxFilter = document.querySelector('#aggrid_search');
+        this.modalTableAgGrid.setFilterTextBox();
+        this.modalTableAgGrid.resetFilter();
     }
 
     validateNumberWithDot(e) {
@@ -582,39 +566,6 @@ export default class ModalForm {
                             </div>
                         </div>
                         `;
-        // this.modalHtml.modalNewEquipment = `
-        //                 <div class="col-9">
-        //                      <div>Здание с уже существующими приборами:</div>
-        //                 </div>
-        //                  <div class="row p-2">
-        //                     <div class="col-3">
-        //                         <label for="aggrid_search" class="col-form-label">Поиск</label>
-        //                     </div>
-        //                     <div class="col-9">
-        //                          <input type="text"  id="aggrid_search"  class="form-control" name="aggrid_search">
-        //                     </div>
-        //                 </div>
-        //                 </div>
-        //                 <div class="modal-aggrid-wrapper">
-        //                     <div id="modal-aggrid" style="width: 100%; height: 100%;"></div>
-        //                 </div>
-        //                 <div class="row p-2">
-        //                     <div class="col-3">
-        //                         <label for="equip_name" class="col-form-label">Название нового прибора</label>
-        //                     </div>
-        //                     <div class="col-9">
-        //                          <input type="text" class="form-control" id="equip_name" required name="equip_name">
-        //                     </div>
-        //                 </div>
-        //                 <div class="row p-2">
-        //                     <div class="col-3">
-        //                         <label for="brand_name" class="col-form-label">Производитель</label>
-        //                     </div>
-        //                     <div class="col-9">
-        //                          <input type="text" class="form-control" id="brand_name" required name="brand_name">
-        //                     </div>
-        //                 </div>
-        //                 `;
     }
 }
 

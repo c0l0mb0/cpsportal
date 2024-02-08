@@ -36,6 +36,9 @@ class EquipmentController extends Controller
         $equipment = Equipment::find($request->id_equip);
         $equipment->equip_name = $request->equip_name;
         $equipment->brand_name = $request->brand_name;
+        $equipment->equip_name_extracted_type = null;
+        $equipment->equip_name_extracted_brand = null;
+
         $equipment = Equipment::create($equipment->toArray());
 
         return response()->json($equipment);
@@ -55,7 +58,6 @@ class EquipmentController extends Controller
 
         return response()->json('Equipment removed successfully');
     }
-
 
 
 }

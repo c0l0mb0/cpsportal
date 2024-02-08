@@ -86,7 +86,6 @@ export default class SideBar {
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.setAddButtonActionForNewBuilding();
-            this.actionMenu.setCopyEquipToBuildingAction();
             this.actionMenu.showPlusAndExcelButton();
             this.actionMenu.setExportPassportAction();
             this.removeMenuPlanGraf();
@@ -102,6 +101,7 @@ export default class SideBar {
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.showExcelButton();
             this.actionMenu.setEditInnerAction();
+            this.actionMenu.setCopyEquipToBuildingAction();
             this.actionMenu.setReturnToBuildingsAction();
             this.removeMenuPlanGraf();
             changePageTitle("Оборудование в здании");

@@ -243,8 +243,6 @@ export default class ActionMenu {
         };
     }
 
-
-
     setEditInnerMonthAction() {
         this.innerMonth.onclick = () => {
             let selectedRow = this.tableAgGrid.getSelectedRow();
@@ -297,7 +295,6 @@ export default class ActionMenu {
     setEditAddEquipOfBuildingButtonActionForNewEquipInBuilding() {
         this.modalForm.setEditAddEquipOfBuildingButtonActionForNewEquipInBuildingModal();
     }
-
 
     setReturnToBuildingsAction() {
         this.assignReturnButtonEventListener(this.returnToBuildingsAction);

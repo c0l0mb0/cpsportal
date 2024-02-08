@@ -75,25 +75,25 @@ class BuildEquipController extends Controller
 
     public function copyEquipmentFromFromOneBuildingToAnother(Request $request)
     {
-//        $this->validate($request, [
-//            'id_build_from' => 'required',
-//            'id_equip_to' => 'required',
-//        ]);
-//        $buildingAndEquip = BuildEquip::findOrFail($id);
-//        $userRole = Auth::user()->roles->pluck('name')[0];
-//        if ($userRole != 'super-user' and $userRole != 'Nur_master' and $userRole != 'Yamburg_master' and
-//            $userRole != 'Zapolyarka_master' and BuildEquip::where('created_by_worker', true)
-//                ->where('id', $id)->doesntExist()) {
-//            $this->createWorkerChangesLog();
-//            $this->workerChangesLog->logUpdatedItem($id, $buildingAndEquip->id_build, $buildingAndEquip->id_equip,
-//                $buildingAndEquip->quantity, $buildingAndEquip->measure, $buildingAndEquip->equip_year,
-//                $buildingAndEquip->equip_comments,);
-//            BuildEquip::where('id', $id)->update(['edited_by_worker' => true]);
-//        }
-//
-//        $buildingAndEquip->update($request->all());
-//
-//        return response()->json($buildingAndEquip);
+        $this->validate($request, [
+            'id_build_from' => 'required',
+            'id_build_to' => 'required',
+        ]);
+        DB::statement('INSERT INTO public.build_equip (id_build, id_equip, quantity, measure, equip_year,
+                                cel_january, cel_january_gray, cel_february, cel_february_gray, cel_march,
+                                cel_march_gray, cel_april, cel_april_gray, cel_may, cel_may_gray, cel_june,
+                                cel_june_gray, cel_july, cel_july_gray, cel_august, cel_august_gray, cel_september,
+                                cel_september_gray, cel_october, cel_october_gray, cel_november, cel_november_gray,
+                                cel_december, cel_december_gray)
+                            SELECT :id_build_to,id_equip, quantity, measure, equip_year,
+                            cel_january, cel_january_gray, cel_february, cel_february_gray, cel_march, cel_march_gray,
+                            cel_april, cel_april_gray, cel_may, cel_may_gray, cel_june, cel_june_gray, cel_july,
+                             cel_july_gray, cel_august, cel_august_gray, cel_september, cel_september_gray, cel_october,
+                              cel_october_gray, cel_november, cel_november_gray, cel_december, cel_december_gray
+                              FROM build_equip
+                              WHERE id_build =:id_build_from', ['id_build_to' => $request->id_build_to,
+            'id_build_from' => $request->id_build_from]);
+        return response()->json('Equipment has been copied successfully');
     }
 
     private function createWorkerChangesLog()
@@ -142,7 +142,9 @@ class BuildEquipController extends Controller
              CONCAT  (quantity, ' ', measure) AS \"quantityWithMeasure\""))
             ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
             ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
-            ->orderBy('equip_name', 'asc')
+            ->orderByRaw("array_position(ARRAY['ППК, и его переферия', 'Извещатель', 'Оповещатель', 'Лучи (шлейфа)',
+             'Оборудование КИПиА', 'Пожаротушение', 'Система речевого оповещения', 'Реле', 'Питание', 'КИПиА',
+             'Термостат', 'Прочее оборудование', 'Бокс, коробка, щит, шкаф, ящик', 'Кабель'], kind_app), kind_app")
             ->where($whereArr)
             ->get();
     }

@@ -299,7 +299,6 @@ export let agGridParameters = {
             onRowSelected: function () {
                 agGridParameters.actionMenu.showDelButton();
                 agGridParameters.actionMenu.showPassportButton();
-                agGridParameters.actionMenu.showCopyEquipOfBuildingButton();
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
@@ -372,6 +371,7 @@ export let agGridParameters = {
                     addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
             onRowSelected: function () {
+                agGridParameters.actionMenu.showCopyEquipOfBuildingButton();
                 agGridParameters.actionMenu.showGoToEquipButton();
             },
             onFirstDataRendered: (params) => {
@@ -880,6 +880,7 @@ export let agGridParameters = {
                     tooltipField: 'equip_name',
                     sortable: true, filter: true,
                     editable: false,
+                    rowDrag: true,
                 },
                 {
                     headerName: "Тип",
@@ -997,7 +998,9 @@ export let agGridParameters = {
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
-            }
+            },
+            rowDragManaged: true,
+            animateRows: true,
         },
         agName: 'equipmentInBuildings',
     },
