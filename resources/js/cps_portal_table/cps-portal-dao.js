@@ -23,6 +23,7 @@ export let config = {
         postPutDeleteEquipment: '/api/equipment',
         getPutDeleteEquipmentInBuilding: '/api/equipment-buildings',
         postCopyEquipmentFromFromOneBuildingToAnother: '/api/copy-equip-to-build',
+        postDeleteEquipDuplicates: '/api/delete-equip-duplicates',
         getEquipmentUsage: '/api/equipment-usage',
         getUserRole: '/api/get-user-role',
         getExportNormiZapasaKip: '/api/export-normi-zapasa-kip',

@@ -96,6 +96,45 @@ class BuildEquipController extends Controller
         return response()->json('Equipment has been copied successfully');
     }
 
+    public function deleteEquipmentDuplicates(Request $request)
+    {
+        $this->validate($request, [
+            'id_equip_to_del' => 'required|numeric|min:0|not_in:0',
+            'id_equip_remain' => 'required|numeric|min:0|not_in:0',
+        ]);
+        //find buildings where is toRemain and toDel equipment are existed
+        $countOfBuildingsWithRemainAndToDelEquipment = DB::select('SELECT count(*) FROM build_equip a
+                     WHERE id_equip = ? and
+                     EXISTS (SELECT 1 FROM build_equip b WHERE b.id_build = a.id_build and b.id_equip = ?)',
+            [$request->id_equip_remain,
+                $request->id_equip_to_del]);
+        if ($countOfBuildingsWithRemainAndToDelEquipment[0]->count > 0 and
+            $countOfBuildingsWithRemainAndToDelEquipment != null and count($countOfBuildingsWithRemainAndToDelEquipment) > 0) {
+            //if buildings where is toRemain and toDel equipment are exists then reassign quantity
+            DB::statement('UPDATE build_equip a SET quantity = quantity +
+             (SELECT sum(b.quantity) FROM build_equip b WHERE b.id_build = a.id_build AND b.id_equip = ?)
+                WHERE a.id_equip = ?
+                AND EXISTS (SELECT 1 FROM build_equip b WHERE b.id_build = a.id_build AND b.id_equip = ?)',
+                [$request->id_equip_to_del, $request->id_equip_remain, $request->id_equip_to_del]);
+            // Удалим из этих Связок "заменяемый" прибор
+            DB::statement('DELETE FROM build_equip a
+            where id_equip = ?
+            and exists (select 1 from build_equip b where b.id_build = a.id_build and b.id_equip = ?)',
+                [$request->id_equip_to_del, $request->id_equip_remain]);
+            // Теперь просто заменим "заменяемый" на "остающийся"
+            DB::statement('update build_equip a set id_equip =  ? where a.id_equip = ?',
+                [$request->id_equip_remain, $request->id_equip_to_del]);
+//            // Проверим, что "связок" с "заменяемым" прибором больше нет
+            $countOfDeletedEquipmentAfterDeleting = DB::select('select count(*)
+                from build_equip a where id_equip = ?', [$request->id_equip_to_del]);
+
+            if ($countOfDeletedEquipmentAfterDeleting[0]->count === 0 and
+                $countOfDeletedEquipmentAfterDeleting != null and count($countOfDeletedEquipmentAfterDeleting) > 0) {
+                DB::statement('delete from equipment where id = ?', [$request->id_equip_to_del]);
+            }
+        }
+    }
+
     private function createWorkerChangesLog()
     {
         if ($this->workerChangesLog === NULL) {

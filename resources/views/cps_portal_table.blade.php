@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" href="{{ asset('css/libs/bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/table/table.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/libs/flatpickr.min.css') }}">
 
 </head>
 <body>
@@ -47,6 +46,9 @@
                 <li>
                     <a class="sidebar__export-plan_grafici sidebar-list-left_margin" hidden href="#">План-графики
                         экспорт</a>
+                </li>
+                <li>
+                    <a class="sidebar__delete-duplicates sidebar-list-left_margin" hidden href="#">Удалить дубликаты</a>
                 </li>
                 <div hidden class="sidebar-list_capture ">Персонал</div>
                 <li>
@@ -151,8 +153,6 @@
                 </div>
                 <div id='page-content'></div>
             </div>
-        </div>
-    </div>
     <!-- Modal -->
     <div class="modal-container">
         <div class="modal fade" id="modal__new-entry" tabindex="-1" aria-labelledby="modal-Label" aria-hidden="true">

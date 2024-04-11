@@ -16,12 +16,12 @@ export default class TableAgGrid {
     idToScroll;
     agFilterModel;
     isReady = false;
-    targetId = 'page-content';
+    targetId;
     confirmDeleteBtn = document.querySelector('.modal__confirm-delete-entry-btn');
     agName;
 
     constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu, idToScroll = undefined,
-                agFilterModel = undefined, cashedGridData = undefined) {
+                agFilterModel = undefined, cashedGridData = undefined, targetId = 'page-content') {
         this.gridOptions = gridOptions;
         this.getDataUrl = getDataUrl;
         this.delUrl = delUrl;
@@ -30,6 +30,7 @@ export default class TableAgGrid {
         this.idToScroll = idToScroll;
         this.agFilterModel = agFilterModel;
         this.cashedGridData = cashedGridData;
+        this.targetId = targetId;
         this.renderAgGrid();
     }
 

@@ -870,6 +870,152 @@ export let agGridParameters = {
         },
         agName: 'cps_equipment',
     },
+    uneditableEquipmentParameters: {
+        gridOptions: {
+            columnDefs: [
+                {
+                    headerName: "Название",
+                    field: "equip_name",
+                    minWidth: 100,
+                    tooltipField: 'equip_name',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "ТипОбобщенный",
+                    field: "kind_app",
+                    minWidth: 100,
+                    tooltipField: 'kind_app',
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Тип",
+                    field: "kind_app_second",
+                    minWidth: 100,
+                    tooltipField: 'kind_app_second',
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Сигнал",
+                    field: "kind_signal",
+                    minWidth: 100,
+                    tooltipField: 'kind_signal',
+                    sortable: true, filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Производитель",
+                    field: "brand_name",
+                    minWidth: 100,
+                    tooltipField: 'brand_name',
+                    sortable: true, filter: true,
+                },
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: false,
+                menuTabs: ['filterMenuTab'],
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: function (event) {
+            },
+            onRowSelected: function () {
+            },
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            }
+        },
+        agName: 'uneditableEquipmentParameters',
+    },
+    uneditableEquipmentParameters2: {
+        gridOptions: {
+            columnDefs: [
+                {
+                    headerName: "Название",
+                    field: "equip_name",
+                    minWidth: 100,
+                    tooltipField: 'equip_name',
+                    sortable: true,
+                    filter: true,
+                },
+                {
+                    headerName: "ТипОбобщенный",
+                    field: "kind_app",
+                    minWidth: 100,
+                    tooltipField: 'kind_app',
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Тип",
+                    field: "kind_app_second",
+                    minWidth: 100,
+                    tooltipField: 'kind_app_second',
+                    filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Сигнал",
+                    field: "kind_signal",
+                    minWidth: 100,
+                    tooltipField: 'kind_signal',
+                    sortable: true, filter: true,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "Производитель",
+                    field: "brand_name",
+                    minWidth: 100,
+                    tooltipField: 'brand_name',
+                    sortable: true, filter: true,
+                },
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: false,
+                menuTabs: ['filterMenuTab'],
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: function (event) {
+            },
+            onRowSelected: function () {
+            },
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            }
+        },
+        agName: 'uneditableEquipmentParameters2',
+    },
     equipmentInBuildingsParameters: {
         gridOptions: {
             columnDefs: [

@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::delete('equipment-buildings/{id}', [BuildEquipController::class, 'destroy']);
     Route::get('equipment-usage/{id}', [BuildEquipController::class, 'getBuildingsWhereEquipmentItemIsUsed']);
     Route::post('copy-equip-to-build', [BuildEquipController::class, 'copyEquipmentFromFromOneBuildingToAnother']);
+    Route::post('delete-equip-duplicates', [BuildEquipController::class, 'deleteEquipmentDuplicates']);
 
 
     Route::get('export-normi-zapasa-kip', [ExcelExportController::class, 'exportNormiZapasaKip']);
