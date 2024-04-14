@@ -37,21 +37,21 @@ export default class SideBar {
             document.getElementById('sidebar').classList.toggle("active");
         };
 
-        // document.querySelector('.sidebar__edit-staff').onclick = () => {
-        //     this.tableAgGrid = new TableAgGrid(agGridParameters.workersParameters.gridOptions,
-        //         config.api.getWorkersALl, config.api.postPutDeleteWorkers,
-        //         agGridParameters.workersParameters.agName, this.actionMenu);
-        //     this.actionMenu.tableAgGrid = this.tableAgGrid;
-        //     this.modalForm.tableAgGrid = this.tableAgGrid;
-        //     this.modalForm.setModalWorkersFormHtml();
-        //     this.actionMenu.showPlusAndExcelButton();
-        //     this.modalForm.setFormWithTexboxesSubmitHandler();
-        //     if (this.menuPlanGraf !== undefined) {
-        //         this.menuPlanGraf.remove();
-        //     }
-        //
-        //     changePageTitle("Работники");
-        // };
+        document.querySelector('.sidebar__edit-schedule').onclick = () => {
+            this.tableAgGrid = new TableAgGrid(agGridParameters.cpsScheduleParameters.gridOptions,
+                config.api.getWorkersALl, config.api.postPutDeleteWorkers,
+                agGridParameters.cpsScheduleParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            // this.modalForm.setModalWorkersFormHtml();
+            // this.actionMenu.showPlusAndExcelButton();
+            // this.modalForm.setFormWithTexboxesSubmitHandler();
+            if (this.menuPlanGraf !== undefined) {
+                this.menuPlanGraf.remove();
+            }
+
+            changePageTitle("Работники");
+        };
 
         // document.querySelector('.sidebar__edit-fire_instr').onclick = () => {
         //     this.tableAgGrid = new TableAgGrid(agGridParameters.fireInstrParameters.gridOptions,

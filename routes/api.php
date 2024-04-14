@@ -20,11 +20,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function(){
-    Route::get('workersall', [WorkersController::class, 'index']);
-    Route::post('workers', [WorkersController::class, 'create']);
-    Route::put('workers/{id}', [WorkersController::class, 'update']);
-    Route::post('workers-add-six-month', [WorkersController::class, 'addSixMonthFromLastDateToNextDate']);
-    Route::delete('workers/{id}', [WorkersController::class, 'destroy']);
+    Route::get('workers-all', [WorkersController::class, 'index']);
+//    Route::post('workers', [WorkersController::class, 'create']);
+//    Route::put('workers/{id}', [WorkersController::class, 'update']);
+//    Route::post('workers-add-six-month', [WorkersController::class, 'addSixMonthFromLastDateToNextDate']);
+//    Route::delete('workers/{id}', [WorkersController::class, 'destroy']);
 
     Route::get('buildings-all', [BuildingsController::class, 'index']);
     Route::get('buildings-and-orederedplangraf', [BuildingsController::class, 'getBuildingsAndPlanGrafDataOrderedByPlanGraf']);

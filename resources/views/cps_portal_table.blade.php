@@ -50,9 +50,9 @@
                 <li>
                     <a class="sidebar__delete-duplicates sidebar-list-left_margin" hidden href="#">Удалить дубликаты</a>
                 </li>
-                <div hidden class="sidebar-list_capture ">Персонал</div>
+                <div class="sidebar-list_capture ">Персонал</div>
                 <li>
-                    <a class="sidebar__edit-fire_instr sidebar-list-left_margin" hidden href="#">ПожИнструктаж</a>
+                    <a class="sidebar__edit-schedule sidebar-list-left_margin"  href="#">Проверки</a>
                 </li>
                 <li>
                     <a class="sidebar__edit-staff sidebar-list-left_margin " hidden href="#">Данные</a>
@@ -153,67 +153,72 @@
                 </div>
                 <div id='page-content'></div>
             </div>
-    <!-- Modal -->
-    <div class="modal-container">
-        <div class="modal fade" id="modal__new-entry" tabindex="-1" aria-labelledby="modal-Label" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modal__caption">Добавить</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+            <!-- Modal -->
+            <div class="modal-container">
+                <div class="modal fade" id="modal__new-entry" tabindex="-1" aria-labelledby="modal-Label"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal__caption">Добавить</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form class="modal-form needs-validation" id="form__new-entry">
+                                <div class="modal__form__body"></div>
+                                <div class="row" style="margin: 0;">
+                                    <mark id="form__error" class="inline-block secondary d-none"
+                                          style="text-align: center">
+                                    </mark>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть
+                                    </button>
+                                    <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <form class="modal-form needs-validation" id="form__new-entry">
-                        <div class="modal__form__body"></div>
-                        <div class="row" style="margin: 0;">
-                            <mark id="form__error" class="inline-block secondary d-none" style="text-align: center">
-                            </mark>
+                </div>
+            </div>
+            <!-- Modal confirm delete-->
+            <div class="modal" tabindex="-1" role="dialog" id="modal__confirm-delete-entry">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Удаление</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Вы действительно хотите удалить данную запись?</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
+                            <button type="button" class="btn btn-primary modal__confirm-delete-entry-btn">Удалить
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Modal confirm delete-->
-    <div class="modal" tabindex="-1" role="dialog" id="modal__confirm-delete-entry">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Удаление</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Вы действительно хотите удалить данную запись?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary modal__confirm-delete-entry-btn">Удалить</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
-<script src="{{ asset('js/libs/ag-grid-enterprise.min.js') }}"></script>
-<script src="{{ asset('js/libs/flatpickr.js') }}"></script>
-<script src="{{ asset('js/libs/ru.js') }}"></script>
+        <script src="{{ asset('js/libs/ag-grid-enterprise.min.js') }}"></script>
+        <script src="{{ asset('js/libs/imask.js') }}"></script>
+{{--        <script src="{{ asset('js/libs/flatpickr.js') }}"></script>--}}
+{{--        <script src="{{ asset('js/libs/ru.js') }}"></script>--}}
 
-<script src="{{ asset('js/libs/jquery-3.2.1.slim.min.js') }}"></script>
-<script src="{{ asset('js/libs/popper.min.js') }}"></script>
-<script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('js/libs/jquery-3.2.1.slim.min.js') }}"></script>
+        <script src="{{ asset('js/libs/popper.min.js') }}"></script>
+        <script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
 
 
-<script src="@php
-    {{echo ('js/cps_table/' . scandir("js/cps_table/")[2]);}}
-@endphp"></script>
+        <script src="@php
+            {{echo ('js/cps_table/' . scandir("js/cps_table/")[2]);}}
+        @endphp"></script>
 
 </body>
 </html>
