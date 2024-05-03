@@ -1,4 +1,3 @@
-import DatePicker from "./ag_grid_classes/date-picker";
 import {config, httpRequest} from "./cps-portal-dao";
 import {addCSRF} from "./helper";
 import NumericCellEditor from "./ag_grid_classes/numeric-cell-editor.js";
@@ -7,45 +6,13 @@ import CheckboxRenderer from "./ag_grid_classes/check-box-render";
 import {userRole} from "./app";
 import DateFormatter from "./ag_grid_classes/date-formatter";
 import StringDateEditor from "./ag_grid_classes/string-date-editor";
+import StyleTimeToExam from "./ag_grid_classes/cellStyleTimeToExam";
 
 
 export let agGridParameters = {
     agOuterId: undefined,
     actionMenu: undefined,
 
-    // workersParameters: {
-    //     gridOptions: {
-    //         columnDefs: [
-    //             {headerName: "ФИО", field: "fio", minWidth: 100, tooltipField: 'fio', sortable: true},
-    //             {
-    //                 headerName: "N табеля",
-    //                 field: "tab_nom",
-    //                 minWidth: 100,
-    //                 tooltipField: 'tab_nom',
-    //                 cellEditor: NumericCellEditor,
-    //             },
-    //             {headerName: "Должность", field: "worker_position", minWidth: 100, tooltipField: 'worker_position'},
-    //         ],
-    //         rowSelection: 'single',
-    //         defaultColDef: {
-    //             resizable: true,
-    //             editable: true,
-    //             menuTabs: ['filterMenuTab'],
-    //         },
-    //         enableBrowserTooltips: true,
-    //         onCellValueChanged: function (event) {
-    //             httpRequest(config.api.postPutDeleteWorkers, "PUT",
-    //                 addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
-    //         },
-    //         onRowSelected: function () {
-    //             agGridParameters.actionMenu.showDelButton();
-    //         },
-    //         onFirstDataRendered: (params) => {
-    //             params.api.sizeColumnsToFit();
-    //         }
-    //     },
-    //     agName: 'workers',
-    // },
     cpsScheduleParameters: {
         gridOptions: {
             columnDefs: [
@@ -72,55 +39,37 @@ export let agGridParameters = {
                     editable: false,
                 },
                 {
-                    headerName: "ПожИнстрПосл",
-                    field: "fire_instr_last",
+                    headerName: "Высота",
+                    field: "height_next",
                     minWidth: 60,
-                    tooltipField: 'fire_instr_last',
+                    tooltipField: 'height_next',
                     cellEditor: StringDateEditor,
                     valueFormatter: DateFormatter,
+                    cellStyle: StyleTimeToExam,
                 },
                 {
-                    headerName: "ПожИнстрСлед",
-                    field: "fire_instr_next",
-                    minWidth: 60,
-                    tooltipField: 'fire_instr_next',
-                    cellEditor: StringDateEditor,
-                    valueFormatter: DateFormatter,
-                },
-                {
-                    headerName: "ЭлБезПосл",
-                    field: "electrobez_last",
-                    minWidth: 60,
-                    tooltipField: 'electrobez_last',
-                    cellEditor: DatePicker,
-                    valueFormatter: DateFormatter,
-                },
-                {
-                    headerName: "ЭлБезСлед",
+                    headerName: "Электобез",
                     field: "electrobez_next",
                     minWidth: 60,
                     tooltipField: 'electrobez_next',
-                    cellEditor: DatePicker,
+                    cellEditor: StringDateEditor,
                     valueFormatter: DateFormatter,
+                    cellStyle: StyleTimeToExam,
                 },
                 {
-                    headerName: "НоутПосл",
-                    field: "laptop_last",
+                    headerName: "Медосмотр",
+                    field: "medcheck_next",
                     minWidth: 60,
-                    tooltipField: 'laptop_last',
-                    cellEditor: DatePicker,
+                    tooltipField: 'medcheck_next',
+                    cellEditor: StringDateEditor,
                     valueFormatter: DateFormatter,
+                    cellStyle: StyleTimeToExam,
                 },
-                {
-                    headerName: "НоутСлед",
-                    field: "laptop_next",
-                    minWidth: 60,
-                    tooltipField: 'laptop_next',
-                    cellEditor: DatePicker,
-                    valueFormatter: DateFormatter,
-                },
+
+
             ],
             rowSelection: 'single',
+            suppressCopyRowsToClipboard: true,
             defaultColDef: {
                 resizable: true,
                 editable: true,
@@ -130,8 +79,21 @@ export let agGridParameters = {
             onCellValueChanged: function (event) {
                 httpRequest(config.api.postPutDeleteWorkers, "PUT", addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
+            onCellEditingStarted: function (event) {
+                let columnName = event.colDef.field;
+                if (columnName.includes('last') === true) {
+                    agGridParameters.actionMenu.showPlusSixButton();
+                    agGridParameters.actionMenu.showPlusThreeButton();
+                    agGridParameters.actionMenu.showPlusTwelveButton();
+                }
+
+            },
+            onCellEditingStopped: function () {
+                agGridParameters.actionMenu.hidePlusSixButton();
+                agGridParameters.actionMenu.hidePlusThreeButton();
+                agGridParameters.actionMenu.hidePlusTwelveButton();
+            },
             onRowSelected: function () {
-                // agGridParameters.actionMenu.showPlusSixButton();
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
@@ -321,6 +283,7 @@ export let agGridParameters = {
             onRowSelected: function () {
                 agGridParameters.actionMenu.showDelButton();
                 agGridParameters.actionMenu.showPassportButton();
+                agGridParameters.actionMenu.showTepExportButton();
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();

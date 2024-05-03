@@ -15,7 +15,9 @@ export default class ActionMenu {
     exportExcel;
     exportPassport;
     exportPlanGraf;
-    fireExamPlusSix;
+    checkPlusSix;
+    checkPlusThree;
+    checkPlusTwelve;
     innerEquipment;
     agBuildingId;
     agBuildingName;
@@ -32,13 +34,17 @@ export default class ActionMenu {
     cashedAgGridBuildings;
     equipUsage;
     copyEquipOfBuilding;
+    jsonExport;
+    tepExport;
 
 
     hideALl() {
         this.newTableRow.style.display = 'none';
         this.deleteTableRow.style.display = 'none';
         this.exportExcel.style.display = 'none';
-        this.fireExamPlusSix.style.display = 'none';
+        this.checkPlusThree.style.display = 'none';
+        this.checkPlusSix.style.display = 'none';
+        this.checkPlusTwelve.style.display = 'none';
         this.innerEquipment.style.display = 'none';
         this.editTableRow.style.display = 'none';
         this.returnBack.style.display = 'none';
@@ -49,6 +55,24 @@ export default class ActionMenu {
         this.arrangePlanGrafSequence.style.display = 'none';
         this.equipUsage.style.display = 'none';
         this.copyEquipOfBuilding.style.display = 'none';
+        this.jsonExport.style.display = 'none';
+        this.tepExport.style.display = 'none';
+    }
+
+    hideTepExportButton() {
+        this.tepExport.style.display = 'none';
+    }
+
+    showTepExportButton() {
+        this.tepExport.style.display = 'block';
+    }
+
+    hideJsonExportButton() {
+        this.jsonExport.style.display = 'none';
+    }
+
+    showJsonExportButton() {
+        this.jsonExport.style.display = 'block';
     }
 
     hideCopyEquipOfBuildingButton() {
@@ -117,11 +141,27 @@ export default class ActionMenu {
     }
 
     showPlusSixButton() {
-        this.fireExamPlusSix.style.display = 'block';
+        this.checkPlusSix.style.display = 'block';
+    }
+
+    showPlusThreeButton() {
+        this.checkPlusThree.style.display = 'block';
+    }
+
+    showPlusTwelveButton() {
+        this.checkPlusTwelve.style.display = 'block';
     }
 
     hidePlusSixButton() {
-        this.fireExamPlusSix.style.display = 'none';
+        this.checkPlusSix.style.display = 'none';
+    }
+
+    hidePlusThreeButton() {
+        this.checkPlusThree.style.display = 'none';
+    }
+
+    hidePlusTwelveButton() {
+        this.checkPlusTwelve.style.display = 'none';
     }
 
     showDelButton() {
@@ -159,6 +199,8 @@ export default class ActionMenu {
     hideAllOneRowAction() {
         this.hideDelButton();
         this.hidePlusSixButton();
+        this.hidePlusThreeButton();
+        this.hidePlusTwelveButton();
         this.hideEditButton();
         this.hideGoToEquipButton();
         this.hidePassportButton();
@@ -177,6 +219,15 @@ export default class ActionMenu {
             httpRequest(config.api.postWorkersAddSixMonth, "POST", addCSRF(selectedRow)).then(() => {
                 this.tableAgGrid.setGridData();
             }).catch((rejected) => console.log(rejected));
+        }
+    }
+
+    setExportWorkersChecksDatesJsonAction() {
+        this.showJsonExportButton();
+        this.jsonExport.onclick = () => {
+            let downloadLink = document.createElement("a");
+            downloadLink.href = config.api.getExportAllNextWorkersChecksJson;
+            downloadLink.click();
         }
     }
 
@@ -202,6 +253,7 @@ export default class ActionMenu {
         this.addButtonActionEventLister = this.modalForm.setModalCpsBuildingsFormHtml.bind(this.modalForm);
         this.newTableRow.addEventListener('click', this.addButtonActionEventLister);
     }
+
     setCopyEquipToBuildingAction() {
         this.copyEquipOfBuilding.removeEventListener('click', this.copyEquipToBuildingEventLister);
         this.copyEquipToBuildingEventLister = this.modalForm.setModalCopyEquipmentToBuildingFormHtml.bind(this.modalForm);
@@ -342,6 +394,16 @@ export default class ActionMenu {
         this.exportPassport.onclick = () => {
             let selectedRow = this.tableAgGrid.getSelectedRow();
             let URL = config.api.getExportPassport + '/' + selectedRow.id;
+
+            let downloadLink = document.createElement("a");
+            downloadLink.href = URL;
+            downloadLink.click();
+        };
+    }
+    setExportTepAction(){
+        this.tepExport.onclick = () => {
+            let selectedRow = this.tableAgGrid.getSelectedRow();
+            let URL = config.api.getExportTep + '/' + selectedRow.id;
 
             let downloadLink = document.createElement("a");
             downloadLink.href = URL;

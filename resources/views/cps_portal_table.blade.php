@@ -52,10 +52,10 @@
                 </li>
                 <div class="sidebar-list_capture ">Персонал</div>
                 <li>
-                    <a class="sidebar__edit-schedule sidebar-list-left_margin"  href="#">Проверки</a>
+                    <a class="sidebar__edit-schedule sidebar-list-left_margin"  hidden href="#">Проверки</a>
                 </li>
                 <li>
-                    <a class="sidebar__edit-staff sidebar-list-left_margin " hidden href="#">Данные</a>
+                    <a class="sidebar__edit-schedule-calendar sidebar-list-left_margin"  hidden href="#">Календарь</a>
                 </li>
             </ul>
         </div>
@@ -90,9 +90,17 @@
                             data-target="#modal__confirm-delete-entry" data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
+                    <button type="button" class="btn plus-three-month action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title=" + 3 месяцa">
+                        <img src="{{ asset('icon/3-plus.svg') }}" class="row-menue__icon">
+                    </button>
                     <button type="button" class="btn plus-six-month action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="последний экзамен + 6 месяцев">
+                            data-bs-placement="bottom" title=" + 6 месяцев">
                         <img src="{{ asset('icon/plus-six.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn plus-twelve-month action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title=" + 12 месяцев">
+                        <img src="{{ asset('icon/12-plus.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn inner-equip action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="оборудование">
@@ -101,6 +109,10 @@
                     <button type="button" class="btn excel-export-passport action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Паспорт здания">
                         <img src="{{ asset('icon/passport.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn excel-export-tep action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Экспорт ТЭП">
+                        <img src="{{ asset('icon/workers.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn excel-export-plangrafic action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Экспорт плана-графика">
@@ -131,6 +143,14 @@
                     <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Экспорт в Excel">
                         <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn json-export action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Экспорт в данных json">
+                        <img src="{{ asset('icon/json-export.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn json-export action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Экспорт в данных json">
+                        <img src="{{ asset('icon/json-export.svg') }}" class="row-menue__icon">
                     </button>
                 </div>
                 <div class="justify-content-end navbar-btn-logout-wrapper">
@@ -208,12 +228,10 @@
 
         <script src="{{ asset('js/libs/ag-grid-enterprise.min.js') }}"></script>
         <script src="{{ asset('js/libs/imask.js') }}"></script>
-{{--        <script src="{{ asset('js/libs/flatpickr.js') }}"></script>--}}
-{{--        <script src="{{ asset('js/libs/ru.js') }}"></script>--}}
-
         <script src="{{ asset('js/libs/jquery-3.2.1.slim.min.js') }}"></script>
         <script src="{{ asset('js/libs/popper.min.js') }}"></script>
         <script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('js/libs/index.global.min.js') }}"></script>
 
 
         <script src="@php

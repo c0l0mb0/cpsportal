@@ -3,7 +3,7 @@ export default class StringDateEditor {
     init(params) {
         // create the cell
         this.eInput = document.createElement('input');
-        this.eInput.setAttribute('style', 'whidth:100%;border:0');
+        this.eInput.setAttribute('style', 'whidth:100%;border:0;outline:none;');
 
         let postgresqlFormat = params.value;
         // console.log(postgresqlFormat)

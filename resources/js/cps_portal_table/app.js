@@ -4,7 +4,6 @@ import ModalForm from './modal.js'
 import {agGridParameters, initializeAgGridParameters} from "./ag-grid-parameters.js";
 import {config, httpRequest} from "./cps-portal-dao";
 import {lists} from "./lists";
-import {addCSRF} from "./helper";
 import IdleTimer from "./idle-timer";
 
 export let userRole = '';
@@ -34,7 +33,9 @@ function init() {
     actionMenu.newTableRow = document.querySelector('.new-table-row');
     actionMenu.deleteTableRow = document.querySelector('.delete-table-row');
     actionMenu.exportExcel = document.querySelector('.excel-export');
-    actionMenu.fireExamPlusSix = document.querySelector('.plus-six-month');
+    actionMenu.checkPlusThree = document.querySelector('.plus-three-month');
+    actionMenu.checkPlusSix = document.querySelector('.plus-six-month');
+    actionMenu.checkPlusTwelve = document.querySelector('.plus-twelve-month');
     actionMenu.innerEquipment = document.querySelector('.inner-equip');
     actionMenu.editTableRow = document.querySelector('.edit-table-row');
     actionMenu.returnBack = document.querySelector('.return-back');
@@ -45,6 +46,8 @@ function init() {
     actionMenu.arrangePlanGrafSequence = document.querySelector('.plangraf-arrange-numbers');
     actionMenu.equipUsage = document.querySelector('.equip-usage');
     actionMenu.copyEquipOfBuilding = document.querySelector('.copy-all-building-equipment');
+    actionMenu.jsonExport = document.querySelector('.json-export');
+    actionMenu.tepExport = document.querySelector('.excel-export-tep');
 
     let idleTimer = new IdleTimer();
 }

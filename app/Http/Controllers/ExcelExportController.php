@@ -8,6 +8,7 @@ use App\Export\ExelExportOtakaziRussianIzveshateli;
 use App\Export\ExelExportPassport;
 use App\Export\ExelExportPlanGrafic;
 use App\Export\ExelExportPotrebnostMtr;
+use App\Export\ExelExportTepSeveralSheets;
 use Illuminate\Http\Request;
 
 class ExcelExportController extends Controller
@@ -17,6 +18,14 @@ class ExcelExportController extends Controller
     {
         $normiZapasaKip = new ExelExportNormiZapasaKip('нормы_запаса_КИП.xlsx', 3, 1);
         $normiZapasaKip->run();
+    }
+
+    public function exportTep($id)
+    {
+        $buildingName   = BuildingsController::getBuildingById($id);
+        $exportTep = new ExelExportTepSeveralSheets('ТЭП_' . $buildingName . '.xlsx', 1, 1);
+        $exportTep->setIdBuilding($id);
+        $exportTep->run();
     }
 
     public function exportPotrebnostMtr()

@@ -1,4 +1,5 @@
 export let lists = {
+    workers: [],
     buildings: {
         all: {},
         area: [

@@ -21,10 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('workers-all', [WorkersController::class, 'index']);
-//    Route::post('workers', [WorkersController::class, 'create']);
-//    Route::put('workers/{id}', [WorkersController::class, 'update']);
-//    Route::post('workers-add-six-month', [WorkersController::class, 'addSixMonthFromLastDateToNextDate']);
-//    Route::delete('workers/{id}', [WorkersController::class, 'destroy']);
+    Route::get('export-all-next-workers-checks-json', [WorkersController::class, 'export']);
+    Route::put('workers/{id}', [WorkersController::class, 'update']);
 
     Route::get('buildings-all', [BuildingsController::class, 'index']);
     Route::get('buildings-and-orederedplangraf', [BuildingsController::class, 'getBuildingsAndPlanGrafDataOrderedByPlanGraf']);
@@ -58,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('export-passport/{id}', [ExcelExportController::class, 'exportPassport']);
     Route::post('export-plangrafic', [ExcelExportController::class, 'exportPlanGraf']);
     Route::get('export-otkazi-russianizveshateli', [ExcelExportController::class, 'exportOtkaziRussianIzveshatel']);
+    Route::get('export-tep/{id}', [ExcelExportController::class, 'exportTep']);
 
     Route::get('get-user-roles', [UserConrtroller::class, 'indexUserRoles']);
 

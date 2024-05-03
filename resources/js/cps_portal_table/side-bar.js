@@ -23,7 +23,9 @@ export default class SideBar {
             document.querySelector('.sidebar__export-plan_grafici').hidden = false;
             document.querySelector('.sidebar__edit-plan_grafici').hidden = false;
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
-            document.querySelector('.sidebar__delete-duplicates').hidden = false;
+            // document.querySelector('.sidebar__delete-duplicates').hidden = false;
+            document.querySelector('.sidebar__edit-schedule').hidden = false;
+            document.querySelector('.sidebar__edit-schedule-calendar').hidden = false;
         } else {
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
             this.cashedAgGridBuildings = lists.buildings.all;
@@ -43,28 +45,11 @@ export default class SideBar {
                 agGridParameters.cpsScheduleParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid;
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            // this.modalForm.setModalWorkersFormHtml();
-            // this.actionMenu.showPlusAndExcelButton();
-            // this.modalForm.setFormWithTexboxesSubmitHandler();
-            if (this.menuPlanGraf !== undefined) {
-                this.menuPlanGraf.remove();
-            }
+            this.actionMenu.setExportWorkersChecksDatesJsonAction();
+            this.removeMenuPlanGraf();
 
-            changePageTitle("Работники");
+            changePageTitle("Проверки работников. Красное - просрочено");
         };
-
-        // document.querySelector('.sidebar__edit-fire_instr').onclick = () => {
-        //     this.tableAgGrid = new TableAgGrid(agGridParameters.fireInstrParameters.gridOptions,
-        //         config.api.getWorkersALl, config.api.postPutDeleteWorkers,
-        //         agGridParameters.fireInstrParameters.agName, this.actionMenu);
-        //     this.actionMenu.tableAgGrid = this.tableAgGrid;
-        //     this.modalForm.tableAgGrid = this.tableAgGrid;
-        //     this.actionMenu.showExcelButton();
-        //     this.actionMenu.setFireExamPlusSixAction();
-        //     this.modalForm.setFormWithTexboxesSubmitHandler();
-        //     this.removeMenuPlanGraf();
-        //     changePageTitle("Пожинструктаж");
-        // };
         document.querySelector('.sidebar__edit-equip').onclick = () => {
             this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentParameters.gridOptions,
                 config.api.getEquipmentALl, config.api.postPutDeleteEquipment,
@@ -79,6 +64,12 @@ export default class SideBar {
             changePageTitle("Оборудование");
         };
 
+        document.querySelector('.sidebar__edit-schedule-calendar').onclick = () => {
+
+            this.removeMenuPlanGraf();
+            changePageTitle("Оборудование");
+        };
+
         document.querySelector('.sidebar__edit-buildings').onclick = () => {
             this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsParameters.gridOptions,
                 config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
@@ -89,6 +80,7 @@ export default class SideBar {
             this.actionMenu.setAddButtonActionForNewBuilding();
             this.actionMenu.showPlusAndExcelButton();
             this.actionMenu.setExportPassportAction();
+            this.actionMenu.setExportTepAction();
             this.removeMenuPlanGraf();
 
             changePageTitle("Здания");
@@ -151,7 +143,54 @@ export default class SideBar {
         };
 
         document.querySelector('.sidebar__delete-duplicates').onclick = () => {
+            changePageTitle("Удаление дубликатов оборудования");
+            this.removeMenuPlanGraf();
             this.insertDeleteDuplicatesHTML();
+        };
+
+        document.querySelector('.sidebar__edit-schedule-calendar').onclick = () => {
+            let events = [];
+            httpRequest(config.api.getWorkersALl, 'GET').then((getWorkersData) => {
+                let fieldsToCheckRu = {
+                    "height_next": 'Высота',
+                    "electrobez_next": 'Электробез',
+                    "medcheck_next": 'Медосмотр'
+                };
+                let idEvent = 0;
+                getWorkersData.forEach((workerData) => {
+                    Object.keys(fieldsToCheckRu).forEach(function (key) {
+                        console.log(key)
+
+                        if (workerData[key] !== null) {
+                            let workerCheckCalendarData = {
+                                id: undefined,
+                                title: undefined,
+                                start: undefined,
+                            }
+                            idEvent =++ idEvent;
+                            workerCheckCalendarData.id = idEvent;
+                            workerCheckCalendarData.title = workerData['fio'] + " " + fieldsToCheckRu[key];
+                            workerCheckCalendarData.start = workerData[key];
+                            events.push(workerCheckCalendarData);
+                        }
+                    });
+
+                });
+
+                const pageContent = document.querySelector('#page-content');
+                while (pageContent.firstChild) {
+                    pageContent.removeChild(pageContent.firstChild);
+                }
+                let calendar = new FullCalendar.Calendar(pageContent, {
+                    initialView: 'dayGridMonth',
+                    events,
+                });
+                calendar.render();
+                changePageTitle("Календарь проверок");
+            }).catch((e) => {
+                console.log(e);
+            });
+
         };
 
 

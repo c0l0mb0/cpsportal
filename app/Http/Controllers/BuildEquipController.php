@@ -178,7 +178,9 @@ class BuildEquipController extends Controller
     {
         return DB::table('build_equip')
             ->select(DB::raw("*, build_equip.id as id,equip_name,
-             CONCAT  (quantity, ' ', measure) AS \"quantityWithMeasure\""))
+             CONCAT  (quantity, ' ', measure) AS \"quantityWithMeasure\",
+             CONCAT  (equip_name_extracted_type, ' ', equip_name_extracted_brand) AS \"typeWithBrand\" ,
+             CASE WHEN has_channels =  TRUE THEN '1' ELSE '' END has_channels_numb"))
             ->leftJoin('equipment', 'equipment.id', '=', 'build_equip.id_equip')
             ->leftJoin('buildings', 'buildings.id', '=', 'build_equip.id_build')
             ->orderByRaw("array_position(ARRAY['ППК, и его переферия', 'Извещатель', 'Оповещатель', 'Лучи (шлейфа)',
@@ -187,6 +189,7 @@ class BuildEquipController extends Controller
             ->where($whereArr)
             ->get();
     }
+
 
     public static function getIzveshatelEquipmentCount()
     {

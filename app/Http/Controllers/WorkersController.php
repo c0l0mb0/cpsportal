@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Workers;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,10 +23,15 @@ class WorkersController extends Controller
         return response()->json($workers);
     }
 
-    public function indexWorkersWithOneWeekToExam()
+    public function export()
     {
-        return response()->json("123");
+        $exportScheduleData = DB::table('workers')
+            ->select(DB::raw('fio, tab_nom, height_next, electrobez_next,medcheck_next'))->get();
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Disposition: attachment; filename="json-schedule.json"');
+        echo json_encode($exportScheduleData);
     }
+
 
 //    public function addSixMonthFromLastDateToNextDate(Request $request)
 //    {

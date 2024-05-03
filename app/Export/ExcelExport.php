@@ -2,9 +2,7 @@
 
 namespace App\Export;
 
-use Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Ods;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
@@ -90,15 +88,23 @@ abstract class ExcelExport
         $this->excelRowCursor++;
     }
 
-    public function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames, $isOneEntry = false, $workBookNumber, $styleArray, $pageBreakEquipNumber = null)
+    public function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames, $isOneEntry = false,
+                                     $workBookNumber, $styleArray, $pageBreakEquipNumber = null)
     {
         $this->excelRowCursor = $excelRowStart;
         $this->excelColumnCursor = $excelColumnStart;
         $range = '';
+        $rowNumber = 1;
         foreach ($this->buildingsWithEquipment as $buildingsWithEquipmentEntry) {
             foreach ($fieldNames as $fieldName) {
                 if ($fieldName == 'empty') {
                     $this->excelColumnCursor++;
+                    continue;
+                }
+                if ($fieldName == 'row_counter') {
+                    $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor], $rowNumber);
+                    $this->excelColumnCursor++;
+                    $rowNumber++;
                     continue;
                 }
                 $fieldPipeSeparated = explode('|', $fieldName);
@@ -109,6 +115,17 @@ abstract class ExcelExport
                         $buildingsWithEquipmentEntry->$fieldNameToString);
                     $this->sheet->getStyle([$this->excelColumnCursor, $this->excelRowCursor])
                         ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    $this->sheet->getStyle([$this->excelColumnCursor, $this->excelRowCursor])
+                        ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $this->excelColumnCursor++;
+                    continue;
+                }
+                if (count($fieldPipeSeparated) > 1 and $fieldPipeSeparated[1] == 'horizontalLeft') {
+                    $fieldNameToString = $fieldPipeSeparated[0];
+                    $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor],
+                        $buildingsWithEquipmentEntry->$fieldNameToString);
+                    $this->sheet->getStyle([$this->excelColumnCursor, $this->excelRowCursor])
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
                     $this->sheet->getStyle([$this->excelColumnCursor, $this->excelRowCursor])
                         ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                     $this->excelColumnCursor++;

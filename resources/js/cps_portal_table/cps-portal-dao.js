@@ -9,6 +9,7 @@ export let config = {
     api: {
         getWorkersALl: '/api/workers-all',
         postPutDeleteWorkers: '/api/workers',
+        getExportAllNextWorkersChecksJson: '/api/export-all-next-workers-checks-json',
         postWorkersAddSixMonth: '/api/workers-add-six-month',
         getBuildingsALl: '/api/buildings-all',
         getBuildingsGroup1: '/api/buildings-group1',
@@ -29,6 +30,7 @@ export let config = {
         getExportNormiZapasaKip: '/api/export-normi-zapasa-kip',
         getExportPotrebnostMtr: '/api/export-potrebnost-mtr',
         getExportPassport: '/api/export-passport',
+        getExportTep: '/api/export-tep',
         getExportPlanGrafic: '/api/export-plangrafic',
         getExportOtkaziIzveshatelei: '/api/export-otkazi-russianizveshateli',
         getExportAllData: '/api/export-all-data',
@@ -47,7 +49,7 @@ export function httpRequest(url, method, data = null, idRow = null) {
     if (idRow !== null) url += '/' + idRow;
 
     return new Promise(function (resolve, reject) {
-        var oReq = new XMLHttpRequest();
+        let oReq = new XMLHttpRequest();
         // oReq.responseType = 'json'; ie11 compatibility
         oReq.open(method, url, true);
         oReq.responseType = "json";
