@@ -57,6 +57,13 @@
                 <li>
                     <a class="sidebar__edit-schedule-calendar sidebar-list-left_margin"  hidden href="#">Календарь</a>
                 </li>
+                <div class="sidebar-list_capture ">Склад</div>
+                <li>
+                    <a class="sidebar__warehouse-workers sidebar-list-left_margin"  hidden href="#">Работники</a>
+                </li>
+                <li>
+                    <a class="sidebar__warehouse-reminders sidebar-list-left_margin"  hidden href="#">Остатки</a>
+                </li>
             </ul>
         </div>
     </nav>

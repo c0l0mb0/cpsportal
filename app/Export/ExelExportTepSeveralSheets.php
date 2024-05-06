@@ -241,6 +241,9 @@ class ExelExportTepSeveralSheets extends ExcelExport
     private function createFifthPage2Dot7PoBody()
     {
         $this->buildingsWithEquipment = BuildEquipController::getBuildingWithEquipmentByBuildingId([
+            ['buildings.id', '=', $this->idBuilding], ['has_channels', '=', true]]);
+        $equipWithChannalsProgram = $this->getBuildingsWithEquipmentFieldValue('programs');
+        $this->buildingsWithEquipment = BuildEquipController::getBuildingWithEquipmentByBuildingId([
             ['buildings.id', '=', $this->idBuilding]]);
         $styleArray = [
             'borders' => [
@@ -259,7 +262,7 @@ class ExelExportTepSeveralSheets extends ExcelExport
             $this->getBuildingsWithEquipmentFieldValue('group_2') . " " .
             $this->getBuildingsWithEquipmentFieldValue('shed');
         $rowsData = array('1', $buildingNameWithGroup,
-            $buildingNameWithGroup, '1', 'empty');
+            $buildingNameWithGroup, '1', $equipWithChannalsProgram);
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null,
             $styleArray);
 
@@ -532,15 +535,15 @@ class ExelExportTepSeveralSheets extends ExcelExport
         $row = $this->excelRowCursor;
         $rowsData = array('empty', '1', $this->getBuildingsWithEquipmentFieldValue('shed'),
             $this->getBuildingsWithEquipmentFieldValue('categ_asu'), 'шт.', '1', '1',
-            '=SUMIF(\'ТЭП здания\'!' . 'F15:F' . $this->firstPageLastRowInTable . ',"ИД",\'ТЭП здания\'!' .
+            '=SUMIF(\'ТЭП здания\'!' . 'F14:F' . $this->firstPageLastRowInTable . ',"ИД",\'ТЭП здания\'!' .
             'E15:E' . $this->firstPageLastRowInTable . ')',
-            '=SUMIF(\'ТЭП здания\'!' . 'F15:F' . $this->firstPageLastRowInTable . ',"УД",\'ТЭП здания\'!' .
+            '=SUMIF(\'ТЭП здания\'!' . 'F14:F' . $this->firstPageLastRowInTable . ',"УД",\'ТЭП здания\'!' .
             'E15:E' . $this->firstPageLastRowInTable . ')',
-            '=SUMIF(\'ТЭП здания\'!' . 'F15:F' . $this->firstPageLastRowInTable . ',"ИА",\'ТЭП здания\'!' .
+            '=SUMIF(\'ТЭП здания\'!' . 'F14:F' . $this->firstPageLastRowInTable . ',"ИА",\'ТЭП здания\'!' .
             'E15:E' . $this->firstPageLastRowInTable . ')',
-            '=SUMIF(\'ТЭП здания\'!' . 'F15:F' . $this->firstPageLastRowInTable . ',"УА",\'ТЭП здания\'!' .
+            '=SUMIF(\'ТЭП здания\'!' . 'F14:F' . $this->firstPageLastRowInTable . ',"УА",\'ТЭП здания\'!' .
             'E15:E' . $this->firstPageLastRowInTable . ')',
-            '=SUMIF(\'ТЭП здания\'!' . 'F15:F' . $this->firstPageLastRowInTable . ',"ИУЦ",\'ТЭП здания\'!' .
+            '=SUMIF(\'ТЭП здания\'!' . 'F14:F' . $this->firstPageLastRowInTable . ',"ИУЦ",\'ТЭП здания\'!' .
             'E15:E' . $this->firstPageLastRowInTable . ')', 'empty', 'empty', '=H' . $row . '+1.6*I' . $row .
             '+1.3*J' . $row . '+2*K' . $row . '+3*L' . $row . '+1.5*M' . $row . '+4*N' . $row . '',
             '=IF(D' . $row . '=1,O' . $row . ',0)', '=IF(D' . $row . '=2,O' . $row . ',0)', '=IF(D' . $row . '=3,O' . $row . ',0)',
@@ -669,8 +672,8 @@ class ExelExportTepSeveralSheets extends ExcelExport
             $this->getBuildingsWithEquipmentFieldValue('shed');
 
 
-        $formulaID = '=SUMIF(\'ТЭП здания\'!' . 'F15:F' . $this->firstPageLastRowInTable . ',"ИД",\'ТЭП здания\'!' .
-            'E15:E' . $this->firstPageLastRowInTable . ')';
+        $formulaID = '=SUMIF(\'ТЭП здания\'!' . 'F14:F' . $this->firstPageLastRowInTable . ',"ИД",\'ТЭП здания\'!' .
+            'E14:E' . $this->firstPageLastRowInTable . ')';
 
         $fieldNames = array('custom|1', 'custom|' . $buildingNameWithGroup, 'typeWithBrand', 'custom|1', 'measure',
             "custom|" . $formulaID, 'proj');
