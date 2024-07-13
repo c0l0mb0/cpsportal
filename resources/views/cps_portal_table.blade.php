@@ -159,6 +159,11 @@
                             data-bs-placement="bottom" title="Экспорт в данных json">
                         <img src="{{ asset('icon/json-export.svg') }}" class="row-menue__icon">
                     </button>
+                    <button type="button" class="btn import-reminds action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" data-toggle="modal" title="Импорт данных из Excel остатки бухгалтерия"
+                            data-target="#modal__import-reminds">
+                        <img src="{{ asset('icon/import-reminds.svg') }}" class="row-menue__icon">
+                    </button>
                 </div>
                 <div class="justify-content-end navbar-btn-logout-wrapper">
                     <form method="POST" action="{{ route('logout') }}">
@@ -226,6 +231,28 @@
                             <button type="button" class="btn btn-primary modal__confirm-delete-entry-btn">Удалить
                             </button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal import file-->
+            <div class="modal-container">
+                <div class="modal fade" id="modal__import-reminds" tabindex="-1" aria-labelledby="modal-Label"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal__caption">Загрузить Excel файл остатков из бухгалтерии</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="POST" action="{{'api/import-excel-warehouse-remains'}}" enctype="multipart/form-data"
+                                  class="modal-form needs-validation m-2">
+                                @csrf
+                                <input type="file" id="myFile" name="excel_import_remains" accept=".xlsx">
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -36,6 +36,7 @@ export default class ActionMenu {
     copyEquipOfBuilding;
     jsonExport;
     tepExport;
+    importReminds;
 
 
     hideALl() {
@@ -57,6 +58,15 @@ export default class ActionMenu {
         this.copyEquipOfBuilding.style.display = 'none';
         this.jsonExport.style.display = 'none';
         this.tepExport.style.display = 'none';
+        this.importReminds.style.display = 'none';
+    }
+
+    hideImportRemindsButton() {
+        this.importReminds.style.display = 'none';
+    }
+
+    showImportRemindsButton() {
+        this.importReminds.style.display = 'block';
     }
 
     hideTepExportButton() {
@@ -259,6 +269,13 @@ export default class ActionMenu {
         this.copyEquipToBuildingEventLister = this.modalForm.setModalCopyEquipmentToBuildingFormHtml.bind(this.modalForm);
         this.copyEquipOfBuilding.addEventListener('click', this.copyEquipToBuildingEventLister);
     }
+    importRemindsButtonActionEventLister(){
+        console.log('importRemindsButtonActionEventLister');
+    }
+    setImportRemindsAction() {
+        this.importReminds.removeEventListener('click', this.importRemindsButtonActionEventLister);
+        this.importReminds.addEventListener('click', this.importRemindsButtonActionEventLister);
+    }
 
     setEquipUsageAction() {
         this.equipUsage.addEventListener('click', () => {
@@ -400,7 +417,8 @@ export default class ActionMenu {
             downloadLink.click();
         };
     }
-    setExportTepAction(){
+
+    setExportTepAction() {
         this.tepExport.onclick = () => {
             let selectedRow = this.tableAgGrid.getSelectedRow();
             let URL = config.api.getExportTep + '/' + selectedRow.id;

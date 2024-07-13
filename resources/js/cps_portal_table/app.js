@@ -48,6 +48,7 @@ function init() {
     actionMenu.copyEquipOfBuilding = document.querySelector('.copy-all-building-equipment');
     actionMenu.jsonExport = document.querySelector('.json-export');
     actionMenu.tepExport = document.querySelector('.excel-export-tep');
+    actionMenu.importReminds  = document.querySelector('.import-reminds ');
 
     let idleTimer = new IdleTimer();
 }

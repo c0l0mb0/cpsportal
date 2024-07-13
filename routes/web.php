@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
+Route::get('/cpstest', function () {
+    return view('cps_test');
+});
 
 Route::get('/cpsportal', function () {
     return view('cps_portal_table');

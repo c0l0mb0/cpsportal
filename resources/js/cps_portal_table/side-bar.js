@@ -26,6 +26,8 @@ export default class SideBar {
             // document.querySelector('.sidebar__delete-duplicates').hidden = false;
             document.querySelector('.sidebar__edit-schedule').hidden = false;
             document.querySelector('.sidebar__edit-schedule-calendar').hidden = false;
+            document.querySelector('.sidebar__warehouse-workers').hidden = false;
+            document.querySelector('.sidebar__warehouse-reminders').hidden = false;
         } else {
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
             this.cashedAgGridBuildings = lists.buildings.all;
@@ -37,6 +39,28 @@ export default class SideBar {
     setButtonsActions() {
         document.getElementById('sidebarCollapse').onclick = () => {
             document.getElementById('sidebar').classList.toggle("active");
+        };
+
+        document.querySelector('.sidebar__warehouse-reminders').onclick = () => {
+            this.removeMenuPlanGraf();
+            this.tableAgGrid = new TableAgGrid(agGridParameters.warehouseRemainsParameters.gridOptions,
+                config.api.getWarehouseRemainsALl, null,
+                agGridParameters.warehouseRemainsParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.setImportRemindsAction();
+            this.actionMenu.showImportRemindsButton();
+            changePageTitle("Текущие остатки по спецодежде (данные из бухгалтерии)");
+        };
+
+        document.querySelector('.sidebar__warehouse-workers').onclick = () => {
+            this.removeMenuPlanGraf();
+            this.tableAgGrid = new TableAgGrid(agGridParameters.cpsWarehouseParameters.gridOptions,
+                config.api.getWorkersALl, null,
+                agGridParameters.cpsWarehouseParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid;
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            changePageTitle("СИЗ работников");
         };
 
         document.querySelector('.sidebar__edit-schedule').onclick = () => {
@@ -149,6 +173,7 @@ export default class SideBar {
         };
 
         document.querySelector('.sidebar__edit-schedule-calendar').onclick = () => {
+            this.actionMenu.hideALl();
             let events = [];
             httpRequest(config.api.getWorkersALl, 'GET').then((getWorkersData) => {
                 let fieldsToCheckRu = {
@@ -159,15 +184,13 @@ export default class SideBar {
                 let idEvent = 0;
                 getWorkersData.forEach((workerData) => {
                     Object.keys(fieldsToCheckRu).forEach(function (key) {
-                        console.log(key)
-
                         if (workerData[key] !== null) {
                             let workerCheckCalendarData = {
                                 id: undefined,
                                 title: undefined,
                                 start: undefined,
                             }
-                            idEvent =++ idEvent;
+                            idEvent = ++idEvent;
                             workerCheckCalendarData.id = idEvent;
                             workerCheckCalendarData.title = workerData['fio'] + " " + fieldsToCheckRu[key];
                             workerCheckCalendarData.start = workerData[key];

@@ -5,6 +5,7 @@ use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ExcelExportController;
 use App\Http\Controllers\UserConrtroller;
+use App\Http\Controllers\WarehouseRemainsController;
 use App\Http\Controllers\WorkersController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::get('warehouse-remains-all', [WarehouseRemainsController::class, 'index']);
+    Route::post('import-excel-warehouse-remains', [WarehouseRemainsController::class, 'importExcelWarehouseRemains']);
+
     Route::get('workers-all', [WorkersController::class, 'index']);
     Route::get('export-all-next-workers-checks-json', [WorkersController::class, 'export']);
     Route::put('workers/{id}', [WorkersController::class, 'update']);
