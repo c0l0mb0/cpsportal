@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Вход</title>
 
-    <link rel="stylesheet" href="{{ asset('css/libs/bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/libs/bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/table/table.css') }}">
 
 </head>
@@ -52,17 +52,17 @@
                 </li>
                 <div class="sidebar-list_capture ">Персонал</div>
                 <li>
-                    <a class="sidebar__edit-schedule sidebar-list-left_margin"  hidden href="#">Проверки</a>
+                    <a class="sidebar__edit-schedule sidebar-list-left_margin" hidden href="#">Проверки</a>
                 </li>
                 <li>
-                    <a class="sidebar__edit-schedule-calendar sidebar-list-left_margin"  hidden href="#">Календарь</a>
+                    <a class="sidebar__edit-schedule-calendar sidebar-list-left_margin" hidden href="#">Календарь</a>
                 </li>
                 <div class="sidebar-list_capture ">Склад</div>
                 <li>
-                    <a class="sidebar__warehouse-workers sidebar-list-left_margin"  hidden href="#">Работники</a>
+                    <a class="sidebar__warehouse-workers sidebar-list-left_margin" hidden href="#">Работники</a>
                 </li>
                 <li>
-                    <a class="sidebar__warehouse-reminders sidebar-list-left_margin"  hidden href="#">Остатки</a>
+                    <a class="sidebar__warehouse-reminders sidebar-list-left_margin" hidden href="#">Остатки</a>
                 </li>
             </ul>
         </div>
@@ -79,12 +79,12 @@
                     <span>Меню</span>
                 </button>
                 <div class="row-menue">
-                    <button type="button" class="btn new-table-row action-menu-btn" data-toggle="modal"
-                            title="Добавить" data-target="#modal__new-entry">
+                    <button type="button" class="btn new-table-row action-menu-btn" data-bs-toggle="modal"
+                            title="Добавить" data-bs-target="#modal__new-entry">
                         <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn edit-table-row action-menu-btn" data-toggle="modal"
-                            title="изменить прибор" data-target="#modal__new-entry">
+                    <button type="button" class="btn edit-table-row action-menu-btn" data-bs-toggle="modal"
+                            title="изменить прибор" data-bs-target="#modal__new-entry">
                         <img src="{{ asset('icon/edit-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn return-back action-menu-btn" data-bs-toggle="tooltip"
@@ -92,9 +92,8 @@
                             title="вернуться к зданиям">
                         <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="tooltip"
-                            data-toggle="modal"
-                            data-target="#modal__confirm-delete-entry" data-bs-placement="bottom" title="Удалить">
+                    <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="modal"
+                            data-bs-target="#modal__confirm-delete-entry" data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn plus-three-month action-menu-btn" data-bs-toggle="tooltip"
@@ -144,7 +143,7 @@
                     <button type="button" class="btn copy-all-building-equipment action-menu-btn"
                             data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="копировать оборудование текущего здания"
-                            data-toggle="modal" data-target="#modal__new-entry">
+                            data-bs-toggle="modal" data-bs-target="#modal__new-entry">
                         <img src="{{ asset('icon/copy.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
@@ -159,11 +158,13 @@
                             data-bs-placement="bottom" title="Экспорт в данных json">
                         <img src="{{ asset('icon/json-export.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn import-reminds action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" data-toggle="modal" title="Импорт данных из Excel остатки бухгалтерия"
-                            data-target="#modal__import-reminds">
+                    <button type="button" class="btn import-reminds action-menu-btn" data-bs-placement="bottom"
+                            data-bs-toggle="modal" title="Импорт данных из Excel остатки бухгалтерия"
+                            data-bs-target="#modal__import-reminds">
                         <img src="{{ asset('icon/import-reminds.svg') }}" class="row-menue__icon">
                     </button>
+
+
                 </div>
                 <div class="justify-content-end navbar-btn-logout-wrapper">
                     <form method="POST" action="{{ route('logout') }}">
@@ -193,9 +194,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="modal__caption">Добавить</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <form class="modal-form needs-validation" id="form__new-entry">
                                 <div class="modal__form__body"></div>
@@ -205,7 +204,7 @@
                                     </mark>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть
                                     </button>
                                     <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
                                 </div>
@@ -220,9 +219,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Удаление</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <p>Вы действительно хотите удалить данную запись?</p>
@@ -230,7 +227,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary modal__confirm-delete-entry-btn">Удалить
                             </button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
                         </div>
                     </div>
                 </div>
@@ -242,12 +239,12 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modal__caption">Загрузить Excel файл остатков из бухгалтерии</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <h5 class="modal-title" id="modal__caption">Загрузить Excel файл остатков из
+                                    бухгалтерии</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-                            <form method="POST" action="{{'api/import-excel-warehouse-remains'}}" enctype="multipart/form-data"
+                            <form method="POST" action="{{'api/import-excel-warehouse-remains'}}"
+                                  enctype="multipart/form-data"
                                   class="modal-form needs-validation m-2">
                                 @csrf
                                 <input type="file" id="myFile" name="excel_import_remains" accept=".xlsx">
@@ -264,7 +261,7 @@
         <script src="{{ asset('js/libs/imask.js') }}"></script>
         <script src="{{ asset('js/libs/jquery-3.2.1.slim.min.js') }}"></script>
         <script src="{{ asset('js/libs/popper.min.js') }}"></script>
-        <script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('js/libs/bootstrap5.min.js') }}"></script>
         <script src="{{ asset('js/libs/index.global.min.js') }}"></script>
 
 
