@@ -10,7 +10,8 @@
     <title>Вход</title>
 
     <link rel="stylesheet" href="{{ asset('css/libs/bootstrap5.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/table/table.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/portal/table.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/portal/exam.css') }}">
 
 </head>
 <body>
@@ -48,9 +49,15 @@
                         экспорт</a>
                 </li>
                 <li>
+                    <a class="sidebar__act_investigate sidebar-list-left_margin" hidden href="#">АктРасслед</a>
+                </li>
+                <li>
                     <a class="sidebar__delete-duplicates sidebar-list-left_margin" hidden href="#">Удалить дубликаты</a>
                 </li>
                 <div class="sidebar-list_capture ">Персонал</div>
+                <li>
+                    <a class="sidebar__exam sidebar-list-left_margin" hidden href="#">Электробез</a>
+                </li>
                 <li>
                     <a class="sidebar__edit-schedule sidebar-list-left_margin" hidden href="#">Проверки</a>
                 </li>
@@ -157,6 +164,10 @@
                     <button type="button" class="btn json-export action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Экспорт в данных json">
                         <img src="{{ asset('icon/json-export.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn copy-path-to-project action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="копировать путь к проекту">
+                        <img src="{{ asset('icon/folder-copy.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn import-reminds action-menu-btn" data-bs-placement="bottom"
                             data-bs-toggle="modal" title="Импорт данных из Excel остатки бухгалтерия"

@@ -1,8 +1,8 @@
-import {httpRequest} from './cps-portal-dao.js'
+import {httpRequest} from '../cps-portal-dao.js'
 import {myExcelXML} from './ag_grid_classes/excel-export.js';
-import {addCSRF} from './helper.js';
+import {addCSRF} from '../helper.js';
 import {AG_GRID_LOCALE_RU} from "./ag_grid_classes/local.ru";
-import {lists} from "./lists";
+import {lists} from "../lists";
 
 //ag grid wrapper, first field from DAO has to have the name "id".
 // constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu, idToScroll = undefined,

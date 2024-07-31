@@ -1,7 +1,7 @@
 import ActionMenu from './action-menu.js'
 import SideBar from './side-bar.js'
 import ModalForm from './modal.js'
-import {agGridParameters, initializeAgGridParameters} from "./ag-grid-parameters.js";
+import {agGridParameters, initializeAgGridParameters} from "./page_content/ag-grid-parameters.js";
 import {config, httpRequest} from "./cps-portal-dao";
 import {lists} from "./lists";
 import IdleTimer from "./idle-timer";
@@ -23,6 +23,7 @@ function init() {
     actionMenu.modalForm = modalForm;
     sideBar.actionMenu = actionMenu;
     sideBar.modalForm = modalForm;
+    sideBar.pageContent = document.querySelector('#page-content');
     sideBar.setPermissions();
     actionMenu.setPermissions();
     sideBar.setButtonsActions();
@@ -48,11 +49,11 @@ function init() {
     actionMenu.copyEquipOfBuilding = document.querySelector('.copy-all-building-equipment');
     actionMenu.jsonExport = document.querySelector('.json-export');
     actionMenu.tepExport = document.querySelector('.excel-export-tep');
-    actionMenu.importReminds  = document.querySelector('.import-reminds ');
+    actionMenu.importReminds = document.querySelector('.import-reminds ');
+    actionMenu.copyPathToProject = document.querySelector('.copy-path-to-project ');
 
     let idleTimer = new IdleTimer();
 }
-
 
 
 function getAllValuesForLists() {

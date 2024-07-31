@@ -2,7 +2,7 @@ import {config} from './cps-portal-dao.js'
 import {httpRequest} from './cps-portal-dao.js'
 import {addCSRF} from './helper.js'
 import ModalAggrid from "./modal-aggrid.js";
-import {agGridParameters} from "./ag-grid-parameters";
+import {agGridParameters} from "./page_content/ag-grid-parameters";
 import {lists} from "./lists";
 import {userRole} from "./app";
 

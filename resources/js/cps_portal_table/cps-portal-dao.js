@@ -7,6 +7,7 @@ let UrlPathWithoutLastDirectory = splitUrl.join("/")
 
 export let config = {
     api: {
+        getExamTable: '/api/exam_table',
         getWarehouseRemainsALl: '/api/warehouse-remains-all',
         getWorkersALl: '/api/workers-all',
         postPutDeleteWorkers: '/api/workers',

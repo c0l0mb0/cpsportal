@@ -1,8 +1,8 @@
 import {config, downloadFile} from "./cps-portal-dao.js";
 import {httpRequest} from "./cps-portal-dao.js";
 import {addCSRF, changePageTitle} from "./helper.js";
-import {agGridParameters} from "./ag-grid-parameters.js";
-import TableAgGrid from "./aggrid";
+import {agGridParameters} from "./page_content/ag-grid-parameters.js";
+import TableAgGrid from "./page_content/aggrid";
 import {userRole} from "./app";
 import {lists} from "./lists";
 
@@ -37,6 +37,7 @@ export default class ActionMenu {
     jsonExport;
     tepExport;
     importReminds;
+    copyPathToProject;
 
 
     hideALl() {
@@ -59,6 +60,11 @@ export default class ActionMenu {
         this.jsonExport.style.display = 'none';
         this.tepExport.style.display = 'none';
         this.importReminds.style.display = 'none';
+        this.copyPathToProject.style.display = 'none';
+    }
+
+    showCopyPathToProjectButton() {
+        this.copyPathToProject.style.display = 'block';
     }
 
     hideImportRemindsButton() {
@@ -269,9 +275,11 @@ export default class ActionMenu {
         this.copyEquipToBuildingEventLister = this.modalForm.setModalCopyEquipmentToBuildingFormHtml.bind(this.modalForm);
         this.copyEquipOfBuilding.addEventListener('click', this.copyEquipToBuildingEventLister);
     }
-    importRemindsButtonActionEventLister(){
+
+    importRemindsButtonActionEventLister() {
         console.log('importRemindsButtonActionEventLister');
     }
+
     setImportRemindsAction() {
         this.importReminds.removeEventListener('click', this.importRemindsButtonActionEventLister);
         this.importReminds.addEventListener('click', this.importRemindsButtonActionEventLister);
@@ -393,14 +401,10 @@ export default class ActionMenu {
     }
 
     returnToBuildingsAction() {
-        let cashedAgGridBuildings = undefined;
-        if (userRole !== "super-user") {
-            cashedAgGridBuildings = lists.buildings.all
-        }
         this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
             config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
             agGridParameters.uneditableBuildingsParameters.agName, this, this.agBuildingId,
-            this.agBuildingFilterState, cashedAgGridBuildings);
+            this.agBuildingFilterState, this.cashedAgGridBuildings);
         this.modalForm.tableAgGrid = this.tableAgGrid;
         this.hideALl();
         this.showExcelButton();
@@ -429,6 +433,29 @@ export default class ActionMenu {
         };
     }
 
+    setCopyPathToProjectButtonAction() {
+        this.copyPathToProject.onclick = () => {
+            let selectedRow = this.tableAgGrid.getSelectedRow();
+            const pathToRootProjectDirectory = 'smb://srvydc05/caralog/УА/ЦЕХ%20ПС/Проекты/dbproj/'
+            let pathToTheProject = pathToRootProjectDirectory + selectedRow.id;
+            this.unsecuredCopyToClipboard(pathToTheProject);
+        };
+    }
+
+    unsecuredCopyToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+        } catch (err) {
+            console.error('Unable to copy to clipboard', err);
+        }
+        document.body.removeChild(textArea);
+    }
+
     setExportPlanGrafAction() {
         this.exportPlanGraf.onclick = () => {
             let selectedRow = this.tableAgGrid.getSelectedRow();
@@ -444,7 +471,10 @@ export default class ActionMenu {
     }
 
     setPermissions() {
-        this.cashedAgGridBuildings = userRole !== "super-user";
+        this.cashedAgGridBuildings = undefined;
+        if (userRole !== "super-user") {
+            this.cashedAgGridBuildings = lists.buildings.all
+        }
     }
 }
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\BuildEquipController;
 use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelExportController;
 use App\Http\Controllers\UserConrtroller;
 use App\Http\Controllers\WarehouseRemainsController;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::get('exam_table', [ExamController::class, 'index']);
+
     Route::get('warehouse-remains-all', [WarehouseRemainsController::class, 'index']);
     Route::post('import-excel-warehouse-remains', [WarehouseRemainsController::class, 'importExcelWarehouseRemains']);
 
