@@ -462,10 +462,21 @@ export default class ActionMenu {
             let requestBody = {};
             requestBody.plan_graf_name = selectedRow.plan_graf_name;
             requestBody.year_pl_gr = document.querySelector('#year_pl_gr').value;
-            requestBody.who_approve_fio = document.querySelector('#who_approve_fio').value;
-            requestBody.who_approve_position = document.querySelector('#who_approve_position').value;
-            requestBody.who_assign_fio = document.querySelector('#who_assign_fio').value;
-            requestBody.who_assign_position = document.querySelector('#who_assign_position').value;
+
+            let whoApproveTabNumber = document.querySelector('#who_approve_fio').value
+            lists.workers.all.forEach((worker) => {
+                if (worker.tab_nom === whoApproveTabNumber) {
+                    requestBody.who_approve_fio = worker.fio;
+                    requestBody.who_approve_position = worker.worker_position;
+                }
+            });
+            let whoAssignTabNumber = document.querySelector('#who_assign_fio').value
+            lists.workers.all.forEach((worker) => {
+                if (worker.tab_nom === whoAssignTabNumber) {
+                    requestBody.who_assign_fio = worker.fio;
+                    requestBody.who_assign_position = worker.worker_position;
+                }
+            });
             downloadFile(config.api.getExportPlanGrafic, "POST", addCSRF(requestBody));
         };
     }

@@ -19,13 +19,14 @@ export default class IdleTimer {
     }
 
     logOut() {
-        alert("вы отключены от сервера из-за бездействия");
+        alert("Вы отключены от сервера из-за бездействия");
         let _this = this;
-        let tokenCPS = addCSRF({});
-        httpRequest(config.api.postLogOut, 'POST', tokenCPS).then((response) => {
-            window.location.href = config.api.loginURL;
-            _this.IDLE_timerID = undefined;
-        })
+        window.location.replace("http://srvyasutp5/cpsequip");
+        // let tokenCPS = addCSRF({});
+        // httpRequest(config.api.postLogOut, 'POST', tokenCPS).then((response) => {
+        //     window.location.href = config.api.loginURL;
+        //     _this.IDLE_timerID = undefined;
+        // })
     }
 
     resetTimer() {

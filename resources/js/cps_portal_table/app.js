@@ -70,7 +70,6 @@ function getAllValuesForLists() {
     }).then((buildingsAffiliateData) => {
         buildingsAffiliateData.forEach((elem) => {
             lists.buildings.affiliate.push(elem.affiliate);
-
         });
         return httpRequest(config.api.getBuildingsPlanGraf, 'GET');
     }).then((buildingsPlanGraf) => {
@@ -83,7 +82,11 @@ function getAllValuesForLists() {
         return httpRequest(config.api.getBuildingsALl, 'GET');
     }).then((buildingALl) => {
         lists.buildings.all = buildingALl;
-    }).then(() => {
+        return httpRequest(config.api.getWorkersALl, 'GET');
+    }).then((workersALl) => {
+        lists.workers.all = workersALl;
+    })
+        .then(() => {
         init();
     }).catch((e) => {
         console.log(e);

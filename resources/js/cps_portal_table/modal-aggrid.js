@@ -26,12 +26,12 @@ export default class ModalAggrid {
     prepareHtml() {
         let pageContentHtml = document.getElementById(this.targetId);
         pageContentHtml.innerHTML = "";
-        pageContentHtml.style.width = '100%'
+        pageContentHtml.style.width = '100%';
         pageContentHtml.classList.add('ag-theme-alpine');
     }
 
     getSelectedRow() {
-        let selectedRows = this.gridOptions.api.getSelectedRows()
+        let selectedRows = this.gridOptions.api.getSelectedRows();
         if (selectedRows.length > 0) {
             return selectedRows[0];
         }

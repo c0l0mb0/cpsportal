@@ -328,6 +328,16 @@ export let agGridParameters = {
                     filter: true,
                 },
                 {
+                    headerName: "tmp",
+                    field: "",
+                    minWidth: 50,
+                    tooltipField: '',
+                    sortable: true,
+                    filter: true,
+                    editable: true,
+                    cellRenderer: CheckboxRenderer,
+                },
+                {
                     headerName: "Очередь",
                     field: "queue",
                     minWidth: 100,
@@ -352,6 +362,14 @@ export let agGridParameters = {
                     cellEditorParams: {
                         values: []
                     }
+                },
+                {
+                    headerName: "toDateTMP",
+                    field: "to_date",
+                    minWidth: 100,
+                    tooltipField: 'to_date',
+                    sortable: true,
+                    filter: true,
                 },
                 {
                     headerName: "Монтаж",
@@ -464,7 +482,7 @@ export let agGridParameters = {
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
-            }
+            },
         },
         agName: 'cps_buildings',
     },

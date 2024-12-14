@@ -64,7 +64,7 @@
                 <li>
                     <a class="sidebar__edit-schedule-calendar sidebar-list-left_margin" hidden href="#">Календарь</a>
                 </li>
-                <div class="sidebar-list_capture ">Склад</div>
+                <div class="sidebar-list_capture" hidden>Склад</div>
                 <li>
                     <a class="sidebar__warehouse-workers sidebar-list-left_margin" hidden href="#">Работники</a>
                 </li>
@@ -148,9 +148,8 @@
                         <img src="{{ asset('icon/chart-tree.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn copy-all-building-equipment action-menu-btn"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="копировать оборудование текущего здания"
-                            data-bs-toggle="modal" data-bs-target="#modal__new-entry">
+                            data-bs-toggle="modal" data-bs-target="#modal__new-entry"
+                            title="копировать оборудование текущего здания">
                         <img src="{{ asset('icon/copy.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"

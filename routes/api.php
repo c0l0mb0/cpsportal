@@ -64,6 +64,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('export-plangrafic', [ExcelExportController::class, 'exportPlanGraf']);
     Route::get('export-otkazi-russianizveshateli', [ExcelExportController::class, 'exportOtkaziRussianIzveshatel']);
     Route::get('export-tep/{id}', [ExcelExportController::class, 'exportTep']);
+    Route::post('export-act-investigation', [ExcelExportController::class, 'exportActInvestigation']);
+    Route::get('export-sps', [ExcelExportController::class, 'exportSpsTest']);
 
     Route::get('get-user-roles', [UserConrtroller::class, 'indexUserRoles']);
 

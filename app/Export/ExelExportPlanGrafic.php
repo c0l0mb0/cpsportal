@@ -9,14 +9,14 @@ use Exception;
 
 class ExelExportPlanGrafic extends ExcelExport
 {
-    public $listSize = 1500;//1404
-    public $listUsedHeight = 0;
-    public $listHeaderHeight = 40;
-    public $itrEquipHeidht = 35;
-    public $firstSheetHeaderRowHeight = 30;
-    public $buildingUpperHeaderHeight = 22;
-    public $buildingLowerHeaderHeight = 150;
-    public $equipItemHeight = 16;
+    public int $listSize = 1500;//1404
+    public int $listUsedHeight = 0;
+    public int $listHeaderHeight = 40;
+    public int $itrEquipHeight = 35;
+    public int $firstSheetHeaderRowHeight = 30;
+    public int $buildingUpperHeaderHeight = 22;
+    public int $buildingLowerHeaderHeight = 150;
+    public int $equipItemHeight = 16;
 
     private $planGrafName;
     private $yearPlGr;
@@ -141,7 +141,7 @@ class ExelExportPlanGrafic extends ExcelExport
         for ($i = 1; $i <= $this->sheet->getHighestRow(); $i++) {
             $cellValue = $this->sheet->getCell([1, $i])->getValue();
             if (str_contains($cellValue, ' (на план. останове. Указать дату, ФИО, подпись ИТР проводящего ТО)')) {
-                $this->sheet->getRowDimension($i)->setRowHeight($this->itrEquipHeidht);
+                $this->sheet->getRowDimension($i)->setRowHeight($this->itrEquipHeight);
             }
         }
 

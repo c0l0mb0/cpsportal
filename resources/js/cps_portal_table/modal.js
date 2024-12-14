@@ -200,6 +200,7 @@ export default class ModalForm {
             this.ui.modalForm.group_2.disabled = true;
             listsAreaSelectedValue = this.ui.modalForm.listsArea.value;
             this.removeOptions(this.ui.modalForm.group_1);
+            console.log(lists.buildings.group_1);
             this.ui.modalForm.group_1.add(new Option('', ''));
             lists.buildings.group_1.forEach((elem) => {
                 if (elem.area === listsAreaSelectedValue) {
@@ -274,6 +275,10 @@ export default class ModalForm {
         this.ui.modalForm.requestMethod = "POST";
         this.ui.modalFormPurpose = 'addEquipmentInBuilding';
         this.ui.modalForm.requestUrl = config.api.getPutDeleteEquipmentInBuilding;
+        setTimeout(function () {
+            document.querySelector('#aggrid_search').focus();
+        }, 1000);
+
     }
 
     setModalPutEquipmentInBuildingHtml() {
@@ -409,7 +414,7 @@ export default class ModalForm {
                                 <label for="area" class="col-form-label">Участок</label>
                             </div>
                             <div class="col-9">
-                              <select class="form-control" id="area" required name="area"">` + this.makeOptionsFromArray(lists.buildings.area) +
+                              <select class="form-control" id="area" required name="area">` + this.makeOptionsFromArray(lists.buildings.area) +
             `
                               </select>
                             </div>
@@ -445,7 +450,7 @@ export default class ModalForm {
                                 <label for="queue" class="col-form-label">Очередь</label>
                             </div>
                             <div class="col-9">
-                                  <select class="form-control" id="queue"  name="queue"">` + this.makeOptionsFromArray(lists.buildings.queue) +
+                                  <select class="form-control" id="queue"  name="queue">` + this.makeOptionsFromArray(lists.buildings.queue) +
             `
                               </select>
                             </div>
@@ -497,7 +502,7 @@ export default class ModalForm {
                                 <label for="type_aups" class="col-form-label">ТипАУПС</label>
                             </div>
                             <div class="col-9">
-                               <select class="form-control" id="type_aups" required name="type_aups"">` + this.makeOptionsFromArray(lists.buildings.type_aups) +
+                               <select class="form-control" id="type_aups" required name="type_aups">` + this.makeOptionsFromArray(lists.buildings.type_aups) +
             `
                               </select>
                             </div>
@@ -507,7 +512,7 @@ export default class ModalForm {
                                 <label for="aud_warn_type" class="col-form-label">типСОУЭ</label>
                             </div>
                             <div class="col-9">
-                                  <select class="form-control" id="aud_warn_type" required name="aud_warn_type"">` + this.makeOptionsFromArray(lists.buildings.aud_warn_type) +
+                                  <select class="form-control" id="aud_warn_type" required name="aud_warn_type">` + this.makeOptionsFromArray(lists.buildings.aud_warn_type) +
             `
                               </select>
                             </div>
@@ -517,7 +522,7 @@ export default class ModalForm {
                                 <label for="categ_asu" class="col-form-label">Категоря сложности АСУ</label>
                             </div>
                             <div class="col-9">
-                                  <select class="form-control" id="categ_asu" required name="categ_asu"">` + this.makeOptionsFromArray(lists.buildings.categ_asu) +
+                                  <select class="form-control" id="categ_asu" required name="categ_asu">` + this.makeOptionsFromArray(lists.buildings.categ_asu) +
             `
                               </select>
                             </div>
@@ -527,7 +532,7 @@ export default class ModalForm {
                                 <label for="plan_graf_name" class="col-form-label">ПланГрафик</label>
                             </div>
                             <div class="col-9">
-                                  <select class="form-control" id="plan_graf_name" required name="plan_graf_name"">` + this.makeOptionsFromArray(lists.buildings.planGraf) +
+                                  <select class="form-control" id="plan_graf_name" required name="plan_graf_name">` + this.makeOptionsFromArray(lists.buildings.planGraf) +
             `
                               </select>
                             </div>

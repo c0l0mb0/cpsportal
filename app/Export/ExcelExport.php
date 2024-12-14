@@ -2,6 +2,7 @@
 
 namespace App\Export;
 
+use JetBrains\PhpStorm\NoReturn;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -15,20 +16,29 @@ abstract class ExcelExport
     public int $excelRowCursor;
     public int $excelColumnCursor;
     protected $sheet;
-    private string $fileName;
+    public string $fileName;
+    private string $templateFileName;
     protected $spreadsheet;
     protected $insertedDbChanksRangesArr = [];
 
-    function __construct($fileName, $excelStartRowCursor, $excelStartColumnCursor)
+    function __construct($fileName, $excelStartRowCursor, $excelStartColumnCursor, $templateFileName = '')
     {
         $this->fileName = $fileName;
-        $this->spreadsheet = new Spreadsheet();
+        $this->templateFileName = $templateFileName;
+        if ($this->templateFileName != '') {
+            $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Xlsx");
+            $this->spreadsheet = $reader->load("./../storage/excel_templates/pl_gr.xlsx");
+        } else {
+            $this->spreadsheet = new Spreadsheet();
+        }
         $this->sheet = $this->spreadsheet->getActiveSheet();
         $this->spreadsheet->getDefaultStyle()->getFont()->setName('Times New Roman');
         $this->spreadsheet->getDefaultStyle()->getFont()->setSize(12);
         $this->areas = ['ГП', 'Ямбург', 'Новый Уренгой'];
         $this->excelRowCursor = $excelStartRowCursor;
         $this->excelColumnCursor = $excelStartColumnCursor;
+
+
     }
 
     abstract public function createHead();
@@ -42,15 +52,13 @@ abstract class ExcelExport
         $this->exportFile();
     }
 
-    private function exportFile()
+    #[NoReturn] private function exportFile()
     {
-
         $writer = new Xlsx($this->spreadsheet);
 //        $writer = new Ods($this->spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . urlencode($this->fileName) . '"');
         $writer->save('php://output');
-
         $this->spreadsheet->disconnectWorksheets();
         exit();
     }
@@ -65,6 +73,8 @@ abstract class ExcelExport
 
     protected function insertJustTextDataInRow($excelRowStart, $excelColumnStart, $rowsData, $workBookNumber, $styleArray)
     {
+        $this->excelColumnCursor = $excelColumnStart;
+        $this->excelRowCursor = $excelRowStart;
         foreach ($rowsData as $filedData) {
             if ($filedData == 'empty') {
                 $this->excelColumnCursor++;
@@ -88,8 +98,8 @@ abstract class ExcelExport
         $this->excelRowCursor++;
     }
 
-    public function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames, $isOneEntry = false,
-                                     $workBookNumber, $styleArray, $pageBreakEquipNumber = null)
+    protected function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames,
+                                     $workBookNumber, $styleArray, $pageBreakEquipNumber = null, $isOneEntry = false)
     {
         $this->excelRowCursor = $excelRowStart;
         $this->excelColumnCursor = $excelColumnStart;
@@ -225,7 +235,7 @@ abstract class ExcelExport
         for ($column = 1; $column <= $this->getNumberFromLetter($this->sheet->getHighestColumn()); $column++) {
 //            $symbolsCount = mb_strlen($this->sheet->getCell([$column, $rowNumber])->getValue(), 'utf8');
 //            $textLinesInCell = mb_substr_count($this->sheet->getCell([$column,$rowNumber])->getValue(), "0xE2 0x90 0xA4") + 1;
-            $textLinesInCell = substr_count($this->sheet->getCell([$column,$rowNumber])->getValue(), PHP_EOL ) + 1;
+            $textLinesInCell = substr_count($this->sheet->getCell([$column, $rowNumber])->getValue(), PHP_EOL) + 1;
             if ($maxTextLinesInCell < $textLinesInCell) {
                 $maxTextLinesInCell = $textLinesInCell;
             }

@@ -36,6 +36,7 @@ export let config = {
         getExportPlanGrafic: '/api/export-plangrafic',
         getExportOtkaziIzveshatelei: '/api/export-otkazi-russianizveshateli',
         getExportAllData: '/api/export-all-data',
+        postExportActInvestigation: '/api/export-act-investigation',
         getUserRoles: '/api/get-user-roles',
         getPutDeleteEquipmentInBuildingWithWorkerChanges: '/api/equipment-buildings-with-worker-changes',
         postLogOut: '/logout',

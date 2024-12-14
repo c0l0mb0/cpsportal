@@ -18,6 +18,7 @@ class ExelExportPassport extends ExcelExport
 
     public function createHead()
     {
+        $this->sheet->getPageSetup()->setFitToHeight(0);
         $this->sheet->getStyle('A10:G14')->getAlignment()->setWrapText(true);
         $this->sheet->getColumnDimension('A')->setWidth(12);
         $this->sheet->getColumnDimension('B')->setWidth(30);
@@ -209,7 +210,6 @@ class ExelExportPassport extends ExcelExport
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('empty', 'empty', 'empty',
             'empty', 'empty', $buildingOverAllSignals), null, null);
 
-
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
             array('3. Условия технического обслуживания:'), null, [
                 'font' => [
@@ -231,9 +231,10 @@ class ExelExportPassport extends ExcelExport
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor,
             array('Другие сведения  ____________________________________________'), null, null);
 
+        $this->sheet->setBreak([1, $this->excelRowCursor], \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
         $this->excelRowCursor++;
 
-        $this->sheet->setBreak([1, $this->excelRowCursor], \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+
         $this->sheet->mergeCells('A' . $this->excelRowCursor . ':G' . $this->excelRowCursor);
         $styleArray = [
             'font' => [
