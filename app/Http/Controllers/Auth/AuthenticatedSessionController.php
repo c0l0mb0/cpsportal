@@ -28,8 +28,15 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        // Get the authenticated user
+        $user = Auth::user();
+
+        if ($user->name === 'test_ot') {
+            return redirect()->route('test');
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
+
     }
 
     /**
