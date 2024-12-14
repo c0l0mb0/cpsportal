@@ -56,7 +56,7 @@
                 </li>
                 <div class="sidebar-list_capture ">Персонал</div>
                 <li>
-                    <a class="sidebar__exam sidebar-list-left_margin" hidden href="#">Электробез</a>
+                    <a class="sidebar__exam sidebar-list-left_margin" href="#">Электробез</a>
                 </li>
                 <li>
                     <a class="sidebar__edit-schedule sidebar-list-left_margin" hidden href="#">Проверки</a>
@@ -276,7 +276,7 @@
 
 
         <script src="@php
-            {{echo ('js/cps_table/' . scandir("js/cps_table/")[2]);}}
+            {{echo ('js/cps_portal/' . scandir("js/cps_portal/")[2]);}}
         @endphp"></script>
 
 </body>
