@@ -3,8 +3,9 @@
 use App\Http\Controllers\BuildEquipController;
 use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\EquipmentController;
-use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ElectroBezExamController;
 use App\Http\Controllers\ExcelExportController;
+use App\Http\Controllers\SpsExamController;
 use App\Http\Controllers\UserConrtroller;
 use App\Http\Controllers\WarehouseRemainsController;
 use App\Http\Controllers\WorkersController;
@@ -22,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function(){
-    Route::get('exam_table', [ExamController::class, 'index']);
+    Route::get('electro_bez_table', [ElectroBezExamController::class, 'index']);
+    Route::get('sps_exam_table', [SpsExamController::class, 'index']);
+    Route::get('export-sps', [ExcelExportController::class, 'exportSpsTest']);
 
     Route::get('warehouse-remains-all', [WarehouseRemainsController::class, 'index']);
     Route::post('import-excel-warehouse-remains', [WarehouseRemainsController::class, 'importExcelWarehouseRemains']);
@@ -65,7 +68,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('export-otkazi-russianizveshateli', [ExcelExportController::class, 'exportOtkaziRussianIzveshatel']);
     Route::get('export-tep/{id}', [ExcelExportController::class, 'exportTep']);
     Route::post('export-act-investigation', [ExcelExportController::class, 'exportActInvestigation']);
-    Route::get('export-sps', [ExcelExportController::class, 'exportSpsTest']);
+
 
     Route::get('get-user-roles', [UserConrtroller::class, 'indexUserRoles']);
 

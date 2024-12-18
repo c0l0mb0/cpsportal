@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\SpsTest;
+use App\Models\SpsExam;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -2229,7 +2229,7 @@ class CreateSpsSeeder extends Seeder
 
             ]];
         foreach ($arr as $quest) {
-            $qestionDB = SpsTest::create([
+            $qestionDB = SpsExam::create([
                 'question' => $quest["Question"],
                 'answer_1' => $quest["Answer_1"],
                 'answer_2' => $quest["Answer_2"],

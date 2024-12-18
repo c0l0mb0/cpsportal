@@ -3,7 +3,7 @@
 namespace App\Export;
 
 use App\Http\Controllers\BuildEquipController;
-use App\Http\Controllers\SpsTestController;
+use App\Http\Controllers\SpsExamController;
 use Exception;
 
 
@@ -21,7 +21,7 @@ class ExelSpsBilet extends ExcelExport
     public function createBody()
     {
         $this->sheet->getColumnDimension('B')->setWidth(150);
-        $this->questions = SpsTestController::index();
+        $this->questions = SpsExamController::index();
 
         $questionNumber = 1;
         foreach ($this->questions as $question) {

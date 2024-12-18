@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" href="{{ asset('css/libs/bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/portal/table.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/portal/exam.css') }}">
 
 </head>
 <body>
@@ -55,10 +54,6 @@
                     <a class="sidebar__delete-duplicates sidebar-list-left_margin" hidden href="#">Удалить дубликаты</a>
                 </li>
                 <div class="sidebar-list_capture ">Персонал</div>
-                <li>
-                    <a class="sidebar__exam sidebar-list-left_margin" href="#">Электробез</a>
-                </li>
-                <li>
                     <a class="sidebar__edit-schedule sidebar-list-left_margin" hidden href="#">Проверки</a>
                 </li>
                 <li>
@@ -276,7 +271,7 @@
 
 
         <script src="@php
-            {{echo ('js/cps_portal/' . scandir("js/cps_portal/")[2]);}}
+            {{echo ('js/app/cps_portal/' . scandir("js/app/cps_portal/")[2]);}}
         @endphp"></script>
 
 </body>

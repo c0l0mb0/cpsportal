@@ -1,1 +1,4 @@
-console.log('1111');
+import Exam from "./exam";
+
+let pageContent = document.querySelector('#page-content');
+let exam = new Exam(pageContent);
