@@ -8,7 +8,6 @@ import {createExamCalendarForm} from "./page_content/exam-calendar";
 import {createDeleteDuplicatesForm} from "./page_content/delete_duplicates";
 import {createPlanGrafForm} from "./page_content/plan-graf-menu";
 import {createReportsForm} from "./page_content/reports";
-import Exam from "./page_content/exam";
 import ActInvestigation from "./page_content/act-investigation";
 
 
@@ -29,8 +28,8 @@ export default class SideBar {
             document.querySelector('.sidebar__edit-plan_grafici').hidden = false;
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
             // document.querySelector('.sidebar__delete-duplicates').hidden = false;
-            document.querySelector('.sidebar__edit-schedule').hidden = false;
-            document.querySelector('.sidebar__edit-schedule-calendar').hidden = false;
+            // document.querySelector('.sidebar__edit-schedule').hidden = false;
+            // document.querySelector('.sidebar__edit-schedule-calendar').hidden = false;
             // document.querySelector('.sidebar__warehouse-workers').hidden = false;
             // document.querySelector('.sidebar__warehouse-reminders').hidden = false;
             // document.querySelector('.sidebar__exam').hidden = false;
@@ -165,13 +164,6 @@ export default class SideBar {
             this.clearPageContent();
             changePageTitle("Расписание проверок");
             createExamCalendarForm(this.pageContent);
-        };
-
-        document.querySelector('.sidebar__exam').onclick = () => {
-            this.actionMenu.hideALl();
-            this.clearPageContent();
-            changePageTitle("Экзамен");
-            let exam = new Exam(this.pageContent);
         };
 
         document.querySelector('.sidebar__act_investigate').onclick = () => {

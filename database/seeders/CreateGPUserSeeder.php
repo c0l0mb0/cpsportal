@@ -17,12 +17,19 @@ class CreateGPUserSeeder extends Seeder
     public function run(): void
     {
         $UserGP1 = User::create([
-            'email' => 'test_ot',
-            'name' => 'test_ot',
-            'password' => Hash::make('08445Gh!'),
+            'email' => 'warehouse',
+            'name' => 'warehouse',
+            'password' => Hash::make('258Kl0@'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+//        $UserGP1 = User::create([
+//            'email' => 'test_ot',
+//            'name' => 'test_ot',
+//            'password' => Hash::make('08445Gh!'),
+//            'created_at' => Carbon::now(),
+//            'updated_at' => Carbon::now(),
+//        ]);
 //        $UserGP1 = User::create([
 //            'email' => 'GP1',
 //            'name' => 'GP1',

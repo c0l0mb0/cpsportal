@@ -25,47 +25,12 @@
             </div>
 
             <ul class="list-unstyled components">
-                <div class="sidebar-list_capture">Оборудование</div>
+                <div class="sidebar-list_capture">Склад</div>
                 <li>
-                    <a class="sidebar__edit-equip sidebar-list-left_margin" hidden href="#">Все обрудование</a>
+                    <a class="sidebar__warehouse-workers sidebar-list-left_margin" href="#">Работники</a>
                 </li>
                 <li>
-                    <a class="sidebar__edit-buildings sidebar-list-left_margin" hidden href="#">Здания</a>
-                </li>
-                <li>
-                    <a class="sidebar__edit-equip-in-building sidebar-list-left_margin" hidden href="#">Оборудование в
-                        здании</a>
-                </li>
-                <li>
-                    <a class="sidebar__export-reports sidebar-list-left_margin" hidden href="#">Отчеты</a>
-                </li>
-                <li>
-                    <a class="sidebar__edit-plan_grafici sidebar-list-left_margin" hidden href="#">План-графики
-                        данные</a>
-                </li>
-                <li>
-                    <a class="sidebar__export-plan_grafici sidebar-list-left_margin" hidden href="#">План-графики
-                        экспорт</a>
-                </li>
-                <li>
-                    <a class="sidebar__act_investigate sidebar-list-left_margin" hidden href="#">АктРасслед</a>
-                </li>
-                <li>
-                    <a class="sidebar__delete-duplicates sidebar-list-left_margin" hidden href="#">Удалить дубликаты</a>
-                </li>
-                <div class="sidebar-list_capture" hidden>Персонал</div>
-                <li>
-                    <a class="sidebar__edit-schedule sidebar-list-left_margin" hidden href="#">Проверки</a>
-                </li>
-                <li>
-                    <a class="sidebar__edit-schedule-calendar sidebar-list-left_margin" hidden href="#">Календарь</a>
-                </li>
-                <div class="sidebar-list_capture" hidden>Склад</div>
-                <li>
-                    <a class="sidebar__warehouse-workers sidebar-list-left_margin" hidden href="#">Работники</a>
-                </li>
-                <li>
-                    <a class="sidebar__warehouse-reminders sidebar-list-left_margin" hidden href="#">Остатки</a>
+                    <a class="sidebar__warehouse-reminders sidebar-list-left_margin" href="#">Остатки</a>
                 </li>
             </ul>
         </div>
@@ -87,78 +52,16 @@
                         <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn edit-table-row action-menu-btn" data-bs-toggle="modal"
-                            title="изменить прибор" data-bs-target="#modal__new-entry">
+                            title="Изменить" data-bs-target="#modal__new-entry">
                         <img src="{{ asset('icon/edit-svgrepo-com.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn return-back action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom"
-                            title="вернуться к зданиям">
-                        <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="modal"
                             data-bs-target="#modal__confirm-delete-entry" data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn plus-three-month action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title=" + 3 месяцa">
-                        <img src="{{ asset('icon/3-plus.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn plus-six-month action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title=" + 6 месяцев">
-                        <img src="{{ asset('icon/plus-six.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn plus-twelve-month action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title=" + 12 месяцев">
-                        <img src="{{ asset('icon/12-plus.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn inner-equip action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="оборудование">
-                        <img src="{{ asset('icon/chip-svgrepo-com.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn excel-export-passport action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Паспорт здания">
-                        <img src="{{ asset('icon/passport.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn excel-export-tep action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Экспорт ТЭП">
-                        <img src="{{ asset('icon/workers.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn excel-export-plangrafic action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Экспорт плана-графика">
-                        <img src="{{ asset('icon/plangraf.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn excel-inner-month action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Меяцы проверок">
-                        <img src="{{ asset('icon/inner-month.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn plangraf-sequence action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Порядок зданий ПлГр">
-                        <img src="{{ asset('icon/sequence.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn plangraf-arrange-numbers action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Расставить номера">
-                        <img src="{{ asset('icon/arrange-build-plgraf.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn equip-usage action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Где используется">
-                        <img src="{{ asset('icon/chart-tree.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn copy-all-building-equipment action-menu-btn"
-                            data-bs-toggle="modal" data-bs-target="#modal__new-entry"
-                            title="копировать оборудование текущего здания">
-                        <img src="{{ asset('icon/copy.svg') }}" class="row-menue__icon">
-                    </button>
                     <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Экспорт в Excel">
                         <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn json-export action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Экспорт в данных json">
-                        <img src="{{ asset('icon/json-export.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn copy-path-to-project action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="копировать путь к проекту">
-                        <img src="{{ asset('icon/folder-copy.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn import-reminds action-menu-btn" data-bs-placement="bottom"
                             data-bs-toggle="modal" title="Импорт данных из Excel остатки бухгалтерия"
@@ -260,15 +163,11 @@
 
 
         <script src="{{ asset('js/libs/ag-grid-enterprise.min.js') }}"></script>
-        <script src="{{ asset('js/libs/imask.js') }}"></script>
-        <script src="{{ asset('js/libs/jquery-3.2.1.slim.min.js') }}"></script>
-        <script src="{{ asset('js/libs/popper.min.js') }}"></script>
         <script src="{{ asset('js/libs/bootstrap5.min.js') }}"></script>
-        <script src="{{ asset('js/libs/index.global.min.js') }}"></script>
 
 
         <script src="@php
-            {{echo ('js/app/cps_portal/' . scandir("js/app/cps_portal/")[2]);}}
+            {{echo ('js/app/cps_warehouse/' . scandir("js/app/cps_warehouse/")[2]);}}
         @endphp"></script>
 
 </body>

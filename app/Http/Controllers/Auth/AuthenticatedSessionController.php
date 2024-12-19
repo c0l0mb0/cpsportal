@@ -35,6 +35,10 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('test');
         }
 
+        if ($user->name === 'warehouse') {
+            return redirect()->route('warehouse');
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
 
     }
