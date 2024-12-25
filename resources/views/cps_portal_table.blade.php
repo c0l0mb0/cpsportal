@@ -160,11 +160,6 @@
                             data-bs-placement="bottom" title="копировать путь к проекту">
                         <img src="{{ asset('icon/folder-copy.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn import-reminds action-menu-btn" data-bs-placement="bottom"
-                            data-bs-toggle="modal" title="Импорт данных из Excel остатки бухгалтерия"
-                            data-bs-target="#modal__import-reminds">
-                        <img src="{{ asset('icon/import-reminds.svg') }}" class="row-menue__icon">
-                    </button>
 
 
                 </div>

@@ -35,12 +35,27 @@ export default class SideBar {
             // document.querySelector('.sidebar__exam').hidden = false;
             document.querySelector('.sidebar__act_investigate').hidden = false;
         } else {
+
             document.querySelector('.sidebar__edit-equip-in-building').hidden = false;
-            // document.querySelector('.sidebar__exam').hidden = false;
             this.cashedAgGridBuildings = lists.buildings.all;
             this.cashedAgGridEquipment = lists.equipment.all;
-            // document.querySelector('.sidebar__edit-plan_grafici').hidden = false;
+            this.setWorkerFrom();
         }
+    }
+
+    setWorkerFrom() {
+        document.getElementById('sidebar').classList.toggle("active");
+        document.getElementById('sidebarCollapse').style.display = 'none';
+        this.tableAgGrid = new TableAgGrid(agGridParameters.uneditableBuildingsParameters.gridOptions,
+            config.api.getBuildingsALl, null,
+            agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu, undefined,
+            undefined, this.cashedAgGridBuildings);
+        this.linksTableAgGridWithActionMenuAndModalForm();
+
+        this.actionMenu.setEditInnerAction();
+        this.actionMenu.setReturnToBuildingsAction();
+
+        changePageTitle("Оборудование в здании");
     }
 
     setButtonsActions() {
@@ -113,8 +128,11 @@ export default class SideBar {
                 agGridParameters.uneditableBuildingsParameters.agName, this.actionMenu, undefined,
                 undefined, this.cashedAgGridBuildings);
             this.linksTableAgGridWithActionMenuAndModalForm();
-            this.actionMenu.showExcelButton();
+
             this.actionMenu.setEditInnerAction();
+            if (userRole === "super-user") {
+                this.actionMenu.showExcelButton();
+            }
             this.actionMenu.setCopyEquipToBuildingAction();
             this.actionMenu.setReturnToBuildingsAction();
 

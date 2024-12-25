@@ -1,3 +1,5 @@
+import {urlPathToLogin} from "./cps-portal-dao";
+
 export default class IdleTimer {
     IDLE_timerID = undefined;
 
@@ -18,7 +20,7 @@ export default class IdleTimer {
     logOut() {
         alert("Вы отключены от сервера из-за бездействия");
         let _this = this;
-        window.location.replace("http://srvyasutp5/cpsequip");
+        window.location.replace(urlPathToLogin);
         // let tokenCPS = addCSRF({});
         // httpRequest(config.api.postLogOut, 'POST', tokenCPS).then((response) => {
         //     window.location.href = config.api.loginURL;

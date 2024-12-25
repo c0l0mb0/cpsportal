@@ -1,12 +1,6 @@
 import {config, httpRequest} from "../cps-portal-dao";
 import {addCSRF} from "../helper";
-import NumericCellEditor from "./ag_grid_classes/numeric-cell-editor.js";
 import {lists} from "../lists";
-import CheckboxRenderer from "./ag_grid_classes/check-box-render";
-import {userRole} from "../app";
-import DateFormatter from "./ag_grid_classes/date-formatter";
-import StringDateEditor from "./ag_grid_classes/string-date-editor";
-import StyleTimeToExam from "./ag_grid_classes/cellStyleTimeToExam";
 
 
 export let agGridParameters = {

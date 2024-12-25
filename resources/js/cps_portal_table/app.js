@@ -23,13 +23,8 @@ function init() {
     actionMenu.modalForm = modalForm;
     sideBar.actionMenu = actionMenu;
     sideBar.modalForm = modalForm;
+
     sideBar.pageContent = document.querySelector('#page-content');
-    sideBar.setPermissions();
-    actionMenu.setPermissions();
-    sideBar.setButtonsActions();
-
-    agGridParameters.actionMenu = actionMenu;
-
     //assign links to buttons
     actionMenu.newTableRow = document.querySelector('.new-table-row');
     actionMenu.deleteTableRow = document.querySelector('.delete-table-row');
@@ -49,8 +44,15 @@ function init() {
     actionMenu.copyEquipOfBuilding = document.querySelector('.copy-all-building-equipment');
     actionMenu.jsonExport = document.querySelector('.json-export');
     actionMenu.tepExport = document.querySelector('.excel-export-tep');
-    actionMenu.importReminds = document.querySelector('.import-reminds ');
     actionMenu.copyPathToProject = document.querySelector('.copy-path-to-project ');
+
+    sideBar.setPermissions();
+    actionMenu.setPermissions();
+    sideBar.setButtonsActions();
+
+    agGridParameters.actionMenu = actionMenu;
+
+
 
     let idleTimer = new IdleTimer();
 }

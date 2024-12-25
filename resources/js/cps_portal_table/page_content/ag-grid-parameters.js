@@ -52,7 +52,6 @@ export let agGridParameters = {
                 },
 
 
-
             ],
             rowSelection: 'single',
             suppressCopyRowsToClipboard: true,
@@ -286,7 +285,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'area',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -299,7 +301,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'group_1',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -312,7 +317,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'group_2',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -325,7 +333,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'shed',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Очередь",
@@ -333,7 +344,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'queue',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -346,7 +360,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'affiliate',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -354,20 +371,15 @@ export let agGridParameters = {
                     }
                 },
                 {
-                    headerName: "toDateTMP",
-                    field: "to_date",
-                    minWidth: 100,
-                    tooltipField: 'to_date',
-                    sortable: true,
-                    filter: 'agTextColumnFilter',
-                },
-                {
                     headerName: "Монтаж",
                     field: "fitt",
                     minWidth: 100,
                     tooltipField: 'fitt',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "МонтажГод",
@@ -375,7 +387,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'fitt_year',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: NumericCellEditor,
                 },
                 {
@@ -384,7 +399,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'proj',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "ПроектГод",
@@ -392,7 +410,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'proj_year',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: NumericCellEditor,
                 },
                 {
@@ -401,7 +422,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'equip_master_type',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "АУПС",
@@ -409,7 +433,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'type_aups',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -422,7 +449,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'aud_warn_type',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -435,7 +465,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'categ_asu',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -448,7 +481,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'on_conserv',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -485,7 +521,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'area',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Группа",
@@ -493,7 +532,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'group_1',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Подгруппа",
@@ -501,7 +543,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'group_2',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Здание",
@@ -509,7 +554,10 @@ export let agGridParameters = {
                     minWidth: 300,
                     tooltipField: 'shed',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Очередь",
@@ -517,7 +565,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'queue',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Филиал",
@@ -525,7 +576,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'affiliate',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
 
             ],
@@ -541,7 +595,9 @@ export let agGridParameters = {
                     addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
             onRowSelected: function () {
-                agGridParameters.actionMenu.showCopyEquipOfBuildingButton();
+                if (userRole === "super-user") {
+                    agGridParameters.actionMenu.showCopyEquipOfBuildingButton();
+                }
                 agGridParameters.actionMenu.showGoToEquipButton();
             },
             onFirstDataRendered: (params) => {
@@ -559,7 +615,10 @@ export let agGridParameters = {
                     width: 100,
                     tooltipField: 'area',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Группа",
@@ -567,7 +626,10 @@ export let agGridParameters = {
                     width: 100,
                     tooltipField: 'group_1',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Подгруппа",
@@ -575,7 +637,10 @@ export let agGridParameters = {
                     width: 50,
                     tooltipField: 'group_2',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Здание",
@@ -583,7 +648,10 @@ export let agGridParameters = {
                     minWidth: 300,
                     tooltipField: 'shed',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Очередь",
@@ -591,7 +659,10 @@ export let agGridParameters = {
                     width: 100,
                     tooltipField: 'queue',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Филиал",
@@ -599,7 +670,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'affiliate',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
 
             ],
@@ -627,7 +701,10 @@ export let agGridParameters = {
                             field: "area",
                             minWidth: 100,
                             tooltipField: 'area',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: false,
                         },
                         {
@@ -635,7 +712,10 @@ export let agGridParameters = {
                             field: "group_1",
                             minWidth: 100,
                             tooltipField: 'group_1',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: false,
 
                         },
@@ -644,7 +724,10 @@ export let agGridParameters = {
                             field: "group_2",
                             minWidth: 100,
                             tooltipField: 'group_2',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: false,
 
                         },
@@ -653,7 +736,10 @@ export let agGridParameters = {
                             field: "shed",
                             minWidth: 100,
                             tooltipField: 'shed',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: false,
 
                         },
@@ -662,7 +748,10 @@ export let agGridParameters = {
                             field: "queue",
                             minWidth: 100,
                             tooltipField: 'queue',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: false,
 
                         },
@@ -671,7 +760,10 @@ export let agGridParameters = {
                             field: "affiliate",
                             minWidth: 100,
                             tooltipField: 'affiliate',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: false,
 
                         },
@@ -686,7 +778,10 @@ export let agGridParameters = {
                             field: "plan_graf_name",
                             minWidth: 100,
                             tooltipField: 'plan_graf_name',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: true,
                             cellEditor: 'agSelectCellEditor',
                             singleClickEdit: true,
@@ -699,7 +794,10 @@ export let agGridParameters = {
                             field: "to_date",
                             minWidth: 100,
                             tooltipField: 'to_date',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: true,
                             cellStyle: {'font-weight': 'bold'}
                         },
@@ -708,7 +806,10 @@ export let agGridParameters = {
                             field: "gr_numb",
                             minWidth: 50,
                             tooltipField: 'gr_numb',
-                            filter: 'agTextColumnFilter',
+                            filter: "agSetColumnFilter",
+                            filterParams: {
+                                applyMiniFilterWhileTyping: true,
+                            },
                             editable: false,
 
                         },
@@ -744,7 +845,10 @@ export let agGridParameters = {
                     field: "area",
                     minWidth: 100,
                     tooltipField: 'area',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                     rowDrag: true
                 },
@@ -753,7 +857,10 @@ export let agGridParameters = {
                     field: "group_1",
                     minWidth: 100,
                     tooltipField: 'group_1',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -761,7 +868,10 @@ export let agGridParameters = {
                     field: "group_2",
                     minWidth: 100,
                     tooltipField: 'group_2',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -769,7 +879,10 @@ export let agGridParameters = {
                     field: "shed",
                     minWidth: 200,
                     tooltipField: 'shed',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -777,7 +890,10 @@ export let agGridParameters = {
                     field: "queue",
                     minWidth: 100,
                     tooltipField: 'queue',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -785,7 +901,10 @@ export let agGridParameters = {
                     field: "plan_graf_name",
                     minWidth: 100,
                     tooltipField: 'plan_graf_name',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -793,7 +912,10 @@ export let agGridParameters = {
                     field: "to_date",
                     minWidth: 100,
                     tooltipField: 'to_date',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -801,7 +923,10 @@ export let agGridParameters = {
                     field: "gr_numb",
                     minWidth: 50,
                     tooltipField: 'gr_numb',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
 
                 },
@@ -835,7 +960,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'area',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "ПланГрафик",
@@ -843,7 +971,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'plan_graf_name',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
 
             ],
@@ -872,35 +1003,50 @@ export let agGridParameters = {
                     field: "area",
                     minWidth: 100,
                     tooltipField: 'area',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Группа",
                     field: "group_1",
                     minWidth: 100,
                     tooltipField: 'group_1',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Подгруппа",
                     field: "group_2",
                     minWidth: 100,
                     tooltipField: 'group_2',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Здание",
                     field: "shed",
                     minWidth: 200,
                     tooltipField: 'shed',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Очередь",
                     field: "queue",
                     minWidth: 100,
                     tooltipField: 'queue',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Филиал",
@@ -908,7 +1054,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'affiliate',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Количество",
@@ -916,7 +1065,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'quantity',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Измерение",
@@ -924,7 +1076,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'measure',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                 },
@@ -952,14 +1107,20 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'equip_name',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "ТипОбобщенный",
                     field: "kind_app",
                     minWidth: 100,
                     tooltipField: 'kind_app',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -971,7 +1132,10 @@ export let agGridParameters = {
                     field: "kind_app_second",
                     minWidth: 100,
                     tooltipField: 'kind_app_second',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -983,7 +1147,10 @@ export let agGridParameters = {
                     field: "kind_signal",
                     minWidth: 100,
                     tooltipField: 'kind_signal',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -995,7 +1162,10 @@ export let agGridParameters = {
                     field: "brand_name",
                     minWidth: 100,
                     tooltipField: 'brand_name',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "ТОостанов",
@@ -1003,7 +1173,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'to_ostanov',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1013,7 +1186,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'to_ostanov_itr',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1049,14 +1225,20 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'equip_name',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "ТипОбобщенный",
                     field: "kind_app",
                     minWidth: 100,
                     tooltipField: 'kind_app',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -1068,7 +1250,10 @@ export let agGridParameters = {
                     field: "kind_app_second",
                     minWidth: 100,
                     tooltipField: 'kind_app_second',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -1080,7 +1265,10 @@ export let agGridParameters = {
                     field: "kind_signal",
                     minWidth: 100,
                     tooltipField: 'kind_signal',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -1092,7 +1280,10 @@ export let agGridParameters = {
                     field: "brand_name",
                     minWidth: 100,
                     tooltipField: 'brand_name',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
 
             ],
@@ -1122,14 +1313,20 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'equip_name',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "ТипОбобщенный",
                     field: "kind_app",
                     minWidth: 100,
                     tooltipField: 'kind_app',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -1141,7 +1338,10 @@ export let agGridParameters = {
                     field: "kind_app_second",
                     minWidth: 100,
                     tooltipField: 'kind_app_second',
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -1153,7 +1353,10 @@ export let agGridParameters = {
                     field: "kind_signal",
                     minWidth: 100,
                     tooltipField: 'kind_signal',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -1165,7 +1368,10 @@ export let agGridParameters = {
                     field: "brand_name",
                     minWidth: 100,
                     tooltipField: 'brand_name',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
 
             ],
@@ -1194,7 +1400,10 @@ export let agGridParameters = {
                     field: "equip_name",
                     minWidth: 350,
                     tooltipField: 'equip_name',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                     rowDrag: true,
                 },
@@ -1203,7 +1412,10 @@ export let agGridParameters = {
                     field: "kind_app",
                     minWidth: 100,
                     tooltipField: 'kind_app',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -1212,7 +1424,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'quantity',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: NumericCellEditor,
                     cellStyle: {'font-weight': 'bold'}
                 },
@@ -1222,7 +1437,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'measure',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: 'agSelectCellEditor',
                     singleClickEdit: true,
                     cellEditorParams: {
@@ -1236,7 +1454,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'equip_year',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     cellEditor: NumericCellEditor,
                     cellStyle: {'font-weight': 'bold'}
                 },
@@ -1249,41 +1470,6 @@ export let agGridParameters = {
                     filter: false,
                     cellEditor: 'agLargeTextCellEditor',
 
-                },
-                {
-                    headerName: "Удалить",
-                    field: "deleted_by_worker",
-                    minWidth: 50,
-                    tooltipField: 'deleted_by_worker',
-                    sortable: true,
-                    filter: 'agTextColumnFilter',
-                    editable: true,
-                    cellRenderer: CheckboxRenderer,
-                    cellStyle: {'background-color': '#b6bec5'}
-                },
-                {
-                    headerName: "Ред",
-                    field: "edited_by_worker",
-                    minWidth: 50,
-                    tooltipField: 'edited_by_worker',
-                    sortable: true,
-                    filter: 'agTextColumnFilter',
-                    editable: false,
-                    hide: true,
-                    cellRenderer: CheckboxRenderer,
-                    cellStyle: {'background-color': '#b6bec5'}
-                },
-                {
-                    headerName: "Созд",
-                    field: "created_by_worker",
-                    minWidth: 50,
-                    tooltipField: 'created_by_worker',
-                    sortable: true,
-                    filter: 'agTextColumnFilter',
-                    editable: false,
-                    hide: true,
-                    cellRenderer: CheckboxRenderer,
-                    cellStyle: {'background-color': '#b6bec5'}
                 },
 
 
@@ -1303,11 +1489,11 @@ export let agGridParameters = {
                     addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
             onRowSelected: function () {
-                if (userRole === "super-user" || userRole === "Nur_master" || userRole === "Yamburg_master" ||
-                    userRole === "Zapolyarka_master") {
-                    agGridParameters.actionMenu.showDelButton();
-                    agGridParameters.actionMenu.showEditButton();
-                }
+                // if (userRole === "super-user" || userRole === "Nur_master" || userRole === "Yamburg_master" ||
+                //     userRole === "Zapolyarka_master") {
+                agGridParameters.actionMenu.showDelButton();
+                agGridParameters.actionMenu.showEditButton();
+                // }
                 agGridParameters.actionMenu.showReturnToBuildingsButton();
 
             },
@@ -1327,7 +1513,10 @@ export let agGridParameters = {
                     field: "equip_name",
                     minWidth: 200,
                     tooltipField: 'equip_name',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -1336,7 +1525,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'quantity',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -1345,7 +1537,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'measure',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: false,
                 },
                 {
@@ -1354,7 +1549,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_january',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1363,7 +1561,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_january_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1373,7 +1574,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_february',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1382,7 +1586,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_february_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1392,7 +1599,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_march',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1401,7 +1611,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_march_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1411,7 +1624,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_april',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1420,7 +1636,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_april_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1430,7 +1649,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_may',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1439,7 +1661,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_may_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1449,7 +1674,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_june',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1458,7 +1686,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_june_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1468,7 +1699,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_july',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1477,7 +1711,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_july_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1487,7 +1724,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_august',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1496,7 +1736,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_august_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1506,7 +1749,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_september',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1515,7 +1761,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_september_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1525,7 +1774,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_october',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1534,7 +1786,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_october_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1544,7 +1799,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_november',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1553,7 +1811,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_november_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1564,7 +1825,10 @@ export let agGridParameters = {
                     minWidth: 100,
                     tooltipField: 'cel_december',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                 },
                 {
@@ -1573,7 +1837,10 @@ export let agGridParameters = {
                     minWidth: 50,
                     tooltipField: 'cel_december_gray',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                     editable: true,
                     cellRenderer: CheckboxRenderer,
                 },
@@ -1608,14 +1875,20 @@ export let agGridParameters = {
                     minWidth: 400,
                     tooltipField: 'area',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Тип",
                     field: "kind_app",
                     minWidth: 60,
                     tooltipField: 'group_2',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "ТипОбобщенный",
@@ -1623,21 +1896,30 @@ export let agGridParameters = {
                     minWidth: 60,
                     tooltipField: 'shed',
                     sortable: true,
-                    filter: 'agTextColumnFilter',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Сигнал",
                     field: "kind_signal",
                     maxWidth: 120,
                     tooltipField: 'group_1',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
                 {
                     headerName: "Производитель",
                     field: "brand_name",
                     maxWidth: 120,
                     tooltipField: 'brand_name',
-                    sortable: true, filter: 'agTextColumnFilter',
+                    sortable: true, filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
                 },
 
             ],
@@ -1653,6 +1935,191 @@ export let agGridParameters = {
             },
         },
         agName: 'cps_equipment_for_choose',
+    },
+    equipmentInBuildingsParametersPlanGrForWorkers: {
+        gridOptions: {
+            columnDefs: [
+
+                {
+                    headerName: "ПланГрНазвание",
+                    field: "plan_graf_name",
+                    minWidth: 200,
+                    tooltipField: 'plan_graf_name',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    editable: false,
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+                {
+                    headerName: "ПорядНомер",
+                    field: "gr_numb",
+                    minWidth: 50,
+                    tooltipField: 'gr_numb',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    editable: false,
+
+                },
+                {
+                    headerName: "ДатыТО",
+                    field: "to_date",
+                    minWidth: 100,
+                    tooltipField: 'to_date',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    editable: false,
+                },
+
+
+                {
+                    headerName: "Группа",
+                    field: "group_1",
+                    minWidth: 100,
+                    tooltipField: 'group_1',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    editable: false,
+
+                },
+                {
+                    headerName: "Подгруппа",
+                    field: "group_2",
+                    minWidth: 100,
+                    tooltipField: 'group_2',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    editable: false,
+
+                },
+                {
+                    headerName: "Здание",
+                    field: "shed",
+                    minWidth: 100,
+                    tooltipField: 'shed',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    editable: false,
+
+                },
+
+                {
+                    headerName: "Название",
+                    field: "equip_name",
+                    minWidth: 350,
+                    tooltipField: 'equip_name',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    editable: false,
+                },
+                {
+                    headerName: "Тип",
+                    field: "kind_app",
+                    minWidth: 100,
+                    tooltipField: 'kind_app',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    editable: false,
+                },
+                {
+                    headerName: "Количество",
+                    field: "quantity",
+                    minWidth: 100,
+                    tooltipField: 'quantity',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    cellEditor: NumericCellEditor,
+                    cellStyle: {'font-weight': 'bold'}
+                },
+                {
+                    headerName: "Измерение",
+                    field: "measure",
+                    minWidth: 100,
+                    tooltipField: 'measure',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    },
+                    cellStyle: {'font-weight': 'bold'}
+                },
+                {
+                    headerName: "Год",
+                    field: "equip_year",
+                    minWidth: 100,
+                    tooltipField: 'equip_year',
+                    filter: "agSetColumnFilter",
+                    filterParams: {
+                        applyMiniFilterWhileTyping: true,
+                    },
+                    cellEditor: NumericCellEditor,
+                    cellStyle: {'font-weight': 'bold'}
+                },
+                {
+                    headerName: "Коментарии",
+                    field: "equip_comments",
+                    minWidth: 100,
+                    tooltipField: 'equip_comments',
+                    filter: false,
+                    cellEditor: 'agLargeTextCellEditor',
+                    editable: true,
+
+                },
+
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                // editable: true,
+                menuTabs: ['filterMenuTab'],
+                sortable: false,
+            },
+            onCellEditingStarted: (event) => {
+
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: function (event) {
+                httpRequest(config.api.getPutDeleteEquipmentInBuilding, "PUT",
+                    addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
+            },
+            onRowSelected: function () {
+                agGridParameters.actionMenu.showDelButton();
+                agGridParameters.actionMenu.showEditButton();
+
+            },
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            },
+            rowDragManaged: true,
+            animateRows: true,
+        },
+        agName: 'equipmentInBuildingsParametersPlanGrForWorkers',
     },
 }
 

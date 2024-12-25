@@ -9,7 +9,9 @@ use Exception;
 
 class ExelExportPlanGraficV2 extends ExcelExport
 {
-    private int $listSize = 1600;//1404
+    //1772.25- max height fits in pl_gr.xlsx template's list with 45% scale and 1, 0.25, 0.25, 0.25 margins
+    //automatic page width and height scale options
+    private int $listSize = 1755;
     private int $listUsedHeight = 0;
     private int $listHeaderHeight = 40;
     private int $itrEquipHeight = 35;
@@ -76,7 +78,6 @@ class ExelExportPlanGraficV2 extends ExcelExport
         $this->setItrEquipHeight();
         $this->createBottom();
         $this->divideToLists();
-
     }
 
     private function divideToLists()
@@ -92,12 +93,13 @@ class ExelExportPlanGraficV2 extends ExcelExport
             if ($watchDog == 10000) {
                 break;
             }
-
-            $rowHeight = $this->sheet->getRowDimension($currentExcelRow)->getRowHeight();
+            $rowHeight = $this->sheet->getRowDimension($currentExcelRow)->getRowHeight(); //return -1 def height
+            if ($rowHeight === -1) { //
+                $rowHeight = 16.5;
+            }
             $this->listUsedHeight += $rowHeight;
 
             if ($this->listUsedHeight > $this->listSize) {
-
 
                 $buildingIndexOnPageBreak = $this->findBuildingInArrByRowNumber($currentExcelRow);
                 $buildingOnPageBreakStartRow = $this->arrEquipmentInBuildingFirstLastRow[$buildingIndexOnPageBreak][0];
@@ -273,7 +275,7 @@ class ExelExportPlanGraficV2 extends ExcelExport
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                 ],
             ],
-            'height' => $this->equipItemHeight];
+            'heightEquip' => $this->equipItemHeight];
 
         $fieldNames = array('equip_name', 'quantity | centered', 'measure | centered', 'to2_new | centered',
             'cel_january | centered', 'cel_february | centered', 'cel_march | centered',
@@ -441,6 +443,8 @@ class ExelExportPlanGraficV2 extends ExcelExport
                     }
 
                     $this->sheet->setCellValue([$this->excelColumnCursor, $this->excelRowCursor], $richText);
+                    $this->sheet->getStyle([$this->excelColumnCursor, $this->excelRowCursor])
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                     $this->excelColumnCursor++;
                     continue;
                 }
@@ -486,8 +490,31 @@ class ExelExportPlanGraficV2 extends ExcelExport
                         $this->sheet->getRowDimension($i)->setRowHeight($styleValue);
                     }
                 }
+                if ($styleEntry === "heightEquip") {
+                    $firstLastRowArr = $this->getFirstAndLastRowFromFullExcelRange($range);
+                    for ($i = $firstLastRowArr[0]; $i <= $firstLastRowArr[1]; $i++) {
+                        $this->sheet->getRowDimension($i)->setRowHeight(-1);
+                        $this->sheet->getStyle('E' . $i . ':P' . $i)->getAlignment()->setWrapText(true);
+                        $highestNumberOfLines = $this->getHighestNumberOfTextLinesInRow($i);
+                        if ($highestNumberOfLines > 1) {
+                            $this->sheet->getRowDimension($i)->setRowHeight($this->equipItemHeight * $highestNumberOfLines);
+                        }
+                    }
+                }
             }
 
         }
+    }
+
+    public function getHighestNumberOfTextLinesInRow($rowNumber)
+    {
+        $highestNumberOfLines = 1;
+        for ($i = 5; $i <= 16; $i++) {
+            $numberOfLines = strlen($this->sheet->getCell([$i, $rowNumber])->getValue()) / 16;
+            if ($numberOfLines > $highestNumberOfLines) {
+                $highestNumberOfLines = $numberOfLines;
+            }
+        }
+        return $highestNumberOfLines;
     }
 }

@@ -61,10 +61,6 @@ class BuildEquipController extends Controller
         if ($userRole != 'super-user' and $userRole != 'Nur_master' and $userRole != 'Yamburg_master' and
             $userRole != 'Zapolyarka_master' and BuildEquip::where('created_by_worker', true)
                 ->where('id', $id)->doesntExist()) {
-            $this->createWorkerChangesLog();
-            $this->workerChangesLog->logUpdatedItem($id, $buildingAndEquip->id_build, $buildingAndEquip->id_equip,
-                $buildingAndEquip->quantity, $buildingAndEquip->measure, $buildingAndEquip->equip_year,
-                $buildingAndEquip->equip_comments,);
             BuildEquip::where('id', $id)->update(['edited_by_worker' => true]);
         }
 
@@ -158,7 +154,7 @@ class BuildEquipController extends Controller
             $equipment->delete();
             return response()->json('Equipment in building removed successfully and logged');
         }
-        return response()->json('Equipment that created by worker is deleted');
+        return response()->json('user role is not found, deleted fail');
     }
 
     public static function getBuildingsWhereEquipmentItemIsUsed($id)

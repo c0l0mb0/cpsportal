@@ -1,9 +1,13 @@
 import {isIE11browser} from "./helper.js";
 
-let url = window.location
-let splitUrl = url.toString().split('/');
-splitUrl = splitUrl.slice(0, -1);
-let UrlPathWithoutLastDirectory = splitUrl.join("/")
+function getUrlPathToLogin() {
+    let url = window.location
+    let splitUrl = url.toString().split('/');
+    splitUrl = splitUrl.slice(0, -1);
+    return splitUrl.join("/")
+}
+
+export let urlPathToLogin = getUrlPathToLogin();
 
 export let config = {
     api: {
@@ -45,7 +49,7 @@ export let config = {
 };
 
 Object.keys(config.api).forEach(key => {
-    config.api[key] = UrlPathWithoutLastDirectory + config.api[key];
+    config.api[key] = urlPathToLogin + config.api[key];
 });
 
 export function httpRequest(url, method, data = null, idRow = null) {
