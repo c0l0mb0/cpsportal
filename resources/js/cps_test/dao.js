@@ -7,6 +7,7 @@ export let config = {
     api: {
         getElectroBezTable: '/api/electro_bez_table',
         getSpsExamTable: '/api/sps_exam_table',
+        getSpsProtocol: '/api/export-sps-protocol',
         postLogOut: '/logout',
         loginURL: '/login',
     }
@@ -79,6 +80,14 @@ export function downloadFile(url, method, data = null) {
     };
 
     oReq.send(JSON.stringify(data));
+}
+
+export function addCSRF(objectData) {
+    let CSRF = document.getElementsByName('csrf-token')[0].getAttribute('content');
+    if (CSRF !== undefined && CSRF !== "") {
+        objectData._token = CSRF;
+        return objectData;
+    }
 }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Export;
 
+use Exception;
 use JetBrains\PhpStorm\NoReturn;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -45,11 +46,16 @@ abstract class ExcelExport
 
     abstract public function createBody();
 
-    public function run()
+    public function run($respondAsOneFile = true, $folder = 'tmp')
     {
         $this->createHead();
         $this->createBody();
-        $this->exportFile();
+        if ($respondAsOneFile === true) {
+            $this->exportFile();
+        } else {
+            $this->saveToHost($folder);
+        }
+
     }
 
     #[NoReturn] private function exportFile()
@@ -62,6 +68,19 @@ abstract class ExcelExport
         $this->spreadsheet->disconnectWorksheets();
         exit();
     }
+
+    private function saveToHost($folder)
+    {
+        $rootDir = dirname(__FILE__, 3);
+
+        $pathToFile = $rootDir . "\\storage\\plGr\\" . $folder . '\\';
+        if (!is_dir($pathToFile)) {
+            mkdir($pathToFile, 07777);
+        }
+        $writer = new Xlsx($this->spreadsheet);
+        $writer->save($pathToFile . $this->fileName);
+    }
+
 
     protected function getBuildingsWithEquipmentFieldValue($fieldName)
     {
@@ -87,7 +106,7 @@ abstract class ExcelExport
             $range = $this->getLetterCoordinates($excelColumnStart, $excelRowStart, $excelColumnStart + count($rowsData) - 1, $excelRowStart);
 
             foreach ($styleArray as $styleEntry => $styleValue) {
-                if ($styleEntry === "height") {
+                if ($styleEntry === 'height') {
                     $this->sheet->getRowDimension($excelRowStart)->setRowHeight($styleValue);
                 }
             }
@@ -99,7 +118,7 @@ abstract class ExcelExport
     }
 
     protected function insertTableChunk($excelRowStart, $excelColumnStart, $fieldNames,
-                                     $workBookNumber, $styleArray, $pageBreakEquipNumber = null, $isOneEntry = false)
+                                        $workBookNumber, $styleArray, $pageBreakEquipNumber = null, $isOneEntry = false)
     {
         $this->excelRowCursor = $excelRowStart;
         $this->excelColumnCursor = $excelColumnStart;
@@ -186,7 +205,7 @@ abstract class ExcelExport
     abstract public function checkAdditionalFieldConditionals($fieldName, $fieldPipeSeparated, $buildingsWithEquipmentEntry);
 
 //    return excel char range
-    protected function getLetterCoordinates($excelColumnFirst, $excelRowFirst, $excelColumnLast, $excelRowLast,)
+    protected function getLetterCoordinates($excelColumnFirst, $excelRowFirst, $excelColumnLast, $excelRowLast)
     {
         $excelColumnFirstLetter = $this->getNameFromNumber($excelColumnFirst);
         $excelColumnLastLetter = $this->getNameFromNumber($excelColumnLast);
@@ -202,7 +221,7 @@ abstract class ExcelExport
         return array($firstRow, $lastRow);
     }
 
-    private function getNameFromNumber($num)
+    protected function getNameFromNumber($num)
     {
         $numeric = ($num - 1) % 26;
         $letter = chr(65 + $numeric);
@@ -214,7 +233,7 @@ abstract class ExcelExport
         }
     }
 
-    private function getNumberFromLetter($string)
+    protected function getNumberFromLetter($string)
     {
         $string = strtoupper($string);
         $length = strlen($string);
@@ -242,5 +261,6 @@ abstract class ExcelExport
         }
         return $maxTextLinesInCell;
     }
+
 
 }

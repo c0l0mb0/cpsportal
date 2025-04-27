@@ -5,13 +5,14 @@ namespace App\Export;
 use App\Http\Controllers\BuildEquipController;
 use App\Http\Controllers\BuildingsController;
 use Exception;
+use PharIo\Version\ExactVersionConstraint;
 
 
 class ExelExportPlanGraficV2 extends ExcelExport
 {
     //1772.25- max height fits in pl_gr.xlsx template's list with 45% scale and 1, 0.25, 0.25, 0.25 margins
     //automatic page width and height scale options
-    private int $listSize = 1755;
+    private int $listSize = 1630;//1740;
     private int $listUsedHeight = 0;
     private int $listHeaderHeight = 40;
     private int $itrEquipHeight = 35;
@@ -28,6 +29,7 @@ class ExelExportPlanGraficV2 extends ExcelExport
     private string $whoAssignFio;
     private string $whoAssignPosition;
     private array $arrEquipmentInBuildingFirstLastRow = [];
+    private bool $isVgk = false;
 
     public function setPlanGrafWorkBookAndSheet($planGrafName, $yearPlGr, $whoApproveFio, $whoApprovePosition,
                                                 $whoAssignFio, $whoAssignPosition)
@@ -40,6 +42,9 @@ class ExelExportPlanGraficV2 extends ExcelExport
         $this->whoAssignPosition = $whoAssignPosition;
         $this->planGrafBuildings = BuildingsController::getBuildingsOfPlanGrafic([
             ['plan_graf_name', '=', $this->planGrafName]]);
+        if (str_contains($this->planGrafName, 'ВЖК')) {
+            $this->isVgk = true;
+        };
     }
 
     public function createHead()
@@ -52,15 +57,17 @@ class ExelExportPlanGraficV2 extends ExcelExport
         $this->sheet->getPageSetup()
             ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A3);
 
-        $this->sheet->setCellValue('L7', $this->whoApprovePosition);
-        $this->sheet->setCellValue('L8', $this->whoApproveFio);
+        $approveNamePatronymicShort = $this->getNamePatronymicShort($this->whoApproveFio);
+        $this->sheet->setCellValue('M7', $this->whoApprovePosition);
+        $this->sheet->setCellValue('M8', '______________' . $approveNamePatronymicShort);
 
-        $signYear = $this->sheet->getCell('L9')->getValue();
-        $this->sheet->setCellValue('L9', str_replace('&year', $this->yearPlGr, $signYear));
+        $signYear = $this->sheet->getCell('M9')->getValue();
+        $this->sheet->setCellValue('M9', str_replace('&year', (int)$this->yearPlGr - 1, $signYear));
 
+        $plGrAffiliates = $this->getAffiliatesString();
 
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, array('на объекте ' .
-            $this->planGrafName . ' филиала УА и МО на ' . $this->yearPlGr .
+            $this->planGrafName . $plGrAffiliates . ' ' . $this->yearPlGr .
             ' год.'), null, null);
 
         $this->excelRowCursor++;
@@ -68,6 +75,40 @@ class ExelExportPlanGraficV2 extends ExcelExport
         $this->insertNewPageHeader($this->excelRowCursor);
     }
 
+    private function getNamePatronymicShort($fioFull): string
+    {
+        $fioFullArr = explode(" ", $fioFull);
+        $name = mb_substr($fioFullArr[1], 0, 1, "utf-8");
+        $name = $name . '. ';
+        $surname = mb_substr($fioFullArr[2], 0, 1, "utf-8");
+        $surname = $surname . '. ';
+
+        return $name . $surname . $fioFullArr[0];
+    }
+
+
+    private function getAffiliatesString()
+    {
+        $result = '';
+        $plGrAffiliatesQuery = BuildingsController::getAffiliatesByPlGr($this->planGrafName);
+//        print_r($plGrAffiliatesQuery);
+        if (count($plGrAffiliatesQuery) === 0) {
+            throw new Exception(count($plGrAffiliatesQuery) === 0);
+        }
+        if (count($plGrAffiliatesQuery) > 1) {
+            $result = ' филиалов ';
+        }
+        if (count($plGrAffiliatesQuery) === 1) {
+            $result = ' филиала ';
+        }
+        $affiliates = '';
+        foreach ($plGrAffiliatesQuery as $row) {
+            $affiliates .= ' ' . $row->affiliate . ',';
+        }
+        $affiliates = rtrim($affiliates, ",");
+//        throw new Exception($affiliates);
+        return $result . $affiliates;
+    }
 
     public function createBody()
     {
@@ -130,7 +171,8 @@ class ExelExportPlanGraficV2 extends ExcelExport
                 // almost whole building fits on page, but 0-4 building's rows on next page. 0 means that only part of one row on next page
                 if (0 <= $buildingOnPageBreak_RowsAfterPageEnd && $buildingOnPageBreak_RowsAfterPageEnd <= 5) {
 
-                    $this->insertPageBreakWithPageHeader($this->arrEquipmentInBuildingFirstLastRow[$buildingIndexOnPageBreak][1] - 3, $buildingIndexOnPageBreak, false);
+                    $this->insertPageBreakWithPageHeader($this->arrEquipmentInBuildingFirstLastRow[$buildingIndexOnPageBreak][1] - 3,
+                        $buildingIndexOnPageBreak, false);
                     $currentExcelRow = $this->arrEquipmentInBuildingFirstLastRow[$buildingIndexOnPageBreak][1] - 4;
                     $page++;
                     continue;
@@ -232,7 +274,7 @@ class ExelExportPlanGraficV2 extends ExcelExport
     {
         for ($i = 1; $i <= $this->sheet->getHighestRow(); $i++) {
             $cellValue = $this->sheet->getCell([1, $i])->getValue();
-            if (str_contains($cellValue, ' (на план . останове . Указать дату, ФИО, подпись ИТР проводящего ТО)')) {
+            if (str_contains($cellValue, 'на план. останове. Указать дату, ФИО')) {
                 $this->sheet->getRowDimension($i)->setRowHeight($this->itrEquipHeight);
                 $this->sheet->getStyle([1, $i])->getAlignment()->setWrapText(true);
             }
@@ -250,6 +292,7 @@ class ExelExportPlanGraficV2 extends ExcelExport
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -260,7 +303,7 @@ class ExelExportPlanGraficV2 extends ExcelExport
             'height' => $this->buildingNameRowHeight
         ];
         $rowBuildingStart = $this->excelRowCursor;
-        $buildingNameAndTOdate = 'Здание ' . $this->getBuildingsWithEquipmentFieldValue('shed') .
+        $buildingNameAndTOdate = $this->getBuildingsWithEquipmentFieldValue('shed') .
             ' дата ТО - ' . $this->getBuildingsWithEquipmentFieldValue('to_date');
         $rowsData = array($buildingNameAndTOdate, 'empty', 'empty', 'empty', 'Дата', 'Дата', 'Дата',
             'Дата', 'Дата', 'Дата', 'Дата', 'Дата', 'Дата', 'Дата', 'Дата', 'Дата',);
@@ -297,7 +340,7 @@ class ExelExportPlanGraficV2 extends ExcelExport
             ],
         ];
         $this->sheet->getRowDimension($this->excelRowCursor)->setRowHeight($this->buildingSignsRowHeight);
-        $rowsData = array('Исполнитель работ(Ф . И . О . подпись)', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',
+        $rowsData = array('Исполнитель работ (Ф. И. О. подпись)', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',
             'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',);
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
 
@@ -307,14 +350,31 @@ class ExelExportPlanGraficV2 extends ExcelExport
         $rowsData = array('comprehensiveTesting', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',
             'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',);
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
-        $this->sheet->getStyle('E' . $this->excelRowCursor - 1 . ':P' . $this->excelRowCursor - 1)->getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED);
+        if (!$this->isVgk) {
+            $this->sheet->getStyle('E' . $this->excelRowCursor - 1 . ':P' . $this->excelRowCursor - 1)->
+            getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED);
+        }
+        if ($this->isVgk) {
+            $this->sheet->getStyle('G' . $this->excelRowCursor - 1)->
+            getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED);
+        }
 
 
         $this->sheet->getRowDimension($this->excelRowCursor)->setRowHeight($this->buildingSoundSystemRowHeight);
         $rowsData = array('alertAndEvacuation', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',
             'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',);
         $this->insertJustTextDataInRow($this->excelRowCursor, $this->excelColumnCursor, $rowsData, null, $styleArray);
-        $this->sheet->getStyle('E' . $this->excelRowCursor - 1 . ':P' . $this->excelRowCursor - 1)->getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED);
+        if (!$this->isVgk) {
+            $this->sheet->getStyle('E' . $this->excelRowCursor - 1 . ':P' . $this->excelRowCursor - 1)->
+            getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED);
+        }
+        if ($this->isVgk) {
+            $this->sheet->getStyle('G' . $this->excelRowCursor - 1)->
+            getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED);
+            $this->sheet->getStyle('M' . $this->excelRowCursor - 1)->
+            getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED);
+        }
+
 
         $rowBuildingEnd = $this->excelRowCursor;
         array_push($this->arrEquipmentInBuildingFirstLastRow, [$rowBuildingStart, $rowBuildingEnd - 1]);
@@ -387,8 +447,11 @@ class ExelExportPlanGraficV2 extends ExcelExport
                     'argb' => 'C1E1C1',
                 ],
             ],
+            'font' => [
+                'size' => '13',
+            ],
             'height' => $this->listHeaderHeight];
-        $rowsData = array(' Наименование оборудования', 'Кол - во', 'Ед . изм - ия', '№ по переч . работ', 'январь', 'февраль',
+        $rowsData = array(' Наименование оборудования', 'Кол - во', 'Ед . изм - ия', '№ по переч. работ', 'январь', 'февраль',
             'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь');
         $this->insertJustTextDataInRow($excelRowCursor, 1, $rowsData, null, $styleArray);
     }
@@ -437,8 +500,12 @@ class ExelExportPlanGraficV2 extends ExcelExport
                     $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
                     $richText->createText($buildingsWithEquipmentEntry->equip_name);
 
+                    if ($buildingsWithEquipmentEntry->to_ostanov_worker) {
+                        $payable = $richText->createTextRun(' (на план. останове. Указать дату, ФИО, подпись проводящего ТО)');
+                        $payable->getFont()->setBold(true);
+                    }
                     if ($buildingsWithEquipmentEntry->to_ostanov_itr) {
-                        $payable = $richText->createTextRun(' (на план . останове . Указать дату, ФИО, подпись ИТР проводящего ТО)');
+                        $payable = $richText->createTextRun(' (на план. останове. Указать дату, ФИО, подпись ИТР проводящего ТО)');
                         $payable->getFont()->setBold(true);
                     }
 

@@ -167,7 +167,7 @@ export default class SideBar {
                 undefined, undefined);
             this.linksTableAgGridWithActionMenuAndModalForm();
             this.actionMenu.setExportPlanGrafAction();
-            changePageTitle("План-графики экспорт");
+            changePageTitle("План-графики libraOffice/excel экспорт");
             createPlanGrafForm(this.pageContent);
         };
 

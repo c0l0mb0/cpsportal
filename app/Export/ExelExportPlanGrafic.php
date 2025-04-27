@@ -158,6 +158,7 @@ class ExelExportPlanGrafic extends ExcelExport
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -263,10 +264,10 @@ class ExelExportPlanGrafic extends ExcelExport
                 if ($fieldName == 'equip_name') {
                     $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
                     $richText->createText($buildingsWithEquipmentEntry->equip_name);
-//                    if ($buildingsWithEquipmentEntry->to_ostanov) {
-//                        $payable = $richText->createTextRun(' (на план. останове)');
-//                        $payable->getFont()->setBold(true);
-//                    }
+                    if ($buildingsWithEquipmentEntry->to_ostanov_worker) {
+                        $payable = $richText->createTextRun(' (на план. останове. Указать дату, ФИО, подпись проводящего ТО)');
+                        $payable->getFont()->setBold(true);
+                    }
 
                     if ($buildingsWithEquipmentEntry->to_ostanov_itr) {
                         $payable = $richText->createTextRun(' (на план. останове. Указать дату, ФИО, подпись ИТР проводящего ТО)');

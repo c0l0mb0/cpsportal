@@ -6,6 +6,7 @@ use App\Models\Buildings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class BuildingsController extends Controller
 {
@@ -23,6 +24,7 @@ class BuildingsController extends Controller
         }
         return response()->json($buildingsQuery->get());
     }
+
 
     public function getBuildingsAndPlanGrafDataOrderedByPlanGraf()
     {
@@ -59,6 +61,23 @@ class BuildingsController extends Controller
             ->orderBy('plan_graf_name', 'asc')
             ->get();
         return response()->json($buildingsPlanGraf);
+    }
+
+    public static function indexPlanGrafReturnArr()
+    {
+        return DB::table('buildings')
+            ->select(DB::raw('plan_graf_name'))
+            ->distinct()
+            ->where('area', '<>', 'ПС САП')
+            ->where('area', '<>', 'Новый Уренгой')
+            ->where('area', '<>', 'Ямбург')
+            ->orderBy('plan_graf_name', 'asc')
+            ->get();
+    }
+
+    public static function getMaintanerRoleByPlGraf($plGraf)
+    {
+        return DB::table('buildings')->where('plan_graf_name', $plGraf)->first();
     }
 
     public function indexGroup1()
@@ -170,6 +189,20 @@ class BuildingsController extends Controller
             ->get();
     }
 
+    public static function getAffiliatesByPlGr($plGr)
+    {
+        return DB::table('buildings')
+            ->select(DB::raw('affiliate'))
+            ->distinct()
+            ->where('plan_graf_name', '=', $plGr)
+            ->where(function ($query) {
+                $query->where('on_conserv', '=', false)
+                    ->orWhereNull('on_conserv');
+            })
+            ->orderBy('affiliate', 'asc')
+            ->get();
+    }
+
     private function getMaintainerRole($areaRequest, $group1Request): string
     {
         $maintainerRolesAreas = array("Новый Уренгой" => "Nur_master", "Ямбург" => "Yamburg_master",
@@ -195,6 +228,14 @@ class BuildingsController extends Controller
             }
         }
         return $maintainerRole;
+    }
+
+    public static function getPlanGrArr()
+    {
+        return DB::table('buildings')
+            ->select(DB::raw('plan_graf_name'))
+            ->distinct()
+            ->get();
     }
 
 

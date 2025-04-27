@@ -2,9 +2,10 @@
     height: 70px;
     padding-top: 5px;
     border-bottom-width: 3px;
-    background-color: #f4f3f3;
+    background-color: #f8f8f8;
     margin-top: 1px;
-    overflow-x: scroll;
+    overflow-x: auto;
+    justify-content: space-between;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -65,4 +66,15 @@
 .vertical-space {
     height: 30px;
     user-select: none;
+}
+
+.blocked {
+    pointer-events: none;       /* Disables mouse interactions */
+    opacity: 0.6;               /* Visual indication of disabled state */
+    cursor: not-allowed;        /* Shows "not allowed" cursor */
+
+    /* Optional additional styling */
+    background-color: #f0f0f0 !important;  /* Grayed out background */
+    color: #999 !important;                /* Lightened text color */
+    border-color: #ddd !important;
 }

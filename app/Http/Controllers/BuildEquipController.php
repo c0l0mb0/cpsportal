@@ -258,4 +258,5 @@ class BuildEquipController extends Controller
     }
 
 
+
 }

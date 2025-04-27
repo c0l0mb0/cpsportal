@@ -6,7 +6,7 @@ export default class Ribbon {
     babbleWidth;
     inScreenBubbles;
     moveAmount;
-
+    bubbleListener;
     constructor(ribbonDiv, bubblesQuantity, exam) {
         this.ribbonDiv = ribbonDiv;
         this.bubblesQuantity = bubblesQuantity;
@@ -29,13 +29,17 @@ export default class Ribbon {
             }
             questionStatus.questionStatusElement = questionStatusElement;
             this.questionsStatus.push(questionStatus);
-            questionStatusElement.addEventListener("click", () => {
-                this.setBabbleStyleNotActive(this.exam.currentQuestionInArray);
-                this.exam.currentQuestionInArray = i;
-                this.setBabbleStyleActive(this.exam.currentQuestionInArray);
-                this.exam.createQuestionAndAnswers(i)
-            });
+            this.bubbleListener = this.bubbleClickAction.bind(this,i)
+            questionStatusElement.addEventListener("click", this.bubbleListener
+            );
         }
+    }
+
+    bubbleClickAction(i) {
+        this.setBabbleStyleNotActive(this.exam.currentQuestionInArray);
+        this.exam.currentQuestionInArray = i;
+        this.setBabbleStyleActive(this.exam.currentQuestionInArray);
+        this.exam.createQuestionAndAnswers(i);
     }
 
 
@@ -82,12 +86,17 @@ export default class Ribbon {
     setBabbleStyleActive(bubbleNumber) {
         this.ActiveBubble = bubbleNumber;
         let bubble = this.questionsStatus[bubbleNumber].questionStatusElement;
-        bubble.classList.add('current-quest-status')
+        bubble.classList.add('current-quest-status');
     }
 
     setBabbleStyleNotActive(bubbleNumber) {
         let bubble = this.questionsStatus[bubbleNumber].questionStatusElement;
-        bubble.classList.remove('current-quest-status')
+        bubble.classList.remove('current-quest-status');
+    }
+
+    setBabbleStyleBlocked(bubbleNumber) {
+        let bubble = this.questionsStatus[bubbleNumber].questionStatusElement;
+        bubble.classList.add('blocked');
     }
 
     moveScrollIfCurrentBubbleIsLast(nextBubble) {
@@ -99,12 +108,7 @@ export default class Ribbon {
             return true;
         }
         if (nextBubble >= lastBubbleInVision) {
-            //
-            // console.log('nextBubble')
-            // console.log(nextBubble)
-            // console.log('lastBubbleInVision')
-            // console.log(lastBubbleInVision)
-            let pixelsToMove =nextBubble * this.babbleWidth - this.moveAmount;
+            let pixelsToMove = nextBubble * this.babbleWidth - this.moveAmount;
             this.ribbonDiv.scrollTo(pixelsToMove, 0);
         }
 

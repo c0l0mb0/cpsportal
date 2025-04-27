@@ -9,6 +9,7 @@ use App\Export\ExelExportOtakaziRussianIzveshateli;
 use App\Export\ExelExportPassport;
 use App\Export\ExelExportPlanGraficV2;
 use App\Export\ExelExportPotrebnostMtr;
+use App\Export\ExelExportExamReport;
 use App\Export\ExelExportTepSeveralSheets;
 use App\Export\ExelSpsBilet;
 use Illuminate\Http\Request;
@@ -39,12 +40,38 @@ class ExcelExportController extends Controller
 
     public function exportPassport($id)
     {
-//        $spsTest = new ExelSpsBilet('СПС вопросы.xlsx', 1, 1);
-//        $spsTest->run();
         $buildingName = BuildingsController::getBuildingById($id);
         $passport = new ExelExportPassport('паспорт_' . $buildingName . '.xlsx', 1, 1);
         $passport->setIdBuilding($id);
         $passport->run();
+    }
+
+    public function exportExamReport(Request $request): void
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'patronymic' => 'required',
+            'surname' => 'required',
+            'is_pass' => 'required',
+            'report_theme' => 'required',
+            'start_time' => 'required',
+            'finish_time' => 'required',
+        ]);
+
+        $questions = $request->input('questions');
+        foreach ($questions as $index => $qa) {
+            $request->validate([
+                "questions.{$index}.question" => 'required|string',
+                "questions.{$index}.answer" => 'required|string',
+                "questions.{$index}.isRight" => 'required|boolean'
+            ]);
+        }
+        $spsReport = new ExelExportExamReport('протокол_' . $request->report_theme . '_' .
+            $request->surname . '.xlsx',
+            1, 1);
+        $spsReport->setReportData($request->name, $request->patronymic, $request->surname, $request->tab_numb,
+            $request->is_pass, $request->report_theme,  $request->questions, $request->start_time, $request->finish_time);
+        $spsReport->run();
     }
 
     public function exportSpsTest()
@@ -75,6 +102,23 @@ class ExcelExportController extends Controller
             $request->who_approve_fio, $request->who_approve_position, $request->who_assign_fio,
             $request->who_assign_position,);
         $planGrafic->run();
+    }
+
+    public function exportPlanGrafAll(Request $request)
+    {
+        set_time_limit(0);
+        $plGrAll = BuildingsController::indexPlanGrafReturnArr();
+        foreach ($plGrAll as $row) {
+            $planGrafName = $row->plan_graf_name;
+            $maintainerRoleRow = BuildingsController::getMaintanerRoleByPlGraf($planGrafName);
+            $planGrafic = new ExelExportPlanGraficV2('план_график_' . $planGrafName . '.xlsx',
+                12, 1, 'pl_gr.xlsx');
+            $planGrafic->setPlanGrafWorkBookAndSheet($planGrafName, '2025',
+                'Ильин Александр Николаевич', 'Зам. начальника цеха ПС', 'Коротун Дмитрий Сергеевич',
+                'Начальник участка ПС');
+            $planGrafic->run(false, $maintainerRoleRow->maintainer_role);
+        }
+
     }
 
     public function exportOtkaziRussianIzveshatel()
